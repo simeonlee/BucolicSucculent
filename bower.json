@@ -1,0 +1,25 @@
+{
+  "name": "bucolicsucculent",
+  "description": "location-based interactive experience",
+  "main": "server/server.js",
+  "authors": [
+    "Derek Liu",
+    "Clara McKenzie",
+    "Brian Kilrain",
+    "Sam Cheung"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/BucolicSucculent/BucolicSucculent",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-google-maps": "^2.3.4"
+  }
+}
