@@ -15,5 +15,10 @@ angular.module('app', ['ui.router', 'app.auth'])
         url: '/signup',
         templateUrl: '../views/signup.html',
         controller: 'AuthController'
+      })
+      .state('createGame', {
+        url: '/createGame',
+        templateUrl: '../views/createGame.html',
+        controller: 'createGameController'
       });
 })
