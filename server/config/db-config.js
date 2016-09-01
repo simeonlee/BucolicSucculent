@@ -22,4 +22,6 @@ Game.belongsTo(User, {as: creatorId});
 
 Location.belongsTo(Game);
 
+db.sync().then
+
 module.exports = db;
