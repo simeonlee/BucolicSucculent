@@ -1,4 +1,5 @@
-angular.module('app', [ui.router])
+
+angular.module('app', ['ui.router', 'app.auth'])
 
 .config(function ($stateProvider, $urlRouterProvider)  {
 
@@ -7,12 +8,12 @@ angular.module('app', [ui.router])
     $stateProvider
       .state('login', {
           url: '/login',
-          templateUrl: '',
-          controller: ''
+          templateUrl: '../views/login.html',
+          controller: 'AuthController'
         })
       .state('signup', {
         url: '/signup',
-        templateUrl: '',
-        controller: ''
+        templateUrl: '../views/signup.html',
+        controller: 'AuthController'
       });
 })
