@@ -1,5 +1,5 @@
 
-angular.module('app', ['ui.router', 'app.auth'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame'])
 
 .config(function ($stateProvider, $urlRouterProvider)  {
 
