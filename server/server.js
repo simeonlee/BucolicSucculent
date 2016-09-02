@@ -1,10 +1,19 @@
 var express = require('express');
+var mysql = require('mysql');
+var bodyParser = require('body-parser');
 var app = express();
 
+app.use(bodyParser.json());
+var parser = bodyParser.json();
+app.use(express.static('./client'));
+
+var db = require('./config/db-config').db;
 require('./config/router')(app, express);
 
-app.use(express.static('./client'));
 
 app.listen(4200, function () {
   console.log('Example app listening on port 4200!');
+  db.sync().then(function() {
+    console.log('Synced with mySql');
+  });
 });

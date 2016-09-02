@@ -5,23 +5,33 @@ var config = {
   password: 'root'
 };
 
-var db = new Sequelize('Scavenger', config.username, config.password);
+var db = new Sequelize('Scavenger', 'root', 'root', {
+  host: 'localhost',
+  dialect: 'mysql',
+  port: 3306,
+  logging: false
+});
 
-var User = require('../games/games')(db);
-var Locations = require('../locations/locations')(db);
+var Game = require('../games/games')(db);
+var Location = require('../locations/locations')(db);
 var Status = require('../status/status')(db);
 var User = require('../users/users')(db);
 
-User.belongsToMany(Game, {through: UserGame});
-Game.belongsToMany(User, {through: UserGame});
+User.belongsToMany(Game, {through: 'usergame', foreignKey: 'userId'});
+Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 
-Location.belongsToMany(User, {through: Status});
-User.belongsToMany(Location, {through: Status});
+Location.belongsToMany(User, {through: 'statuses', foreignKey: 'userId'});
+User.belongsToMany(Location, {through: 'statuses', foreignKey: 'locationId'});
 
-Game.belongsTo(User, {as: creatorId});
+// Might not like the double-relationship
+// Game.belongsTo(User, {as: 'creatorId'});
 
 Location.belongsTo(Game);
 
-db.sync().then
-
-module.exports = db;
+module.exports = {
+  db: db,
+  Game: Game,
+  Location: Location,
+  Status: Status,
+  User: User
+};
