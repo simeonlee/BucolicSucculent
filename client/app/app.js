@@ -1,7 +1,7 @@
 
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps'])
 
-.config(function ($stateProvider, $urlRouterProvider)  {
+.config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider)  {
 
     $urlRouterProvider.otherwise('/login'); // <-------------- default view
 
@@ -21,4 +21,12 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame'])
         templateUrl: '../views/createGame.html',
         controller: 'createGameController'
       });
+
+
+      //////////////////// 
+
+      uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM',
+        libraries: 'drawing,geometry,visualization'
+    });
 })
