@@ -1,0 +1,11 @@
+<div>
+  <h1>Create a New Game~</h1>
+
+  <!-- Map to choose waypoints -->
+
+  <button ng-click="submitWaypoints()">Start Game</button>
+
+  <div class="sharePath">
+    <h3 ng-if="gamePath">Share this url with your friends: <a id="gamePath" ng-href="{{ gamePath }}">{{ gamePath }}</a></h3>
+  </div>
+</div>
