@@ -27,8 +27,5 @@ module.exports = function(app, express) {
     .catch(function(err) {
       res.status(409).send('Username already exists');
     });
-
-    console.log('REQUEST', req.body);
-
   });
 };
