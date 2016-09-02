@@ -2,7 +2,13 @@
   <h1>Create a New Game~</h1>
 
   <!-- Map to choose waypoints -->
-  <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+  <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+    <ui-gmap-drawing-manager
+      options="createOptions"
+      control='{}'
+      static='true'>
+    </ui-gmap-drawing-manager>
+  </ui-gmap-google-map>
 
   <button ng-click="submitWaypoints()">Start Game</button>
 
