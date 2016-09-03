@@ -1,6 +1,6 @@
 |      URL                         | HTTP Verb | Request Body |                             Result                                           |
 |:--------------------------------:|:---------:|:------------:|:----------------------------------------------------------------------------:|
-| /api/game                        |    GET    |    empty     |                                                     Return JSON of all games |
+| /api/game?username               |    GET    |    empty     |                                                     Return JSON of all games |
 | /api/game?username&gameId        |    GET    |    empty     |    Find or create JSON of game information for that user to render front-end |
 | /api/game?username&gameId        |    PUT    |     JSON     |                                               Return updated location status |
 | /api/game/create                 |    POST   |     JSON     |                 Create a new game given the locations and return the game id |
