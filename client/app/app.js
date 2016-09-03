@@ -3,7 +3,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider)  {
 
-    $urlRouterProvider.otherwise('/login'); // <-------------- default view
+    $urlRouterProvider.otherwise('/login'); // <-------------- default view SET TO DASHBOARD!
 
     $stateProvider
       .state('login', {
