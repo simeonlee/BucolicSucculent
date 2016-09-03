@@ -1,8 +1,8 @@
 |      URL                         | HTTP Verb | Request Body |                             Result                                           |
 |:--------------------------------:|:---------:|:------------:|:----------------------------------------------------------------------------:|
 | /api/game                        |    GET    |    empty     |                                                     Return JSON of all games |
-| /api/game/?username&gameId       |    GET    |    empty     |    Find or create JSON of game information for that user to render front-end |
-| /api/game/?username&gameId       |    PUT    |     JSON     |                                               Return updated location status |
+| /api/game?username&gameId        |    GET    |    empty     |    Find or create JSON of game information for that user to render front-end |
+| /api/game?username&gameId        |    PUT    |     JSON     |                                               Return updated location status |
 | /api/game/create                 |    POST   |     JSON     |                 Create a new game given the locations and return the game id |
 | /api/users                       |    GET    |    empty     |                                                        Initial login for jwt |
 | /api/users/signup                |    POST   |     JSON     |       Creates the account in the db and Return authentication somehow (jwt?) |
@@ -37,12 +37,12 @@ CREATING/JOINING A GAME
   GET /api/game/
 
 3. a user joins an existing created game ->
-  GET /api/game/?username&gameId
+  GET /api/game?username&gameId
   If gameId DOES NOT exist inside user/game table, then create locations in db and return JSON of game info for front end to render Game View
   if gameId DOES exist, give them current game info for that user
 
 4. a user toggles a location ->
-  PUT /api/game/?username&gameId
+  PUT /api/game?username&gameId
   Client sends in current location and a key-value of the specific location id that was clicked and sends a true/false value to the server.
   The server will take the current location and compare it with the location in the database and check if they are actually there. *
   Return back the value of that location true/false so that the client can rerender only that location
