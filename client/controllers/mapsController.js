@@ -1,3 +1,6 @@
+/********* config put in app.js for now ********/
+
+
 // angular.module('app.maps', [])
 
 // .config(function(uiGmapGoogleMapApiProvider) {

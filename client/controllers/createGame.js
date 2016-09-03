@@ -3,7 +3,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
 .controller('createGameController', function($scope, uiGmapGoogleMapApi) {
   $scope.submitWaypoints = function() {
     // get waypoints from map and submit to server to create createGame
-    $scope.gamePath = 'http://www.reddit.com';
+    $scope.gamePath = 'http://www.reddit.com'; //<------ to be game url
   };
 
   $scope.map = { 
@@ -35,7 +35,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
     }
   });
 
-  $scope.consoleMarker = function() {
+  $scope.consoleMarker = function() {  //<-------- trying to get marker data
     console.log($scope.map.data)
   }
 
