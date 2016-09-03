@@ -2,7 +2,7 @@ var express = require('express');
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var app = express();
-
+//hi
 app.use(bodyParser.json());
 var parser = bodyParser.json();
 app.use(express.static('./client'));

@@ -21,7 +21,10 @@ module.exports = function(app, express) {
     //This is when the creator makes a game and clicks create game
     var creator = 'sam';
     //somehow we create the code;
-    var pathUrl = 'abcde';
+
+    // increment pathUrl
+    var pathUrl = 'zxfasdf';
+    // hash it?
 
     var locations = [
       {lat: 1, lng: 1},
@@ -30,16 +33,25 @@ module.exports = function(app, express) {
       {lat: 6, lng: 7}
     ];
 
-    User.find({
+    User.findOne({
       where: {
         username: creator
-      }
+      },
+      raw: true
     }).then(function(user) {
+      console.log(user);
       Game.create({
         creatorId: user.id,
-        path: pathUrl,
-    }).then(function(game) {
+        path: pathUrl
+      }, {
+        raw: true
+      }).then(function(game) {
+        console.log('game', game.get({
+            plain: true
+          })
+        );
       // iterate through locations(waypoints)
+      });
     });
 
 
