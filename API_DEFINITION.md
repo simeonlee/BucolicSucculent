@@ -4,7 +4,6 @@
 | /api/game?username&gameId        |    GET    |    empty     |    Find or create JSON of game information for that user to render front-end |
 | /api/game?username&gameId        |    PUT    |     JSON     |                                               Return updated location status |
 | /api/game/create                 |    POST   |     JSON     |                 Create a new game given the locations and return the game id |
-| /api/users                       |    GET    |    empty     |                                                        Initial login for jwt |
 | /api/users/signup                |    POST   |     JSON     |       Creates the account in the db and Return authentication somehow (jwt?) |
 | /api/users/login                 |    POST   |     JSON     |                                         Return authentication somehow (jwt?) |
 
