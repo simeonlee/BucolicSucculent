@@ -50,7 +50,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
       $scope.$apply(); //<----- apply changes to digest loop (probably unnecessary if not rendering marker coords)
 
       // This works without draggable markers only. TODO: fix draggableness.
-      id++;
+      id++; //<--- incrememnt id prop
     });
   });
 
