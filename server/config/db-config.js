@@ -20,14 +20,14 @@ var User = require('../users/users')(db);
 User.belongsToMany(Game, {through: 'usergame', foreignKey: 'userId'});
 Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 
-Location.belongsToMany(User, {through: 'statuses', foreignKey: 'userId'});
-User.belongsToMany(Location, {through: 'statuses', foreignKey: 'locationId'});
+Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
+User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
 
 // Might not like the double-relationship
 // Game.belongsTo(User, {as: 'creatorId'});
 
 Location.belongsTo(Game);
-// Game.hasMany(Location); // needed?
+Game.hasMany(Location); // needed?
 
 module.exports = {
   db: db,

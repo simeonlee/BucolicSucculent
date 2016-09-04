@@ -12,6 +12,8 @@ module.exports = function(app, express) {
       if (req.query.gameId) {
         // do a query for gameId and username
         // return game info for username
+
+        //Looks in usergame table to see if player is in game
         Game.findOne({
           where: {id: req.query.gameId},
           include: [{
@@ -19,8 +21,9 @@ module.exports = function(app, express) {
             where: { username: req.query.username },
           }]
         }).then(function (gameFound) {
+          //if the user was not in the game, have player join the game
           if (!gameFound) {
-            //player is joining the game
+            // function (User, req.query.username) 
             User.findOne({
               where: { username: req.query.username }
             })
@@ -30,16 +33,69 @@ module.exports = function(app, express) {
               })
               .then(function (currentGame) {
                 if (currentGame) {
+                  //Adds to the usergame relation table
                   currentUser.addGame(currentGame);
                   console.log('Joined the game');
-                  res.send('Joined the game');
+
+                  // Find all locations of the Game
+                  Location.findAll({
+                    include: [{
+                      model: Game,
+                      where: {id: req.query.gameId}
+                    }]
+                  })
+                  .then( function (allLoc) {
+                    //force async of creation of locations for user
+                    var asyncCounter = 0;
+                    //For each location of each game, create a status row linked to both and set default status to false
+                    allLoc.forEach(function (eachLoc) {
+                      currentUser.addLocation(eachLoc)
+                      .then( function (elem) {
+                        Status.update({ status: false },
+                        { where: {
+                          locationId: elem[0][0].dataValues.locationId,
+                          userId: elem[0][0].dataValues.userId,
+                        }});
+                        asyncCounter++;
+                        if (asyncCounter === allLoc.length) {
+                          User.findAll({
+                            attributes: ['id'],
+                            where: {
+                              username: req.query.username
+                            },
+                            include: [{
+                              model: Location,
+                              where: {
+                                gameId: req.query.gameId
+                              }
+                            }]
+                          }).then(function(result) {
+                            res.send(result);
+                          });
+                        }
+                      });
+                    });
+                  });
                 }
               });
             });
-
+            // if (!gameFound)
+          } else {
+            User.findAll({
+              attributes: ['id'],
+              where: {
+                username: req.query.username
+              },
+              include: [{
+                model: Location,
+                where: {
+                  gameId: req.query.gameId
+                }
+              }]
+            }).then(function(result) {
+              res.send(result);
+            });
           }
-          // console.log(theGame.dataValues);
-          // res.send(theGame);
 
         });
       } else {  
@@ -68,7 +124,7 @@ module.exports = function(app, express) {
 
   app.post('/api/game/create', function (req, res) {
     //This is when the creator makes a game and clicks create game
-    var creator = 'sam';
+    var creator = 'beth';
     //somehow we create the code;
 
     // increment pathUrl
