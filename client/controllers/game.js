@@ -14,7 +14,9 @@ angular.module('app.game', ['uiGmapgoogle-maps'])
 
   $scope.user = {"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]};  //<--------- TODO: figure out matching logged-in user with appropriate user from game data
 
-
+  $scope.validateLocation = function(locationId) { //TODO: validate location with browser geolocation api
+    console.log(locationId)
+  }
 
 })
 .controller('gameStatsController', function($scope) {

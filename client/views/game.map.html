@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="gameMapController">
   <p>hello I'm a game map view</p>
   <ui-gmap-google-map center='map.center' zoom='map.zoom'>
     <ui-gmap-markers models="markers" idKey="'id'" coords="'coords'" options="'options'"></ui-gmap-markers>
@@ -10,7 +10,7 @@
     <h4>Locations</h4>
       <form>
         <div ng-repeat="location in user.locations">
-          <input type="checkbox" value="{{location.id}}" ng-checked="location.status" ng-disabled="location.status"><span ng-class="{statusComplete: location.status}">Location: {{location.id}}</span><br>
+          <input ng-change="validateLocation({{location.id}})" ng-model="validateMe" type="checkbox" value="{{location.id}}" ng-checked="location.status" ng-disabled="location.status"><span ng-class="{statusComplete: location.status}">Location: {{location.id}}</span><br>
         </div>
       </form>
   </div>
