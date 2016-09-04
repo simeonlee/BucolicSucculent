@@ -2,8 +2,17 @@
   <h1>Create a New Game~</h1>
 
   <!-- Map to choose waypoints -->
+  <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+    <ui-gmap-drawing-manager
+      options="createOptions"
+      control='{}'
+      static='true'>
+    </ui-gmap-drawing-manager>
+  </ui-gmap-google-map>
 
   <button ng-click="submitWaypoints()">Start Game</button>
+
+  <h2>{{map.markers}}</h2>
 
   <div class="sharePath">
     <h3 ng-if="gamePath">Share this url with your friends: <a id="gamePath" ng-href="{{ gamePath }}">{{ gamePath }}</a></h3>

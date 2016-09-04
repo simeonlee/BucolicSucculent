@@ -1,0 +1,6 @@
+.angular-google-map-container { 
+  height: 400px; 
+}
+.statusComplete{
+  text-decoration: line-through;
+}
