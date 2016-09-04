@@ -11,15 +11,12 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
       latitude: 37.7836881,                 //<------- set this to current location
       longitude: -122.40904010000001 
     }, 
-    zoom: 13,
-    events: {
-      click: function(map, eventName, originalEventArgs) {
-            console.log(this.data)
-
-      }
-    }
+    zoom: 13
   };
 
+  $scope.map.markers = [];
+
+  // var sequence = 1;
   uiGmapGoogleMapApi.then(function(maps) { //<------- create map (promise) and after
     $scope.createOptions = {
       drawingMode: google.maps.drawing.OverlayType.MARKER,
@@ -30,14 +27,21 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
         ]
       },
       markerOptions: {
-        draggable: true
+        draggable: true,
+        // label: sequence.toString(), //<---------- add z-index and label to marker (doesn't work as is)
+        // zIndex: sequence
       },
     }
+    google.maps.event.addListener($scope.createOptions, 'overlaycomplete', function(event) {
+      var lat = event.overlay.position.lat();
+      var lng = event.overlay.position.lng();
+      $scope.map.markers.push(lat, lng); //<---------- push coords to markers array
+      console.log($scope.map.markers);
+      $scope.$apply(); //<----- apply changes to digest loop (probably unnecessary if not rendering marker coords)
+
+    });
   });
 
-  $scope.consoleMarker = function() {  //<-------- trying to get marker data
-    console.log($scope.map.data)
-  }
 
 
 
