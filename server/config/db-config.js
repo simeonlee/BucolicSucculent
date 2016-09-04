@@ -27,6 +27,7 @@ User.belongsToMany(Location, {through: 'statuses', foreignKey: 'locationId'});
 // Game.belongsTo(User, {as: 'creatorId'});
 
 Location.belongsTo(Game);
+// Game.hasMany(Location); // needed?
 
 module.exports = {
   db: db,
