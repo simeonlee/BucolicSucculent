@@ -1,5 +1,5 @@
 
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game'])
 
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider)  {
 
@@ -23,11 +23,22 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       })
       .state('game', {
         url: '/game/:gameId',
-        templateUrl: '',
-        controller: '',
+        templateUrl: '../views/game.html',
+        controller: 'gameController',
         resolve: {
           data: function($stateParams) {
-            Requests.getGameData($stateParams.gameId)
+            return {
+              map: { 
+                center: { 
+                  latitude: 37.7836881,                 //<------- dummy data
+                  longitude: -122.40904010000001 
+                }, 
+                zoom: 13,
+                markers: [{"id":1,"coords":{"latitude":37.76922210201123,"longitude":-122.46047973632812},"options":{"label":"1","visible":true}},{"id":2,"coords":{"latitude":37.76392978442336,"longitude":-122.43318557739258},"options":{"label":"2","visible":true}},{"id":3,"coords":{"latitude":37.7897092979573,"longitude":-122.40589141845703},"options":{"label":"3","visible":true}}]
+              }
+            }
+
+            // Requests.getGameData($stateParams.gameId)
           }
         }
       });

@@ -14,10 +14,10 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
     zoom: 13
   };
 
-  $scope.map.markers = [];
+  $scope.map.markers = []; //<--------- save marker coords here
 
   // var sequence = 1;
-  uiGmapGoogleMapApi.then(function(maps) { //<------- create map (promise) and after
+  uiGmapGoogleMapApi.then(function(map) { //<------- create map (promise) and after
     $scope.createOptions = {
       drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControlOptions: {
@@ -27,18 +27,30 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
         ]
       },
       markerOptions: {
-        draggable: true,
+        // draggable: true, //<------------- fix draggable marker coords saving and uncomment
         // label: sequence.toString(), //<---------- add z-index and label to marker (doesn't work as is)
         // zIndex: sequence
       },
     }
+    var id = 1;
     google.maps.event.addListener($scope.createOptions, 'overlaycomplete', function(event) {
-      var lat = event.overlay.position.lat();
-      var lng = event.overlay.position.lng();
-      $scope.map.markers.push(lat, lng); //<---------- push coords to markers array
+      var marker = {
+        id: id,
+        coords: {
+          latitude: event.overlay.position.lat(),
+          longitude: event.overlay.position.lng()
+        },
+        options: {
+          label: id.toString(),
+          visible: true
+        }
+      };
+      $scope.map.markers.push(marker); //<---------- push coords to markers array
       console.log($scope.map.markers);
       $scope.$apply(); //<----- apply changes to digest loop (probably unnecessary if not rendering marker coords)
 
+      // This works without draggable markers only. TODO: fix draggableness.
+      id++;
     });
   });
 
