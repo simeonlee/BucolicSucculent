@@ -111,14 +111,30 @@ module.exports = function(app, express) {
 
       }
     }
-    
-    // res.send('This is the GET for /game');
-
   });
 
-  app.put('/api/game', function (req, res) {
+/*
+{
+  userId:
+  locationId:
+  status:
+}
+*/
 
-    res.send('This is the POST for /game');
+  app.put('/api/game', function (req, res) {
+    Status.findOne({
+      where: {
+        userId: req.body.userId,
+        locationId: req.body.locationId,
+      }
+    }).then(function(currentStatus) {
+      currentStatus.update({
+        status: req.body.status
+      }).then(function(result) {
+        res.send(result);
+      });
+    });
+    // res.send('This is the POST for /game');
 
   });
 
