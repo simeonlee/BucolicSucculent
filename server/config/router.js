@@ -7,11 +7,43 @@ module.exports = function(app, express) {
 
   app.get('/api/game', function (req, res) {
 
+    console.log(req.query);
+    if (req.query.username) {
+      if (req.query.gameId) {
+        // return game info for username
+      } else {  
+        // // return games for username
+        // User.findOne({
+        //   where: {
+        //     username: req.query.username
+        //   },
+        //   raw: true
+        // })
+        // .then(function(user) {
+        //   user.id
+        // })
+        Game.findAll({
+          include: [{
+            model: User,
+            where: { username: req.query.username },
+          }],
+          raw: true
+        }).then(function(data) {
+          console.log('DATA', data);
+        });
+
+
+
+
+
+      }
+    }
+    
     res.send('This is the GET for /game');
 
   });
 
-  app.post('/api/game', function (req, res) {
+  app.put('/api/game', function (req, res) {
 
     res.send('This is the POST for /game');
 
@@ -19,11 +51,11 @@ module.exports = function(app, express) {
 
   app.post('/api/game/create', function (req, res) {
     //This is when the creator makes a game and clicks create game
-    var creator = 'sam';
+    var creator = 'derek';
     //somehow we create the code;
 
     // increment pathUrl
-    var pathUrl = 'zxfasdf';
+    var pathUrl = 'happy';
     // hash it?
 
     var locations = [
@@ -36,21 +68,21 @@ module.exports = function(app, express) {
     User.findOne({
       where: {
         username: creator
-      },
-      raw: true
-    }).then(function(user) {
-      console.log(user);
+      }
+    })
+    .then(function(currentUser) {
       Game.create({
-        creatorId: user.id,
+        creatorId: currentUser.dataValues.id,
         path: pathUrl
-      }, {
-        raw: true
-      }).then(function(game) {
-        console.log('game', game.get({
-            plain: true
-          })
-        );
+      })
+      .then(function(currentGame) {
+        currentUser.addGame(currentGame);
       // iterate through locations(waypoints)
+      // for(var i = 0; i < locations.length; i++) {
+      //   Location.create({
+
+      //   })
+      // }
       });
     });
 
@@ -76,7 +108,7 @@ module.exports = function(app, express) {
   app.post('/api/users/login', function(req, res) {
     // Login users
 
-    res.send('Should pass');
+    res.send('Some Authentication');
 
 
   });
