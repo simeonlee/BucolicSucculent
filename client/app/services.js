@@ -9,7 +9,8 @@ angular.module('app.services', [])
       }
       return $http({
         method: 'GET',
-        url: ''  //<-------------- server end point
+        url: '/api/game',  //<-------------- server end point
+        params: params
       });
     }
   };

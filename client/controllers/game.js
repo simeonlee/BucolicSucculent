@@ -1,17 +1,23 @@
 angular.module('app.game', ['uiGmapgoogle-maps'])
 
-.controller('gameController', function($scope, data, uiGmapGoogleMapApi) {
-  $scope.data = data;
-
+.controller('gameController', function($scope, data) {
   $scope.map = data.map;
+  $scope.markers = data.map.markers;
+  $scope.players = data.players; //<-----------------property in data json for player info
+  
 
-
+})
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi) {
   uiGmapGoogleMapApi.then(function(map) {
-    
-    $scope.markers = data.map.markers
-    console.log($scope.markers)
-
+    // post rendering tasks....
   })
+
+  $scope.user = {"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]};  //<--------- TODO: figure out matching logged-in user with appropriate user from game data
+
+
+
+})
+.controller('gameStatsController', function($scope) {
 
 
 });

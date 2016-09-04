@@ -1,9 +1,13 @@
 <div>
   <h1>Game View</h1>
+  <div class="navigation">
+    <ul>
+      <li><a ui-sref="game.map">Map</a></li>
+      <li><a ui-sref="game.stats">Game Stats</a></li>
+    </ul>
+  </div>
 
-  <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-    
-    <ui-gmap-markers models="markers" idKey="'id'" coords="'coords'" options="'options'"></ui-gmap-markers>
-  </ui-gmap-google-map>
+    <div ui-view></div>
+
 
 </div>
