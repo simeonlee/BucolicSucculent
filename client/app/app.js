@@ -1,5 +1,5 @@
 
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services'])
 
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider)  {
 
@@ -20,13 +20,23 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         url: '/createGame',
         templateUrl: '../views/createGame.html',
         controller: 'createGameController'
+      })
+      .state('game', {
+        url: '/game/:gameId',
+        templateUrl: '',
+        controller: '',
+        resolve: {
+          data: function($stateParams) {
+            Requests.getGameData($stateParams.gameId)
+          }
+        }
       });
 
 
       //////////////////// 
 
       uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM',
+        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- configure map
         libraries: 'drawing,geometry,visualization'
     });
 })
