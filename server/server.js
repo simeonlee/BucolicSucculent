@@ -1,16 +1,19 @@
 var express = require('express');
+var mysql = require('mysql');
+var bodyParser = require('body-parser');
 var app = express();
-
+//hi
+app.use(bodyParser.json());
+var parser = bodyParser.json();
 app.use(express.static('./client'));
 
-app.get('/api/game', function (req, res) {
-  res.send('Hello World! This is the game route.');
-});
+var db = require('./config/db-config').db;
+require('./config/router')(app, express);
 
-app.get('/api/game/map', function (req, res) {
-  res.send('Hello World! This is the game map.');
-});
 
 app.listen(4200, function () {
   console.log('Example app listening on port 4200!');
+  db.sync().then(function() {
+    console.log('Synced with mySql');
+  });
 });
