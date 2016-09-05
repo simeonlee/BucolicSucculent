@@ -10,7 +10,4 @@ angular.module('app.auth', [])
   $scope.signup = function() {
 
   };
-  
-
-
-  })
+});
