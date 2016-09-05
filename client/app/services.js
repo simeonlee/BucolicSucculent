@@ -12,8 +12,12 @@ angular.module('app.services', ['ngGeolocation'])
         url: '/api/game',  //<-------------- server end point
         params: params
       });
+    },
+    createGame: function(markers) {
+      
     }
   };
+<<<<<<< ba60a180b378b38a14499c9f79744fa8e6eb584b
 })
 <<<<<<< e894955b2186010ba6de90ec095e3d488ebcf781
 .factory('Auth', function ($http, $location, $window) {
