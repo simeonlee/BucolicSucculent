@@ -12,18 +12,23 @@ angular.module('app.services', ['ngGeolocation'])
         url: '/api/game',  //<-------------- server end point
         params: params
       });
+    },
+    createGame: function(markers) {
+      
     }
   };
-})
-// .factory('GetLoc', ['$geolocation', function($geolocation) {
+});
+// .factory('GeoLoc', ['$geolocation', '$q', function($geolocation, $q) {
 //   return {
-//     showLocation: function() {
-//       $geolocation.getCurrentPosition({
-//         timeout: 60000
-//       }).then(function(position) {
-//       console.log(position);
-//       return position;
-//     });;
+//     setMyLocation: function() {
+//       return $q(function(resolve, error) {
+//         $geolocation.getCurrentPosition({
+//           timeout: 60000
+//         })
+//         .then(function(position) {
+//           resolve(position);
+//         });
+//       });
 //     }
-//   };
+//   }
 // }]);

@@ -4,39 +4,42 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   $scope.map = data.map;
   $scope.markers = data.map.markers;
   $scope.players = data.players; //<-----------------property in data json for player info
-  $scope.myPosition = data.map.center; 
   
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc) {
+ 
+
   uiGmapGoogleMapApi.then(function(map) {
     // post rendering tasks....
   })
-
-  $geolocation.getCurrentPosition({
-        timeout: 60000
-      }).then(function(position) {
-      // console.log(position);
-      $scope.myPosition = position;
-    });
-
+  
   $geolocation.watchPosition({
-    timeout: 60000,
-    maximumAge: 1000,
-    enableHighAccuracy: true
-  });
+      timeout: 60000,
+      maximumAge: 250,
+      enableHighAccuracy: true
+    })
+  $scope.myPosition = $geolocation.position;
 
-  $scope.$watch('myPosition', function(newVal, oldVal) {
-    if (newVal) {
-      console.log(newVal)
-      $scope.map = {
+  $scope.$watch('myPosition', function (newValue, oldValue) {
+    if (newValue) {
+      $scope.circle = {
         center: {
-          latitude: newVal.coords.latitude,
-          longitude: newVal.coords.longitude
+          latitude: newValue.coords.latitude,
+          longitude: newValue.coords.longitude
         },
-        zoom: 13
-      }
-      
+        radius: newValue.coords.accuracy,
+        stroke: {
+          color: 'blue',
+          weight: 1,
+          opacity: 0.4
+        },
+        clickable: false,
+        fill: {
+          color: 'blue',
+          opacity: 0.3
+        }
+      };                      
     }
   }, true);
 
