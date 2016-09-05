@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['ngGeolocation'])
 
 .factory('Requests', function($http) {
   return {
@@ -14,4 +14,16 @@ angular.module('app.services', [])
       });
     }
   };
-});
+})
+// .factory('GetLoc', ['$geolocation', function($geolocation) {
+//   return {
+//     showLocation: function() {
+//       $geolocation.getCurrentPosition({
+//         timeout: 60000
+//       }).then(function(position) {
+//       console.log(position);
+//       return position;
+//     });;
+//     }
+//   };
+// }]);
