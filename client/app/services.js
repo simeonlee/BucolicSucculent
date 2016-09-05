@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['ngGeolocation'])
 
 .factory('Requests', function($http) {
   return {
@@ -15,6 +15,7 @@ angular.module('app.services', [])
     }
   };
 })
+<<<<<<< e894955b2186010ba6de90ec095e3d488ebcf781
 .factory('Auth', function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password
