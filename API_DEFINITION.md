@@ -33,7 +33,7 @@ CREATING/JOINING A GAME
   Backend creates the game and links the creator to the user's id
 
 2. a user checks the dashboard ->
-  GET /api/game/
+  GET /api/game?username
 
 3. a user joins an existing created game ->
   GET /api/game?username&gameId
