@@ -1,0 +1,14 @@
+<div>
+  <h2>Current Game Stats</h2>
+
+  <h3>Players</h3>
+    <ul class="players">
+      <div ng-repeat="player in players">
+        <li>{{player.name}}</li>
+        <ul class="locations">
+          <li ng-repeat="location in player.locations">{{location.id}}: {{location.status}}</li>
+        </ul>
+      </div>
+    </ul>
+
+</div>
