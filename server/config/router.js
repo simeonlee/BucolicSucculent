@@ -113,14 +113,6 @@ module.exports = function(app, express) {
     }
   });
 
-/*
-{
-  userId:
-  locationId:
-  status:
-}
-*/
-
   app.put('/api/game', function (req, res) {
     Status.findOne({
       where: {
