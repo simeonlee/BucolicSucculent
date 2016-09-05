@@ -140,10 +140,10 @@ module.exports = function(app, express) {
     // hash it?
 
     var locations = [
-      {lat: 2, lng: 4, sequence: 1},
-      {lat: 2, lng: 6, sequence: 2},
-      {lat: 4, lng: 5, sequence: 3},
-      {lat: 6, lng: 7, sequence: 4}
+      {latitude: 2, longitude: 4, sequence: 1},
+      {latitude: 2, longitude: 6, sequence: 2},
+      {latitude: 4, longitude: 5, sequence: 3},
+      {latitude: 6, longitude: 7, sequence: 4}
     ];
 
     User.findOne({
