@@ -34,7 +34,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
                   longitude: -122.40904010000001 
                 }, 
                 zoom: 13,
-                markers: [{"id":1,"coords":{"latitude":37.76922210201123,"longitude":-122.46047973632812},"options":{"label":"1","visible":true}},{"id":2,"coords":{"latitude":37.76392978442336,"longitude":-122.43318557739258},"options":{"label":"2","visible":true}},{"id":3,"coords":{"latitude":37.7897092979573,"longitude":-122.40589141845703},"options":{"label":"3","visible":true}}]
+                markers: [{"id":1,"coords":{"latitude":37.76922210201123,"longitude":-122.46047973632812}},{"id":2,"coords":{"latitude":37.76392978442336,"longitude":-122.43318557739258}},{"id":3,"coords":{"latitude":37.7897092979573,"longitude":-122.40589141845703}}]
               },
               players: [{"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]}, {"name": 'Clara', "locations": [{"id": 1, "status": false},{"id": 2, "status": true},{"id": 3, "status": true}]}]
             }
