@@ -1,9 +1,15 @@
-angular.module('app.createGame', ['uiGmapgoogle-maps'])
+angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services'])
 
-.controller('createGameController', function($scope, uiGmapGoogleMapApi) {
+.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests) {
   $scope.submitWaypoints = function() {
+
     // get waypoints from map and submit to server to create createGame
-    $scope.gamePath = 'http://www.reddit.com'; //<------ to be game url
+    Requests.createGame('brian', $scope.map.markers) // <----- dummy user 'brian'
+      .then(function(res) {
+        var gameUrl = res.body;
+        $scope.gamePath = 'http://localhost:4200/' + gameUrl; //<------ to be game url
+      })
+
   };
 
   $scope.map = { 
@@ -40,10 +46,10 @@ angular.module('app.createGame', ['uiGmapgoogle-maps'])
           latitude: event.overlay.position.lat(),
           longitude: event.overlay.position.lng()
         },
-        options: {
-          label: id.toString(),
-          visible: true
-        }
+        // options: {
+        //   label: id.toString(),
+        //   visible: true
+        // }
       };
       $scope.map.markers.push(marker); //<---------- push coords to markers array
       console.log($scope.map.markers);
