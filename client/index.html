@@ -29,8 +29,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- Angular Dependencies -->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM&callback=" async defer></script> --> 
+    <!-- This loads the googlemaps api which we will do on the server? -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM&callback=" async defer></script>  -->
 
     <!-- loads map api stuff -->
     <script src='lib/lodash/dist/lodash.js'></script>
@@ -38,6 +38,8 @@
     <script src="lib/ui-router/release/angular-ui-router.js"></script>
     <script src='lib/angular-simple-logger/dist/angular-simple-logger.js'></script>
     <script src='lib/angular-google-maps/dist/angular-google-maps.js'></script>
+    <script src="lib/ngGeolocation/ngGeolocation.js"></script>
+    <srcipt src="../node_modules/angular-q-promisify/promisify.js"></srcipt>
    
     <!-- Angular Modules -->
     <script src="app/services.js"></script>
@@ -45,6 +47,8 @@
     <script src="controllers/createGame.js"></script>
     <script src="controllers/auth.js"></script>
     <script src="app/app.js"></script>
+
+    <!-- Load Geolocation LAST -->
 
   </body>
 </html>
