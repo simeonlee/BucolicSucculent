@@ -249,21 +249,21 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/users/signup', function(req, res) {
-  //Must be application/json content type;
-    if (req.body.username && req.body.password) { 
+    //Must be application/json content type;
+    console.log('username:', req.body.username, 'password:',req.body.password);
+    if (req.body.username && req.body.password) {
       var user = {
         username : req.body.username.toLowerCase(),
         password : req.body.password
       };
       
       // create it as needed
-      Utils.encryptPassword(user, function(err, isMatch) {
+      Utils.encryptPassword(user, function(err, user) {
         console.log('back from encryptPasswd - passwd should be encrypted in the user structure')
         User.findOrCreate({where: user, defaults: {}})
         .then(function(user, created) {
-          // create token and return
-
           console.log('back from createOne created: ', created, ' user: ', user);
+          // create token and return
           res.status(201).send('New user added.');
         })
         .catch(function(err) {
@@ -273,8 +273,8 @@ module.exports = function(app, express) {
     } else {
       // missing username or password
       res.status(401).send('missing username or password');
-    });
-  }; // end of signup
+    }
+  }); // end of signup
 
   app.post('/api/users/login', function(req, res) {
     console.log (req.headers.username);
