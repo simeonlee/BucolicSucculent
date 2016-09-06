@@ -128,19 +128,27 @@ module.exports = function(app, express) {
     }
   });
 
-  app.put('/api/game', jwtauth, requireAuth, function (req, res) {
-    Status.findOne({
+  app.put('/api/game', function (req, res) {
+    User.findOne({
       where: {
-        userId: req.body.userId,
-        locationId: req.body.locationId,
+        username: req.body.username
       }
-    }).then(function(currentStatus) {
-      currentStatus.update({
-        status: req.body.status
-      }).then(function(result) {
-        res.send(result);
+    })
+    .then(function (currentUser) {
+      Status.findOne({
+        where: {
+          userId: currentUser.id,
+          locationId: req.body.locationId,
+        }
+      }).then(function(currentStatus) {
+        currentStatus.update({
+          status: true
+        }).then(function(result) {
+          res.send(result);
+        });
       });
-    });
+
+    })
     // res.send('This is the POST for /game');
 
   });

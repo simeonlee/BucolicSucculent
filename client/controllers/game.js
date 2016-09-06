@@ -3,7 +3,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 .controller('gameController', function($scope, data) {
   $scope.markers = data;
     // $scope.players = res.data.players; //<-----------------property in data json for player info
-  
+  // var something = $scope.markers.map(function())
   
   $scope.map = { 
     center: { 
@@ -50,27 +50,35 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   })
 
   console.log($scope.markers, 'sdlfkj')
-  $scope.user = {"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]};  //<--------- TODO: figure out matching logged-in user with appropriate user from game data
 
-  $scope.validateLocation = function(locationId) { //TODO: validate location with browser geolocation api
+  $scope.validateLocation = function(locationId) { 
     console.log(locationId)
+    var pointToCheck
+    $scope.markers.forEach(function(location) {
+      if (location.id === locationId) {
+        pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
+
+      }
+    })
     // get lat and lng from locationId
-    var point2 = new google.maps.LatLng(37.7837646, -122.40909429999999); //<-- Dummy point... loc to be checked
+     //<-- Dummy point... loc to be checked
     
-    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, point2);
+    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
+
     console.log(distanceBetween)
+
     if (distanceBetween <= 250) { //<---------- ok within 250 meters
 
       // make call to server to update location status for player
-      Requests.updateLocStatus(user, locationId).then(function(res) {     //<----- adjust function args
+      Requests.updateLocStatus($rootScope.user.username, locationId).then(function(res) {     //<----- adjust function args
         // after res gets back from put request
       }) 
 
 
-      $scope.user.locations.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
+      $scope.markers.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
         if (location.id === locationId) {
-          console.log(location.id, locationId, 'logcation')
-          location.status = true;
+          console.log(location.id, locationId, 'location')
+          location.statuses.status = true;
         }
         console.log($scope.user, 'user');
         // $scope.$apply();
