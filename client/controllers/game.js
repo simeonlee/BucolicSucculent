@@ -3,7 +3,13 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 .controller('gameController', function($scope, data) {
   $scope.markers = data;
     // $scope.players = res.data.players; //<-----------------property in data json for player info
-  // var something = $scope.markers.map(function())
+  $scope.markers.forEach(function(marker, ind){
+    var label = marker.sequence.toString();
+    $scope.markers[ind].options = {
+      label: label
+    };
+  })
+  console.log($scope.markers, 'this is tslkfjsdflk');
   
   $scope.map = { 
     center: { 
