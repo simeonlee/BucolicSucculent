@@ -34,6 +34,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         ]
       },
       markerOptions: {
+        visible: false
         // draggable: true, //<------------- fix draggable marker coords saving and uncomment
         // label: sequence.toString(), //<---------- add z-index and label to marker (doesn't work as is)
         // zIndex: sequence
@@ -41,10 +42,14 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     }
     var sequence = 1;
     google.maps.event.addListener($scope.createOptions, 'overlaycomplete', function(event) {
+      console.log(event)
       var marker = {
         sequence: sequence,
         latitude: event.overlay.position.lat(),
-        longitude: event.overlay.position.lng()
+        longitude: event.overlay.position.lng(),
+        options: {
+          label: sequence.toString()
+        }
       };
       $scope.map.markers.push(marker); //<---------- push coords to markers array
       console.log($scope.map.markers);
