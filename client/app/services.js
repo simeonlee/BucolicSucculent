@@ -14,9 +14,10 @@ angular.module('app.services', ['ngGeolocation'])
       });
     },
     createGame: function(markers) {
-      
+      // post request to server
     }
   };
+<<<<<<< 363208688b6d89007f93008239356cb00db4d459
 <<<<<<< ba60a180b378b38a14499c9f79744fa8e6eb584b
 })
 <<<<<<< e894955b2186010ba6de90ec095e3d488ebcf781
