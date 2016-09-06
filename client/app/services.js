@@ -9,12 +9,31 @@ angular.module('app.services', ['ngGeolocation'])
       }
       return $http({
         method: 'GET',
-        url: '/api/game',  //<-------------- server end point
+        url: 'http://localhost:4200/api/game',  //<-------------- server end point
         params: params
       });
     },
-    createGame: function(markers) {
-      // post request to server
+    createGame: function(user, markers) {
+      var data = {
+        userId: user,
+        markers: markers, //<---- array of locations
+      }
+      return $http({
+        method: 'POST',
+        url: 'http://localhost:4200api/game/create',
+        data: data
+      });
+    },
+    updateLocStatus: function(user, loc) {
+      var data = {
+        userId: user,
+        locationId: loc
+      };
+      return $http({
+        method: 'PUT',
+        url: 'http://localhost:4200api/game',
+        data: data
+      });
     }
   };
 })
