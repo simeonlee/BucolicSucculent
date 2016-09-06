@@ -27,7 +27,7 @@ angular.module('app.services', ['ngGeolocation'])
     },
     updateLocStatus: function(user, loc) {
       var data = {
-        userId: user,
+        username: user,
         locationId: loc
       };
       return $http({
