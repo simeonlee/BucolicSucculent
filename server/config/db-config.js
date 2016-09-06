@@ -9,7 +9,7 @@ var db = new Sequelize('Scavenger', 'root', 'root', {
   host: 'localhost',
   dialect: 'mysql',
   port: 3306,
-  logging: false,
+  logging: console.log,
 });
 
 var Game = require('../games/games')(db);

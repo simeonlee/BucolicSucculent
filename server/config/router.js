@@ -250,37 +250,48 @@ module.exports = function(app, express) {
 
   app.post('/api/users/signup', function(req, res) {
   //Must be application/json content type;
-
-    var username = req.body.username.toLowerCase();
-    var password = req.body.password;
-
-    User.create({username: username, password: password})
-    .then(function() {
-      // create token and return
+    if (req.body.username && req.body.password) { 
+      var user = {
+        username : req.body.username.toLowerCase(),
+        password : req.body.password
+      };
       
-      res.status(201).send('New user added.');
-    })
-    .catch(function(err) {
-      res.status(409).send('Username already exists');
+      // create it as needed
+      Utils.encryptPassword(user, function(err, isMatch) {
+        console.log('back from encryptPasswd - passwd should be encrypted in the user structure')
+        User.findOrCreate({where: user, defaults: {}})
+        .then(function(user, created) {
+          // create token and return
+
+          console.log('back from createOne created: ', created, ' user: ', user);
+          res.status(201).send('New user added.');
+        })
+        .catch(function(err) {
+          res.status(409).send('Username already exists or other err: '+ err);
+        });
+      });
+    } else {
+      // missing username or password
+      res.status(401).send('missing username or password');
     });
-  });
+  }; // end of signup
 
   app.post('/api/users/login', function(req, res) {
-
-    if (req.headers.username && req.headers.password) {   
-      
+    console.log (req.headers.username);
+    console.log (req.headers.password);
+    if (req.headers.username && req.headers.password) {      
       // Fetch the appropriate user, if they exist
-      User.findOne({ username: req.headers.username }, function(err, user) {
-        if (err) {    
-          res.send('Authentication error', 401)
-        }
+
+      User.findOne({ username: req.headers.username })
+      .then(function(user) {
+        console.log('back from findOne'); 
 
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
+          console.log('compare passwords back err ' + err + ' isMatch ' + isMatch);
           if (err) {            
             // bad password
-            res.send('Authentication error', 401)
-          }
-          if (isMatch) {  
+            res.status(401).send('Authentication error');
+          } else if (isMatch) {  
             // has successfully authenticated, send a token
             var expires = moment().add('days', 7).valueOf()       
             var token = jwt.encode(
@@ -298,12 +309,14 @@ module.exports = function(app, express) {
           } else {            
             res.send('Authentication error', 401)
           }
-        });
-      }); // end findOne callback
+        }); // comparePassword
+      }) // .then findOne
+    .error(function(err) { 
+      console.log('send auth error');  
+      res.send('Authentication error', 401)
+    }); // .error findOne
     } else {
-      // missing username or password
       res.send('Authentication error', 401)
     }
-
-  })
+  });
 };

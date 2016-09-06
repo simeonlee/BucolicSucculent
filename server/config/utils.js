@@ -1,26 +1,28 @@
 // placeholder for server utility functions
 // that are not related to database
+var bcrypt = require('bcrypt-nodejs');
 
-exports.encryptPassword = function(user) {
+exports.encryptPassword = function(user, cb) {
 
-    var SALT_WORK_FACTOR = 10;
+  var SALT_WORK_FACTOR = 10;
 
-    // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+  // only hash the password if it has been modified (or is new)
+  console.log('is user modified ' + !user.isModified('password'))
+  if (!user.isModified('password')) return cb();
 
-    // generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+  // generate a salt
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if (err) return next(err);
+
+    // hash the password along with our new salt
+    bcrypt.hash(user.password, salt, function(err, hash) {
         if (err) return next(err);
 
-        // hash the password along with our new salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
-
-            // override the cleartext password with the hashed one
-            user.password = hash;
-            next();
-        });
+        // override the cleartext password with the hashed one
+        user.password = hash;
+        cb();
     });
+  });
 };
 
 // compare to encrypted password
