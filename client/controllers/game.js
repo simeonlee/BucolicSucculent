@@ -23,6 +23,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
   $scope.$watch('myPosition', function (newValue, oldValue) {
     if (newValue.coords) {
+      console.log(newValue)
       $scope.circle = {
         center: {
           latitude: newValue.coords.latitude,
@@ -50,13 +51,20 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   $scope.validateLocation = function(locationId) { //TODO: validate location with browser geolocation api
     console.log(locationId)
     // get lat and lng from locationId
-    var point2 = new google.maps.LatLng(37.76392978442336, -122.43318557739258); //<-- Dummy point... loc to be checked
+    var point2 = new google.maps.LatLng(37.5728027, -122.3356122); //<-- Dummy point... loc to be checked
     
     var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, point2);
-
+    console.log(distanceBetween)
     if (distanceBetween <= 250) { //<---------- ok within 250 meters
       // make call to server to update location status for player
-      // update local user info to reflect location status
+      $scope.user.locations.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
+        if (location.id === locationId) {
+          console.log(location.id, locationId, 'logcation')
+          location.status = true;
+        }
+        console.log($scope.user, 'user');
+        // $scope.$apply();
+      })
       $scope.verifyFailed = false;
     } else {
       $scope.verifyFailed = true;
