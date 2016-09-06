@@ -1,16 +1,20 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
-.run(function(){
-
-})
 
 .controller('gameController', function($scope, data) {
-  $scope.map = data.map;
-  $scope.markers = data.map.markers;
-  $scope.players = data.players; //<-----------------property in data json for player info
+  $scope.markers = data;
+    // $scope.players = res.data.players; //<-----------------property in data json for player info
   
+  
+  $scope.map = { 
+    center: { 
+      latitude: 37.7836881,                 //<------- SF default map
+      longitude: -122.40904010000001 
+    }, 
+    zoom: 13
+  };
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests, $rootScope) {
  
 
   uiGmapGoogleMapApi.then(function(map) {
@@ -45,6 +49,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   })
 
+  console.log($scope.markers, 'sdlfkj')
   $scope.user = {"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]};  //<--------- TODO: figure out matching logged-in user with appropriate user from game data
 
   $scope.validateLocation = function(locationId) { //TODO: validate location with browser geolocation api

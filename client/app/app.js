@@ -29,24 +29,14 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         controller: 'createGameController'
       })
       .state('game', {
-        url: '/game/:gameId',
+        url: '/game/:path',
         templateUrl: '../views/game.html',
         controller: 'gameController',
         resolve: {
-          data: function($stateParams) {
-            return {
-              map: { 
-                center: { 
-                  latitude: 37.7836881,                 //<------- dummy data
-                  longitude: -122.40904010000001 
-                }, 
-                zoom: 13,
-                markers: [{"id":1,"coords":{"latitude":37.76922210201123,"longitude":-122.46047973632812}},{"id":2,"coords":{"latitude":37.5728027,"longitude":-122.3356122}},{"id":3,"coords":{"latitude":37.7897092979573,"longitude":-122.40589141845703}}]
-              },
-              players: [{"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]}, {"name": 'Clara', "locations": [{"id": 1, "status": false},{"id": 2, "status": true},{"id": 3, "status": true}]}]
-            }
-
-            // Requests.getGameData($stateParams.gameId) <----- turn on get request once server is ready
+          data: function($stateParams, Requests) {
+            return Requests.getGameData($stateParams.path).then(function(res) {
+              return res.data.locations;
+            }); 
           }
         }
       })
