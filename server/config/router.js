@@ -4,9 +4,11 @@ var Status = require('./db-config').Status;
 var User = require('./db-config').User;
 var Utils = require('./utils');
 var express = require('express');
+var moment = require('moment');
 var jwtauth = require('./jwt');
 var jwt = require('jwt-simple');
 var md5 = require('md5');
+var jwt = require('jwt-simple');
 
 module.exports = function(app, express) {
 
