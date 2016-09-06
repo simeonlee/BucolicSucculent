@@ -23,6 +23,7 @@ exports.encryptPassword = function(user, cb) {
 
 // compare to encrypted password
 exports.comparePassword = function(pwd, user, cb) {
+  console.log('compare Password', pwd, 'to', user.password)
   bcrypt.compare(pwd, user.password, function(err, isMatch) {
     if (err) {
       return cb(err);

@@ -4,7 +4,9 @@ var Status = require('./db-config').Status;
 var User = require('./db-config').User;
 var Utils = require('./utils');
 var express = require('express');
+var moment = require('moment');
 var jwtauth = require('./jwt');
+var jwt = require('jwt-simple');
 
 module.exports = function(app, express) {
 
@@ -293,7 +295,7 @@ module.exports = function(app, express) {
             res.status(401).send('Authentication error');
           } else if (isMatch) {  
             // has successfully authenticated, send a token
-            var expires = moment().add('days', 7).valueOf()       
+            var expires = moment().add(7, 'days').valueOf()       
             var token = jwt.encode(
               {
                 iss: user.id,
@@ -307,7 +309,7 @@ module.exports = function(app, express) {
               user : user.toJSON()
             });
           } else {            
-            res.send('Authentication error', 401)
+            res.status(401).send('Authentication error');
           }
         }); // comparePassword
       }) // .then findOne
