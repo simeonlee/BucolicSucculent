@@ -36,10 +36,7 @@ angular.module('app.services', ['ngGeolocation'])
       });
     }
   };
-<<<<<<< 363208688b6d89007f93008239356cb00db4d459
-<<<<<<< ba60a180b378b38a14499c9f79744fa8e6eb584b
 })
-<<<<<<< e894955b2186010ba6de90ec095e3d488ebcf781
 .factory('Auth', function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password
@@ -48,7 +45,6 @@ angular.module('app.services', ['ngGeolocation'])
   // after you login/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
   var login = function (user) {
-    console.log('factory Auth login', user );    
     return $http({
       method: 'POST',
       url: '/api/users/login',
