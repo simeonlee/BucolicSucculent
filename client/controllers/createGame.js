@@ -1,13 +1,14 @@
-angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services'])
+angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests) {
+.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope) {
   $scope.submitWaypoints = function() {
 
     // get waypoints from map and submit to server to create createGame
-    Requests.createGame('brian', $scope.map.markers) // <----- dummy user 'brian'
+    Requests.createGame($rootScope.user, $scope.map.markers) // <----- dummy user 'brian'
       .then(function(res) {
-        var gameUrl = res.body;
-        $scope.gamePath = 'http://localhost:4200/' + gameUrl; //<------ to be game url
+        console.log(res);
+        var gameUrl = res.data;
+        $scope.gamePath = 'http://localhost:4200/#/game/' + gameUrl + '/map'; //<------ to be game url
       })
 
   };
@@ -38,25 +39,19 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services'])
         // zIndex: sequence
       },
     }
-    var id = 1;
+    var sequence = 1;
     google.maps.event.addListener($scope.createOptions, 'overlaycomplete', function(event) {
       var marker = {
-        id: id,
-        coords: {
-          latitude: event.overlay.position.lat(),
-          longitude: event.overlay.position.lng()
-        },
-        // options: {
-        //   label: id.toString(),
-        //   visible: true
-        // }
+        sequence: sequence,
+        latitude: event.overlay.position.lat(),
+        longitude: event.overlay.position.lng()
       };
       $scope.map.markers.push(marker); //<---------- push coords to markers array
       console.log($scope.map.markers);
       $scope.$apply(); //<----- apply changes to digest loop (probably unnecessary if not rendering marker coords)
 
       // This works without draggable markers only. TODO: fix draggableness.
-      id++; //<--- incrememnt id prop
+      sequence++; //<--- incrememnt sequence prop
     });
   });
 
