@@ -8,6 +8,7 @@
   <div class="playerProgress">
 
     <h3>Status for Player: {{user.name}}</h3>
+    <p ng-if="verifyFailed">You are not at this location</p>
     <h4>Locations</h4>
       <form>
         <div ng-repeat="location in user.locations">

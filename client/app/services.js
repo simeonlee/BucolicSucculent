@@ -14,21 +14,21 @@ angular.module('app.services', ['ngGeolocation'])
       });
     },
     createGame: function(markers) {
-      
+      // post request to server
     }
   };
-});
-// .factory('GeoLoc', ['$geolocation', '$q', function($geolocation, $q) {
-//   return {
-//     setMyLocation: function() {
-//       return $q(function(resolve, error) {
-//         $geolocation.getCurrentPosition({
-//           timeout: 60000
-//         })
-//         .then(function(position) {
-//           resolve(position);
-//         });
-//       });
-//     }
-//   }
-// }]);
+})
+.factory('GeoLoc', ['$geolocation', '$q', function($geolocation, $q) {
+  return {
+    setMyLocation: function() {
+      return $q(function(resolve, error) {
+        $geolocation.getCurrentPosition({
+          timeout: 60000
+        })
+        .then(function(position) {
+          resolve(position);
+        });
+      });
+    }
+  }
+}]);
