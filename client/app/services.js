@@ -23,11 +23,15 @@ angular.module('app.services', [])
   // after you login/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
   var login = function (user) {
-console.log('factory Auth login');    
+    console.log('factory Auth login', user );    
     return $http({
       method: 'POST',
       url: '/api/users/login',
-      data: user
+      headers: {
+        "Content-Type": 'application/json; charset=utf-8',
+        "username": user.username,
+        "password": user.password
+      }
     })
     .then(function (resp) {
       return resp.data.token;

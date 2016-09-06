@@ -4,7 +4,6 @@ var Status = require('./db-config').Status;
 var User = require('./db-config').User;
 var Utils = require('./utils');
 var express = require('express');
-var moment = require('moment');
 var jwtauth = require('./jwt');
 var jwt = require('jwt-simple');
 
@@ -295,30 +294,25 @@ module.exports = function(app, express) {
             res.status(401).send('Authentication error');
           } else if (isMatch) {  
             // has successfully authenticated, send a token
-            var expires = moment().add(7, 'days').valueOf()       
-            var token = jwt.encode(
-              {
-                iss: user.id,
-                exp: expires
-              }, 
-              app.get('jwtTokenSecret')
-            );            
-            res.json({
-              token : token,
-              expires : expires,
-              user : user.toJSON()
-            });
+            var secret = app.get('jwtTokenSecret');
+            Utils.createToken(user, secret, function(token) {
+              if ( token.token ) {
+                res.json(token);
+              } else {
+                res.status(401).send('Token error');
+              }
+            });   
           } else {            
             res.status(401).send('Authentication error');
           }
         }); // comparePassword
       }) // .then findOne
-    .error(function(err) { 
-      console.log('send auth error');  
-      res.send('Authentication error', 401)
-    }); // .error findOne
+      .error(function(err) { 
+        console.log('send auth error');  
+        res.status(401).send('Authentication error');
+      }); // .error findOne
     } else {
-      res.send('Authentication error', 401)
+      res.status(401).send('Authentication error');
     }
   });
 };

@@ -1,6 +1,8 @@
 // placeholder for server utility functions
 // that are not related to database
 var bcrypt = require('bcrypt-nodejs');
+var moment = require('moment');
+var jwt = require('jwt-simple');
 
 exports.encryptPassword = function(user, cb) {
 
@@ -35,6 +37,24 @@ exports.comparePassword = function(pwd, user, cb) {
 // get user from database
 exports.findByUsername = function (username, cb) {
   User.findOne({ username: username }, cb);
+};
+
+exports.createToken = function (user, secret, cb) {
+  // has successfully authenticated, send a token
+  var expires = moment().add(7, 'days').valueOf();
+  console.log(user.id, expires, secret);
+  var token = jwt.encode(
+    {
+      iss: user.id,
+      exp: expires
+    }, 
+    secret
+  );
+  //    expires : expires,
+  //    user : user.toJSON()        
+  cb ({
+    token : token,
+  });
 };
 
 
