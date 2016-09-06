@@ -15,7 +15,7 @@ angular.module('app.services', ['ngGeolocation'])
     },
     createGame: function(user, markers) {
       var data = {
-        userId: user,
+        username: user.username,
         markers: markers, //<---- array of locations
       }
       return $http({

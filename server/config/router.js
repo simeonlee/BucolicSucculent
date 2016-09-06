@@ -5,6 +5,7 @@ var User = require('./db-config').User;
 var Utils = require('./utils');
 var express = require('express');
 var jwtauth = require('./jwt');
+var md5 = require('md5');
 
 module.exports = function(app, express) {
 
@@ -16,7 +17,7 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
+  app.get('/api/game', function(req, res) {
 
     // console.log(req.query);
     if (req.query.username) {
@@ -141,21 +142,31 @@ module.exports = function(app, express) {
 
   });
 
-  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
+  app.post('/api/game/create', function (req, res) {
     //This is when the creator makes a game and clicks create game
-    var creator = 'beth';
-    //somehow we create the code;
 
+  //   { username: 'beth',
+  // markers:
+  //  [ {latitude: 2, longitude: 4, sequence: 1},
+  //    {latitude: 2, longitude: 4.21412412, sequence: 2},
+  //    {latitude: 2, longitude: 4, sequence: 3} ] }
+
+    var creator = req.body.username;
+    //somehow we create the code;
+    console.log(req.body);
+    var pathUrl = md5(JSON.stringify(req.body))
     // increment pathUrl
-    var pathUrl = 'lol';
+    //var pathUrl = 'somethingelse';
     // hash it?
 
-    var locations = [
-      {latitude: 2, longitude: 4, sequence: 1},
-      {latitude: 2, longitude: 6, sequence: 2},
-      {latitude: 4, longitude: 5, sequence: 3},
-      {latitude: 6, longitude: 7, sequence: 4}
-    ];
+    // var locations = [
+    //   {latitude: 2, longitude: 4, sequence: 1},
+    //   {latitude: 2, longitude: 6, sequence: 2},
+    //   {latitude: 4, longitude: 5, sequence: 3},
+    //   {latitude: 6, longitude: 7, sequence: 4}
+    // ];
+
+    var locations = req.body.markers;
 
     User.findOne({
       where: {
@@ -244,7 +255,7 @@ module.exports = function(app, express) {
     // }
 
 
-    res.send('Should send url(path) to game here');
+    res.send(pathUrl);
 
   });
 

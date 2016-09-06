@@ -1,6 +1,13 @@
 
 angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game'])
 
+.run(function($rootScope) {
+  $rootScope.user = { //<=-========= dummy user data
+    username: 'beth',
+    password: '123'
+  }
+})
+
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider)  {
 
     $urlRouterProvider.otherwise('/login'); // <-------------- default view TODO: SET TO DASHBOARD!
