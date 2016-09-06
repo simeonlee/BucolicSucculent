@@ -22,7 +22,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   $scope.myPosition = $geolocation.position;
 
   $scope.$watch('myPosition', function (newValue, oldValue) {
-    if (newValue) {
+    if (newValue.coords) {
       $scope.circle = {
         center: {
           latitude: newValue.coords.latitude,
