@@ -2,10 +2,21 @@ var Game = require('./db-config').Game;
 var Location = require('./db-config').Location;
 var Status = require('./db-config').Status;
 var User = require('./db-config').User;
+var Utils = require('./utils');
+var express = require('express');
+var jwtauth = require('./jwt');
 
 module.exports = function(app, express) {
 
-  app.get('/api/game', function (req, res) {
+  var requireAuth = function(req, res, next) {
+    if (!req.user) {
+      res.end('Not authorized', 401);
+    } else {
+      next();
+    }
+  }
+
+  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
 
     // console.log(req.query);
     if (req.query.username) {
@@ -113,7 +124,7 @@ module.exports = function(app, express) {
     }
   });
 
-  app.put('/api/game', function (req, res) {
+  app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     Status.findOne({
       where: {
         userId: req.body.userId,
@@ -130,7 +141,7 @@ module.exports = function(app, express) {
 
   });
 
-  app.post('/api/game/create', function (req, res) {
+  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
     //This is when the creator makes a game and clicks create game
     var creator = 'beth';
     //somehow we create the code;
@@ -245,6 +256,8 @@ module.exports = function(app, express) {
 
     User.create({username: username, password: password})
     .then(function() {
+      // create token and return
+      
       res.status(201).send('New user added.');
     })
     .catch(function(err) {
@@ -253,10 +266,44 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/users/login', function(req, res) {
-    // Login users
 
-    res.send('Some Authentication');
+    if (req.headers.username && req.headers.password) {   
+      
+      // Fetch the appropriate user, if they exist
+      User.findOne({ username: req.headers.username }, function(err, user) {
+        if (err) {    
+          res.send('Authentication error', 401)
+        }
 
+        Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
+          if (err) {            
+            // bad password
+            res.send('Authentication error', 401)
+          }
+          if (isMatch) {  
+            // has successfully authenticated, send a token
+            var expires = moment().add('days', 7).valueOf()       
+            var token = jwt.encode(
+              {
+                iss: user.id,
+                exp: expires
+              }, 
+              app.get('jwtTokenSecret')
+            );            
+            res.json({
+              token : token,
+              expires : expires,
+              user : user.toJSON()
+            });
+          } else {            
+            res.send('Authentication error', 401)
+          }
+        });
+      }); // end findOne callback
+    } else {
+      // missing username or password
+      res.send('Authentication error', 401)
+    }
 
-  });
+  })
 };
