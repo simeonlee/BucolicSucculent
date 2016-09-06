@@ -40,7 +40,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
           latitude: $geolocation.position.coords.latitude,
           longitude: $geolocation.position.coords.longitude
         },
-        radius: $geolocation.position.coords.accuracy,
+        radius: 100,
         stroke: {
           color: 'blue',
           weight: 1,
@@ -73,7 +73,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
     console.log(distanceBetween)
 
-    if (distanceBetween <= 250) { //<---------- ok within 250 meters
+    if (distanceBetween <= 100) { //<---------- ok within 250 meters
 
       // make call to server to update location status for player
       Requests.updateLocStatus($rootScope.user.username, locationId).then(function(res) {     //<----- adjust function args
