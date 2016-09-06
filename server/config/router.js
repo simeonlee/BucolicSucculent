@@ -251,21 +251,28 @@ module.exports = function(app, express) {
 
   app.post('/api/users/signup', function(req, res) {
     //Must be application/json content type;
-    console.log('username:', req.body.username, 'password:',req.body.password);
-    if (req.body.username && req.body.password) {
-      var user = {
-        username : req.body.username.toLowerCase(),
-        password : req.body.password
+    console.log('signup username:', req.headers.username, 'password:',req.headers.password); 
+    if (req.headers.username && req.headers.password) {   
+       var user = {
+        username : req.headers.username.toLowerCase(),
+        password : req.headers.password
       };
       
-      // create it as needed
+      // create it
       Utils.encryptPassword(user, function(err, user) {
         console.log('back from encryptPasswd - passwd should be encrypted in the user structure')
-        User.findOrCreate({where: user, defaults: {}})
+        User.findOrCreate({where: user, defaults: {} })
         .then(function(user, created) {
-          console.log('back from createOne created: ', created, ' user: ', user);
+          console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
           // create token and return
-          res.status(201).send('New user added.');
+          var secret = app.get('jwtTokenSecret');
+          Utils.createToken(user, secret, function(token) {
+            if ( token.token ) {
+              res.json(token);
+            } else {
+              res.status(401).send('Token error');
+            }
+          });  
         })
         .catch(function(err) {
           res.status(409).send('Username already exists or other err: '+ err);

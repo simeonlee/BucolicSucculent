@@ -43,7 +43,11 @@ angular.module('app.services', [])
     return $http({
       method: 'POST',
       url: '/api/users/signup',
-      data: user
+      headers: {
+        "Content-Type": 'application/json; charset=utf-8',
+        "username": user.username,
+        "password": user.password
+      }
     })
     .then(function (resp) {
       return resp.data.token;

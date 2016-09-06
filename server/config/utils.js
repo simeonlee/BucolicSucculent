@@ -41,11 +41,11 @@ exports.findByUsername = function (username, cb) {
 
 exports.createToken = function (user, secret, cb) {
   // has successfully authenticated, send a token
+  console.log('create token', user[0].dataValues.id, secret);
   var expires = moment().add(7, 'days').valueOf();
-  console.log(user.id, expires, secret);
   var token = jwt.encode(
     {
-      iss: user.id,
+      iss: user[0].dataValues.id,
       exp: expires
     }, 
     secret
