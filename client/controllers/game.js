@@ -7,7 +7,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests) {
  
 
   uiGmapGoogleMapApi.then(function(map) {
@@ -56,7 +56,13 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, point2);
     console.log(distanceBetween)
     if (distanceBetween <= 250) { //<---------- ok within 250 meters
+
       // make call to server to update location status for player
+      Requests.updateLocStatus(user, locationId).then(function(res) {     //<----- adjust function args
+        // after res gets back from put request
+      }) 
+
+
       $scope.user.locations.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
         if (location.id === locationId) {
           console.log(location.id, locationId, 'logcation')
