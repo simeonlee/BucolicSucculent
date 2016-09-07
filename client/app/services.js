@@ -48,7 +48,11 @@ angular.module('app.services', ['ngGeolocation'])
     return $http({
       method: 'POST',
       url: '/api/users/login',
-      data: user
+      headers: {
+        "Content-Type": 'application/json; charset=utf-8',
+        "username": user.username,
+        "password": user.password
+      }
     })
     .then(function (resp) {
       return resp.data.token;
@@ -56,10 +60,15 @@ angular.module('app.services', ['ngGeolocation'])
   };
 
   var signup = function (user) {
+    console.log('factory Auth signup');
     return $http({
       method: 'POST',
       url: '/api/users/signup',
-      data: user
+      headers: {
+        "Content-Type": 'application/json; charset=utf-8',
+        "username": user.username,
+        "password": user.password
+      }
     })
     .then(function (resp) {
       return resp.data.token;
@@ -67,10 +76,12 @@ angular.module('app.services', ['ngGeolocation'])
   };
 
   var isAuth = function () {
+    console.log('isAuth');
     return !!$window.localStorage.getItem('token');
   };
 
   var signout = function () {
+    console.log('isAuth');
     $window.localStorage.removeItem('token');
     $location.path('/login');
   };
