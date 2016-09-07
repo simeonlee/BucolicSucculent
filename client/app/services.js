@@ -55,14 +55,12 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
-      console.log('login',resp.data.user, resp.data.token);
       $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };
 
   var signup = function (user) {
-    console.log('factory Auth signup');
     return $http({
       method: 'POST',
       url: '/api/users/signup',
@@ -73,19 +71,16 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
-      console.log('signin',resp.data.user, resp.data.token);
       $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };
 
   var isAuth = function () {
-    console.log('isAuth');
     return !!$window.localStorage.getItem('token');
   };
 
   var signout = function () {
-    console.log('isAuth');
     $window.localStorage.removeItem('token');
     $location.path('/login');
   };
