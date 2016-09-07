@@ -260,7 +260,7 @@ module.exports = function(app, express) {
       
       // create it
       Utils.encryptPassword(user, function(err, user) {
-         User.create({where: user, defaults: {} })
+         User.create(user)
         .then(function(user, created) {
           //console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
           // create token and return
