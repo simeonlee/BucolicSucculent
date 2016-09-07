@@ -9,7 +9,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
       return $http({
         method: 'GET',
-        url: 'http://localhost:4200/api/game',  //<-------------- server end point
+        url: '/api/game',  //<-------------- server end point
         params: params
       });
     },
@@ -20,7 +20,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
       return $http({
         method: 'POST',
-        url: 'http://localhost:4200/api/game/create',
+        url: '/api/game/create',
         data: data
       });
     },
@@ -31,7 +31,7 @@ angular.module('app.services', ['ngGeolocation'])
       };
       return $http({
         method: 'PUT',
-        url: 'http://localhost:4200/api/game',
+        url: '/api/game',
         data: data
       });
     }

@@ -8,7 +8,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     Requests.createGame($rootScope.user, $scope.map.markers) 
       .then(function(res) {
         var gameUrl = res.data;
-        $scope.gamePath = 'http://localhost:4200/#/game/' + gameUrl + '/map'; //<------ to be game url
+        $scope.gamePath = 'http://138.68.53.22:4200/#/game/' + gameUrl + '/map'; //<------ to be game url
       });
 
       $scope.showMap = false;
