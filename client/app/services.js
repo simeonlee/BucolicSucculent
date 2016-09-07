@@ -45,7 +45,6 @@ angular.module('app.services', ['ngGeolocation'])
   // after you login/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
   var login = function (user) {
-    console.log(user, 'loginuser')
     return $http({
       method: 'POST',
       url: '/api/users/login',
@@ -56,6 +55,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      console.log('login',resp.data.user, resp.data.token);
       $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
@@ -73,6 +73,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      console.log('signin',resp.data.user, resp.data.token);
       $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
