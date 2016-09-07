@@ -1,6 +1,12 @@
 angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window) {
+.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
+  if (!isAuth) {
+    $location.path('/login');
+  }
+
+
+
   $scope.showMap = true;
   $scope.submitWaypoints = function() {
     $scope.user = $window.localStorage.getItem('user')

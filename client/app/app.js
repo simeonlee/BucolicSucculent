@@ -20,7 +20,12 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       .state('createGame', {
         url: '/createGame',
         templateUrl: '../views/createGame.html',
-        controller: 'createGameController'
+        controller: 'createGameController',
+        resolve: {
+          isAuth: function(Auth) {
+            return Auth.isAuth();
+          }
+        }
       })
       .state('game', {
         url: '/game/:path',
@@ -32,6 +37,9 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
               console.log(res.data)
               return res.data.locations;
             }); 
+          },
+          isAuth: function(Auth) {
+            return Auth.isAuth();
           }
         }
       })

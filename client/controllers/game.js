@@ -1,6 +1,13 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
-.controller('gameController', function($scope, data, $window) {
+.controller('gameController', function($scope, data, $window, isAuth, $location) {
+  console.log('asdfa', isAuth)
+  if (!isAuth) {
+    $location.path('/login');
+  }
+
+
+
   $scope.user = $window.localStorage.getItem('user')
   console.log(data, 'thsibedata')
   $scope.markers = data;
