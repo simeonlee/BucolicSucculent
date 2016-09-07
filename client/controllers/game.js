@@ -72,32 +72,34 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
   $scope.validateLocation = function(locationId) { 
 
-    if (!$scope.myLatLng) { // <===== TODO handle if my position isn't calculated yet
-      createMyPosition();
-    }
+    if ($scope.myLatLng) {
+      $scope.locationError = false;
+      console.log('checking location: ', locationId);
+      var pointToCheck;
+      $scope.markers.forEach(function(location) {
+        if (location.id === locationId) { // get specific marker data
+          pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
 
-    console.log('checking location: ', locationId);
-    var pointToCheck;
-    $scope.markers.forEach(function(location) {
-      if (location.id === locationId) { // get specific marker data
-        pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
+          var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
 
-        var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
+          if (distanceBetween <= 100) { //<---------- ok within 100 meters
 
-        if (distanceBetween <= 100) { //<---------- ok within 100 meters
-
-          // make call to server to update location status for player
-          Requests.updateLocStatus($scope.user, locationId).then(function(res) {    
-            // adjust local location data
-            location.statuses.status = true;
-            $scope.verifyFailed = false;
-          }) 
-        } else {
-          // location not close enough... display notification
-          $scope.verifyFailed = true;     
+            // make call to server to update location status for player
+            Requests.updateLocStatus($scope.user, locationId).then(function(res) {    
+              // adjust local location data
+              location.statuses.status = true;
+              $scope.verifyFailed = false;
+            }) 
+          } else {
+            // location not close enough... display notification
+            $scope.verifyFailed = true;     
+          }
         }
-      }
-    });
+      });
+    } else {
+      createMyPosition();
+      $scope.locationError = true;
+    }
   }
 })
 .controller('gameStatsController', function($scope) {
