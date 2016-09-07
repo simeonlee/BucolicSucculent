@@ -1,11 +1,11 @@
 angular.module('app.services', ['ngGeolocation'])
 
-.factory('Requests', function($http) {
+.factory('Requests', function($http, $rootScope) {
   return {
-    getGameData: function(gameId) {
+    getGameData: function(path) {
       var params = {
-        username: '', //<----- this needs to come from auth logic?
-        gameId: gameId
+        username: $rootScope.user.username, //<----- this needs to come from auth logic?
+        path: path
       }
       return $http({
         method: 'GET',
@@ -15,7 +15,7 @@ angular.module('app.services', ['ngGeolocation'])
     },
     createGame: function(user, markers) {
       var data = {
-        userId: user,
+        username: user.username,
         markers: markers, //<---- array of locations
       }
       return $http({
@@ -26,7 +26,7 @@ angular.module('app.services', ['ngGeolocation'])
     },
     updateLocStatus: function(user, loc) {
       var data = {
-        userId: user,
+        username: user,
         locationId: loc
       };
       return $http({

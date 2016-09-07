@@ -5,6 +5,7 @@ var User = require('./db-config').User;
 var Utils = require('./utils');
 var express = require('express');
 var jwtauth = require('./jwt');
+var md5 = require('md5');
 
 module.exports = function(app, express) {
 
@@ -16,17 +17,17 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
+  app.get('/api/game', function(req, res) {
 
     // console.log(req.query);
     if (req.query.username) {
-      if (req.query.gameId) {
+      if (req.query.path) {
         // do a query for gameId and username
         // return game info for username
 
         //Looks in usergame table to see if player is in game
         Game.findOne({
-          where: {id: req.query.gameId},
+          where: {path: req.query.path},
           include: [{
             model: User,
             where: { username: req.query.username },
@@ -40,9 +41,10 @@ module.exports = function(app, express) {
             })
             .then( function (currentUser) {
               Game.findOne({
-                where: { id: req.query.gameId }
+                where: { path: req.query.path }
               })
               .then(function (currentGame) {
+                var gameId = currentGame.id;
                 if (currentGame) {
                   //Adds to the usergame relation table
                   currentUser.addGame(currentGame);
@@ -52,7 +54,7 @@ module.exports = function(app, express) {
                   Location.findAll({
                     include: [{
                       model: Game,
-                      where: {id: req.query.gameId}
+                      where: {id: gameId}
                     }]
                   })
                   .then( function (allLoc) {
@@ -66,24 +68,25 @@ module.exports = function(app, express) {
                         { where: {
                           locationId: elem[0][0].dataValues.locationId,
                           userId: elem[0][0].dataValues.userId,
-                        }});
-                        asyncCounter++;
-                        if (asyncCounter === allLoc.length) {
-                          User.findAll({
-                            attributes: ['id'],
-                            where: {
-                              username: req.query.username
-                            },
-                            include: [{
-                              model: Location,
+                        }}).then(function() {
+                          asyncCounter++;
+                          if (asyncCounter === allLoc.length) {
+                            User.findOne({
+                              attributes: [],
                               where: {
-                                gameId: req.query.gameId
-                              }
-                            }]
-                          }).then(function(result) {
-                            res.send(result);
-                          });
-                        }
+                                username: req.query.username
+                              },
+                              include: [{
+                                model: Location,
+                                where: {
+                                  gameId: gameId
+                                }
+                              }]
+                            }).then(function(result) {
+                              res.send(result);
+                            });
+                          }
+                        });
                       });
                     });
                   });
@@ -92,15 +95,16 @@ module.exports = function(app, express) {
             });
             // if (!gameFound)
           } else {
-            User.findAll({
-              attributes: ['id'],
+            
+            User.findOne({
+              attributes: [],
               where: {
                 username: req.query.username
               },
               include: [{
                 model: Location,
                 where: {
-                  gameId: req.query.gameId
+                  gameId: gameFound.id
                 }
               }]
             }).then(function(result) {
@@ -124,38 +128,56 @@ module.exports = function(app, express) {
     }
   });
 
-  app.put('/api/game', jwtauth, requireAuth, function (req, res) {
-    Status.findOne({
+  app.put('/api/game', function (req, res) {
+    User.findOne({
       where: {
-        userId: req.body.userId,
-        locationId: req.body.locationId,
+        username: req.body.username
       }
-    }).then(function(currentStatus) {
-      currentStatus.update({
-        status: req.body.status
-      }).then(function(result) {
-        res.send(result);
+    })
+    .then(function (currentUser) {
+      Status.findOne({
+        where: {
+          userId: currentUser.id,
+          locationId: req.body.locationId,
+        }
+      }).then(function(currentStatus) {
+        currentStatus.update({
+          status: true
+        }).then(function(result) {
+          res.send(result);
+        });
       });
-    });
+
+    })
     // res.send('This is the POST for /game');
 
   });
 
-  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
+  app.post('/api/game/create', function (req, res) {
     //This is when the creator makes a game and clicks create game
-    var creator = 'beth';
-    //somehow we create the code;
 
+  //   { username: 'beth',
+  // markers:
+  //  [ {latitude: 2, longitude: 4, sequence: 1},
+  //    {latitude: 2, longitude: 4.21412412, sequence: 2},
+  //    {latitude: 2, longitude: 4, sequence: 3} ] }
+
+    var creator = req.body.username;
+    //somehow we create the code;
+    console.log(req.body);
+    var pathUrl = md5(JSON.stringify(req.body))
     // increment pathUrl
-    var pathUrl = 'lol';
+    //var pathUrl = 'somethingelse';
     // hash it?
 
-    var locations = [
-      {latitude: 2, longitude: 4, sequence: 1},
-      {latitude: 2, longitude: 6, sequence: 2},
-      {latitude: 4, longitude: 5, sequence: 3},
-      {latitude: 6, longitude: 7, sequence: 4}
-    ];
+    // var locations = [
+    //   {latitude: 2, longitude: 4, sequence: 1},
+    //   {latitude: 2, longitude: 6, sequence: 2},
+    //   {latitude: 4, longitude: 5, sequence: 3},
+    //   {latitude: 6, longitude: 7, sequence: 4}
+    // ];
+
+    var locations = req.body.markers;
 
     User.findOne({
       where: {
@@ -244,7 +266,7 @@ module.exports = function(app, express) {
     // }
 
 
-    res.send('Should send url(path) to game here');
+    res.send(pathUrl);
 
   });
 

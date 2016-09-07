@@ -1,16 +1,26 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
-.run(function(){
-
-})
 
 .controller('gameController', function($scope, data) {
-  $scope.map = data.map;
-  $scope.markers = data.map.markers;
-  $scope.players = data.players; //<-----------------property in data json for player info
+  $scope.markers = data;
+    // $scope.players = res.data.players; //<-----------------property in data json for player info
+  $scope.markers.forEach(function(marker, ind){
+    var label = marker.sequence.toString();
+    $scope.markers[ind].options = {
+      label: label
+    };
+  })
+  console.log($scope.markers, 'this is tslkfjsdflk');
   
+  $scope.map = { 
+    center: { 
+      latitude: 37.7836881,                 //<------- SF default map
+      longitude: -122.40904010000001 
+    }, 
+    zoom: 13
+  };
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests, $rootScope) {
  
 
   uiGmapGoogleMapApi.then(function(map) {
@@ -30,7 +40,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
           latitude: $geolocation.position.coords.latitude,
           longitude: $geolocation.position.coords.longitude
         },
-        radius: $geolocation.position.coords.accuracy,
+        radius: 100,
         stroke: {
           color: 'blue',
           weight: 1,
@@ -45,27 +55,35 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   })
 
-  $scope.user = {"name": 'Brian', "locations": [{"id": 1, "status": true},{"id": 2, "status": false},{"id": 3, "status": false}]};  //<--------- TODO: figure out matching logged-in user with appropriate user from game data
 
-  $scope.validateLocation = function(locationId) { //TODO: validate location with browser geolocation api
+  $scope.validateLocation = function(locationId) { 
     console.log(locationId)
+    var pointToCheck;
+    $scope.markers.forEach(function(location) {
+      if (location.id === locationId) {
+        pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
+
+      }
+    })
     // get lat and lng from locationId
-    var point2 = new google.maps.LatLng(37.7837646, -122.40909429999999); //<-- Dummy point... loc to be checked
+     //<-- Dummy point... loc to be checked
     
-    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, point2);
+    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
+
     console.log(distanceBetween)
-    if (distanceBetween <= 250) { //<---------- ok within 250 meters
+
+    if (distanceBetween <= 100) { //<---------- ok within 100 meters
 
       // make call to server to update location status for player
-      Requests.updateLocStatus(user, locationId).then(function(res) {     //<----- adjust function args
+      Requests.updateLocStatus($rootScope.user.username, locationId).then(function(res) {     //<----- adjust function args
         // after res gets back from put request
       }) 
 
 
-      $scope.user.locations.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
+      $scope.markers.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
         if (location.id === locationId) {
-          console.log(location.id, locationId, 'logcation')
-          location.status = true;
+          console.log(location.id, locationId, 'location')
+          location.statuses.status = true;
         }
         console.log($scope.user, 'user');
         // $scope.$apply();
