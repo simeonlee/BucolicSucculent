@@ -18,6 +18,7 @@
   "homepage": "https://github.com/derektliu/BucolicSucculent#readme",
   "dependencies": {
     "angular": "^1.5.8",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "express": "^4.14.0",
@@ -26,6 +27,7 @@
     "jwt-simple": "^0.5.0",
     "md5": "^2.2.1",
     "mocha": "^3.0.2",
+    "moment": "^2.14.1",
     "mysql": "^2.11.1",
     "sequelize": "^3.24.1"
   }

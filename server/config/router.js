@@ -6,6 +6,7 @@ var Utils = require('./utils');
 var express = require('express');
 var jwtauth = require('./jwt');
 var md5 = require('md5');
+var jwt = require('jwt-simple');
 
 module.exports = function(app, express) {
 
@@ -271,61 +272,72 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/users/signup', function(req, res) {
-  //Must be application/json content type;
-
-    var username = req.body.username.toLowerCase();
-    var password = req.body.password;
-
-    User.create({username: username, password: password})
-    .then(function() {
-      // create token and return
-      
-      res.status(201).send('New user added.');
-    })
-    .catch(function(err) {
-      res.status(409).send('Username already exists');
-    });
-  });
-
-  app.post('/api/users/login', function(req, res) {
-
+    //Must be application/json content type;
+    console.log('signup username:', req.headers.username, 'password:',req.headers.password); 
     if (req.headers.username && req.headers.password) {   
+       var user = {
+        username : req.headers.username.toLowerCase(),
+        password : req.headers.password
+      };
       
-      // Fetch the appropriate user, if they exist
-      User.findOne({ username: req.headers.username }, function(err, user) {
-        if (err) {    
-          res.send('Authentication error', 401)
-        }
-
-        Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
-          if (err) {            
-            // bad password
-            res.send('Authentication error', 401)
-          }
-          if (isMatch) {  
-            // has successfully authenticated, send a token
-            var expires = moment().add('days', 7).valueOf()       
-            var token = jwt.encode(
-              {
-                iss: user.id,
-                exp: expires
-              }, 
-              app.get('jwtTokenSecret')
-            );            
-            res.json({
-              token : token,
-              expires : expires,
-              user : user.toJSON()
-            });
-          } else {            
-            res.send('Authentication error', 401)
-          }
+      // create it
+      Utils.encryptPassword(user, function(err, user) {
+         User.create(user)
+        .then(function(user, created) {
+          //console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
+          // create token and return
+          var secret = app.get('jwtTokenSecret');
+          Utils.createToken(user, secret, function(token) {
+            if ( token.token ) {
+              res.json(token);
+            } else {
+              res.status(401).send('Token error');
+            }
+          });  
+        })
+        .catch(function(err) {
+          res.status(409).send('Username already exists or other err: '+ err);
         });
-      }); // end findOne callback
+      });
     } else {
       // missing username or password
-      res.send('Authentication error', 401)
+      res.status(401).send('missing username or password');
     }
+  }); // end of signup
 
-  })
+  app.post('/api/users/login', function(req, res) {
+    if (req.headers.username && req.headers.password) {      
+      // Fetch the appropriate user, if they exist
+
+      User.findOne({ username: req.headers.username })
+      .then(function(user) { 
+
+        Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
+          console.log('compare passwords back err ' + err + ' isMatch ' + isMatch);
+          if (err) {            
+            // bad password
+            res.status(401).send('Authentication error');
+          } else if (isMatch) {  
+            // has successfully authenticated, send a token
+            var secret = app.get('jwtTokenSecret');
+            Utils.createToken(user, secret, function(token) {
+              if ( token.token ) {
+                res.json(token);
+              } else {
+                res.status(401).send('Token error');
+              }
+            });   
+          } else {            
+            res.status(401).send('Authentication error');
+          }
+        }); // comparePassword
+      }) // .then findOne
+      .error(function(err) { 
+        console.log('send auth error');  
+        res.status(401).send('Authentication error');
+      }); // .error findOne
+    } else {
+      res.status(401).send('Authentication error');
+    }
+  });
 };
