@@ -54,6 +54,7 @@ exports.createToken = function (user, secret, cb) {
   //    user : user.toJSON()        
   cb ({
     token : token,
+    user: user.dataValues.username
   });
 };
 

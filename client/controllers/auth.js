@@ -1,6 +1,6 @@
 angular.module('app.auth', [])
 
-.controller('AuthController', function( $scope, Auth ) {
+.controller('AuthController', function( $window, $scope, Auth ) {
 
   $scope.login = function() {
     console.log($scope.user);
@@ -9,7 +9,7 @@ angular.module('app.auth', [])
       .then(function (token) {
         console.log('recieved', token);
         if (token) {
-          $scope.user.token = token;
+          $window.localStorage.setItem('token', token)
           $.ajaxSetup({
             headers: {
               'x-access-token': token
@@ -28,7 +28,8 @@ angular.module('app.auth', [])
     Auth.signup($scope.user)
       .then(function (token) {
         if (token) {
-          $scope.token = token;
+          $window.localStorage.setItem('token', token)
+          console.log(token, 'thistoke');
           // set in in ajax headers for automatic inclusion
           $.ajaxSetup({
             headers: {

@@ -1,10 +1,10 @@
 angular.module('app.services', ['ngGeolocation'])
 
-.factory('Requests', function($http, $rootScope) {
+.factory('Requests', function($http, $window) {
   return {
     getGameData: function(path) {
       var params = {
-        username: $rootScope.user.username, //<----- this needs to come from auth logic?
+        username: $window.localStorage.getItem('user'), //<----- this needs to come from auth logic?
         path: path
       }
       return $http({
@@ -15,7 +15,7 @@ angular.module('app.services', ['ngGeolocation'])
     },
     createGame: function(user, markers) {
       var data = {
-        username: user.username,
+        username: user,
         markers: markers, //<---- array of locations
       }
       return $http({
@@ -45,6 +45,7 @@ angular.module('app.services', ['ngGeolocation'])
   // after you login/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
   var login = function (user) {
+    console.log(user, 'loginuser')
     return $http({
       method: 'POST',
       url: '/api/users/login',
@@ -55,6 +56,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };
@@ -71,6 +73,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };

@@ -1,6 +1,8 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
-.controller('gameController', function($scope, data) {
+.controller('gameController', function($scope, data, $window) {
+  $scope.user = $window.localStorage.getItem('user')
+  console.log(data, 'thsibedata')
   $scope.markers = data;
     // $scope.players = res.data.players; //<-----------------property in data json for player info
   $scope.markers.forEach(function(marker, ind){
@@ -75,7 +77,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     if (distanceBetween <= 100) { //<---------- ok within 100 meters
 
       // make call to server to update location status for player
-      Requests.updateLocStatus($rootScope.user.username, locationId).then(function(res) {     //<----- adjust function args
+      Requests.updateLocStatus($scope.user, locationId).then(function(res) {     //<----- adjust function args
         // after res gets back from put request
       }) 
 

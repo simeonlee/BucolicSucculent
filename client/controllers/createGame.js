@@ -1,14 +1,15 @@
 angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope) {
+.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window) {
   $scope.showMap = true;
   $scope.submitWaypoints = function() {
-
+    $scope.user = $window.localStorage.getItem('user')
     // get waypoints from map and submit to server to create createGame
-    Requests.createGame($rootScope.user, $scope.map.markers) 
+    Requests.createGame($scope.user, $scope.map.markers) 
       .then(function(res) {
+        console.log(res);
         var gameUrl = res.data;
-        $scope.gamePath = 'http://138.68.53.22:4200/#/game/' + gameUrl + '/map'; //<------ to be game url
+        $scope.gamePath = 'http://' + $rootScope.host + ':4200/#/game/' + gameUrl + '/map'; //<------ to be game url
       });
 
       $scope.showMap = false;
