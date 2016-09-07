@@ -34,7 +34,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         resolve: {
           data: function($stateParams, Requests) {
             return Requests.getGameData($stateParams.path).then(function(res) {
-              console.log(res.data)
+              console.log(res.data) 
               return res.data.locations;
             }); 
           },
@@ -82,8 +82,8 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 })
 .run(function ($rootScope, $location, Auth) {
 
-  // $rootScope.host = 'localhost';
-  $rootScope.host = '138.68.53.22';
+  $rootScope.host = 'localhost'; // for development
+  // $rootScope.host = '138.68.53.22'; // for production
 
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
