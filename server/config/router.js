@@ -260,10 +260,9 @@ module.exports = function(app, express) {
       
       // create it
       Utils.encryptPassword(user, function(err, user) {
-        console.log('back from encryptPasswd - passwd should be encrypted in the user structure')
-        User.findOrCreate({where: user, defaults: {} })
+         User.create({where: user, defaults: {} })
         .then(function(user, created) {
-          console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
+          //console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
           // create token and return
           var secret = app.get('jwtTokenSecret');
           Utils.createToken(user, secret, function(token) {
@@ -285,14 +284,11 @@ module.exports = function(app, express) {
   }); // end of signup
 
   app.post('/api/users/login', function(req, res) {
-    console.log (req.headers.username);
-    console.log (req.headers.password);
     if (req.headers.username && req.headers.password) {      
       // Fetch the appropriate user, if they exist
 
       User.findOne({ username: req.headers.username })
-      .then(function(user) {
-        console.log('back from findOne'); 
+      .then(function(user) { 
 
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
           console.log('compare passwords back err ' + err + ' isMatch ' + isMatch);
