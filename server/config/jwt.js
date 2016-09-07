@@ -14,6 +14,7 @@ module.exports = function(req, res, next){
       if (decoded.exp <= Date.now()) {
         res.end('Access token has expired', 400);
       }
+      console.log('jwt decoded token OK', decoded.iss);
       // get user data and attach
       User.findOne({ where: { 'id': decoded.iss } }).then(function(user){
         if (user) {       
