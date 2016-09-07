@@ -55,11 +55,10 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   })
 
-  console.log($scope.markers, 'sdlfkj')
 
   $scope.validateLocation = function(locationId) { 
     console.log(locationId)
-    var pointToCheck
+    var pointToCheck;
     $scope.markers.forEach(function(location) {
       if (location.id === locationId) {
         pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
@@ -73,7 +72,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
     console.log(distanceBetween)
 
-    if (distanceBetween <= 100) { //<---------- ok within 250 meters
+    if (distanceBetween <= 100) { //<---------- ok within 100 meters
 
       // make call to server to update location status for player
       Requests.updateLocStatus($rootScope.user.username, locationId).then(function(res) {     //<----- adjust function args

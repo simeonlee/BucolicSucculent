@@ -5,7 +5,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
   $scope.submitWaypoints = function() {
 
     // get waypoints from map and submit to server to create createGame
-    Requests.createGame($rootScope.user, $scope.map.markers) // <----- dummy user 'brian'
+    Requests.createGame($rootScope.user, $scope.map.markers) 
       .then(function(res) {
         var gameUrl = res.data;
         $scope.gamePath = 'http://localhost:4200/#/game/' + gameUrl + '/map'; //<------ to be game url
