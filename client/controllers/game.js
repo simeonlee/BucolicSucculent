@@ -29,7 +29,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   };
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, Requests) {
  
   //init map
   uiGmapGoogleMapApi.then(function(map) {
