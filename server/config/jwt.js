@@ -11,15 +11,12 @@ module.exports = function(req, res, next){
     var decoded = jwt.decode(token, 'teambsAThackreactor47')
     if (decoded) {
       // check exirpation date
-      
-  console.log(decoded.iss, 'sdfs')
       if (decoded.exp <= Date.now()) {
         res.end('Access token has expired', 400);
       }
       // get user data and attach
       User.findOne({ where: { 'id': decoded.iss } }).then(function(user){
-        if (user) {   
-        console.log('weok')      
+        if (user) {       
           req.user = user;
           return next();
         }

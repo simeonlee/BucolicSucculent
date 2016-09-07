@@ -4,19 +4,19 @@ angular.module('app.services', ['ngGeolocation'])
   return {
     getGameData: function(path) {
       var params = {
-        username: $window.localStorage.getItem('user'), //<----- this needs to come from auth logic?
+        username: $window.localStorage.getItem('user'), 
         path: path
       }
       return $http({
         method: 'GET',
-        url: '/api/game',  //<-------------- server end point
+        url: '/api/game',  
         params: params
       });
     },
     createGame: function(user, markers) {
       var data = {
         username: user,
-        markers: markers, //<---- array of locations
+        markers: markers, 
       }
       return $http({
         method: 'POST',
@@ -96,18 +96,4 @@ angular.module('app.services', ['ngGeolocation'])
     isAuth: isAuth,
     signout: signout
   };
-})
-.factory('GeoLoc', ['$geolocation', '$q', function($geolocation, $q) {
-  return {
-    setMyLocation: function() {
-      return $q(function(resolve, error) {
-        $geolocation.getCurrentPosition({
-          timeout: 60000
-        })
-        .then(function(position) {
-          resolve(position);
-        });
-      });
-    }
-  }
-}]);
+});

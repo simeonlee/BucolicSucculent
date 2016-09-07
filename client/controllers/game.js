@@ -1,24 +1,24 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
 .controller('gameController', function($scope, data, $window, isAuth, $location) {
-  console.log('asdfa', isAuth)
+  //Check for JWT
   if (!isAuth) {
     $location.path('/login');
   }
 
-
-
+  //Get user and markers data
   $scope.user = $window.localStorage.getItem('user')
-  console.log(data, 'thsibedata')
   $scope.markers = data;
-    // $scope.players = res.data.players; //<-----------------property in data json for player info
+
+    // $scope.players = res.data.players; //<----------------- wishlist
+
+  //Add labels to markers according to sequence number
   $scope.markers.forEach(function(marker, ind){
     var label = marker.sequence.toString();
     $scope.markers[ind].options = {
       label: label
     };
   })
-  console.log($scope.markers, 'this is tslkfjsdflk');
   
   $scope.map = { 
     center: { 
@@ -29,20 +29,23 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   };
 
 })
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, GeoLoc, Requests, $rootScope) {
+.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation) {
  
-
+  //init map
   uiGmapGoogleMapApi.then(function(map) {
     // post rendering tasks....
   })
   
-  $geolocation.watchPosition({
-      timeout: 60000,
-      maximumAge: 250,
-      enableHighAccuracy: true
-  })
-  $scope.myPosition = $geolocation.position;
+  //create position on map
+  var createMyPosition = function() {$geolocation.watchPosition({
+        timeout: 60000,
+        maximumAge: 250,
+        enableHighAccuracy: true
+    });
+  }
 
+  createMyPosition();
+  //watch for position change
   $scope.$on('$geolocation.position.changed', function(newValue) {
     $scope.circle = {
         center: {
@@ -61,51 +64,43 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
           opacity: 0.3
         }
       };  
+
+      // create gmap latLng object for calculating distance
       $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   })
 
 
   $scope.validateLocation = function(locationId) { 
-    console.log(locationId)
-    var pointToCheck;
-    $scope.markers.forEach(function(location) {
-      if (location.id === locationId) {
-        pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
 
-      }
-    })
-    // get lat and lng from locationId
-     //<-- Dummy point... loc to be checked
-    
-    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
-
-    console.log(distanceBetween)
-
-    if (distanceBetween <= 100) { //<---------- ok within 100 meters
-
-      // make call to server to update location status for player
-      Requests.updateLocStatus($scope.user, locationId).then(function(res) {     //<----- adjust function args
-        // after res gets back from put request
-      }) 
-
-
-      $scope.markers.forEach(function(location) { //<---- works on dummy data but probably needs some work with the real thing
-        if (location.id === locationId) {
-          console.log(location.id, locationId, 'location')
-          location.statuses.status = true;
-        }
-        console.log($scope.user, 'user');
-        // $scope.$apply();
-      })
-      $scope.verifyFailed = false;
-    } else {
-      $scope.verifyFailed = true;
+    if (!$scope.myLatLng) { // <===== TODO handle if my position isn't calculated yet
+      createMyPosition();
     }
 
-  }
+    console.log('checking location: ', locationId);
+    var pointToCheck;
+    $scope.markers.forEach(function(location) {
+      if (location.id === locationId) { // get specific marker data
+        pointToCheck = new google.maps.LatLng(location.latitude, location.longitude);
 
+        var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween($scope.myLatLng, pointToCheck);
+
+        if (distanceBetween <= 100) { //<---------- ok within 100 meters
+
+          // make call to server to update location status for player
+          Requests.updateLocStatus($scope.user, locationId).then(function(res) {    
+            // adjust local location data
+            location.statuses.status = true;
+            $scope.verifyFailed = false;
+          }) 
+        } else {
+          // location not close enough... display notification
+          $scope.verifyFailed = true;     
+        }
+      }
+    });
+  }
 })
 .controller('gameStatsController', function($scope) {
-
+  //wishlist
 
 });
