@@ -82,8 +82,8 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 })
 .run(function ($rootScope, $location, Auth) {
 
-  $rootScope.host = 'localhost';
-  // $rootScope.host = '138.68.53.22';
+  // $rootScope.host = 'localhost';
+  $rootScope.host = '138.68.53.22';
 
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
