@@ -1,5 +1,11 @@
 <div>
   <p>hello I'm a game map view</p>
+
+  <div ng-show="locationError">
+    <h3 class="error">Your location wasn't found!</h3>
+    <p>#*- If you are using Chrome, please try another browser -*#</p>
+  </div>
+    
   <ui-gmap-google-map center='map.center' zoom='map.zoom'>
     <ui-gmap-markers models="markers" idKey="'id'" coords="'self'" options="'options'"></ui-gmap-markers>
     <ui-gmap-circle center="circle.center" radius="circle.radius" stroke="circle.stroke" fill="circle.fill" clickable="circle.clickable"></ui-gmap-circle>

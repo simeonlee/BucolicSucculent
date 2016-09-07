@@ -11,14 +11,14 @@ var jwt = require('jwt-simple');
 module.exports = function(app, express) {
 
   var requireAuth = function(req, res, next) {
-    if (!req.user) {
+    if (!req.body.username && !req.query.username) {
       res.end('Not authorized', 401);
     } else {
       next();
     }
   }
 
-  app.get('/api/game', function(req, res) {
+  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
 
     // console.log(req.query);
     if (req.query.username) {
@@ -129,7 +129,7 @@ module.exports = function(app, express) {
     }
   });
 
-  app.put('/api/game', function (req, res) {
+  app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     User.findOne({
       where: {
         username: req.body.username
@@ -154,7 +154,7 @@ module.exports = function(app, express) {
 
   });
 
-  app.post('/api/game/create', function (req, res) {
+  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
     //This is when the creator makes a game and clicks create game
 
   //   { username: 'beth',
@@ -165,7 +165,7 @@ module.exports = function(app, express) {
 
     var creator = req.body.username;
     //somehow we create the code;
-    console.log(req.body);
+    console.log(req.body, 'ehsdlfkjs');
     var pathUrl = md5(JSON.stringify(req.body))
     // increment pathUrl
     //var pathUrl = 'somethingelse';
@@ -286,9 +286,10 @@ module.exports = function(app, express) {
         .then(function(user, created) {
           //console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
           // create token and return
-          var secret = app.get('jwtTokenSecret');
+          var secret = 'teambsAThackreactor47';
           Utils.createToken(user, secret, function(token) {
             if ( token.token ) {
+              console.log(token, 'thistoken')
               res.json(token);
             } else {
               res.status(401).send('Token error');
@@ -309,9 +310,8 @@ module.exports = function(app, express) {
     if (req.headers.username && req.headers.password) {      
       // Fetch the appropriate user, if they exist
 
-      User.findOne({ username: req.headers.username })
+      User.findOne({where: { username: req.headers.username }})
       .then(function(user) { 
-
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
           console.log('compare passwords back err ' + err + ' isMatch ' + isMatch);
           if (err) {            
@@ -319,7 +319,7 @@ module.exports = function(app, express) {
             res.status(401).send('Authentication error');
           } else if (isMatch) {  
             // has successfully authenticated, send a token
-            var secret = app.get('jwtTokenSecret');
+            var secret = 'teambsAThackreactor47';
             Utils.createToken(user, secret, function(token) {
               if ( token.token ) {
                 res.json(token);

@@ -25,7 +25,7 @@ exports.encryptPassword = function(user, cb) {
 
 // compare to encrypted password
 exports.comparePassword = function(pwd, user, cb) {
-  console.log('compare Password', pwd, 'to', user.password)
+  // console.log('compare Password', pwd, 'to', user.password) <----throws and error if user is not in db
   bcrypt.compare(pwd, user.password, function(err, isMatch) {
     if (err) {
       return cb(err);
@@ -54,6 +54,7 @@ exports.createToken = function (user, secret, cb) {
   //    user : user.toJSON()        
   cb ({
     token : token,
+    user: user.dataValues.username
   });
 };
 

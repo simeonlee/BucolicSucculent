@@ -1,26 +1,26 @@
 angular.module('app.services', ['ngGeolocation'])
 
-.factory('Requests', function($http, $rootScope) {
+.factory('Requests', function($http, $window) {
   return {
     getGameData: function(path) {
       var params = {
-        username: $rootScope.user.username, //<----- this needs to come from auth logic?
+        username: $window.localStorage.getItem('user'), 
         path: path
       }
       return $http({
         method: 'GET',
-        url: 'http://localhost:4200/api/game',  //<-------------- server end point
+        url: '/api/game',  
         params: params
       });
     },
     createGame: function(user, markers) {
       var data = {
-        username: user.username,
-        markers: markers, //<---- array of locations
+        username: user,
+        markers: markers, 
       }
       return $http({
         method: 'POST',
-        url: 'http://localhost:4200/api/game/create',
+        url: '/api/game/create',
         data: data
       });
     },
@@ -31,7 +31,7 @@ angular.module('app.services', ['ngGeolocation'])
       };
       return $http({
         method: 'PUT',
-        url: 'http://localhost:4200/api/game',
+        url: '/api/game',
         data: data
       });
     }
@@ -45,6 +45,7 @@ angular.module('app.services', ['ngGeolocation'])
   // after you login/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
   var login = function (user) {
+    console.log(user, 'loginuser')
     return $http({
       method: 'POST',
       url: '/api/users/login',
@@ -55,6 +56,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };
@@ -71,6 +73,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
   };
@@ -93,18 +96,4 @@ angular.module('app.services', ['ngGeolocation'])
     isAuth: isAuth,
     signout: signout
   };
-})
-.factory('GeoLoc', ['$geolocation', '$q', function($geolocation, $q) {
-  return {
-    setMyLocation: function() {
-      return $q(function(resolve, error) {
-        $geolocation.getCurrentPosition({
-          timeout: 60000
-        })
-        .then(function(position) {
-          resolve(position);
-        });
-      });
-    }
-  }
-}]);
+});
