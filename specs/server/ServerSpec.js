@@ -32,9 +32,25 @@ describe ('', function() {
             });
         })
         .end(done);
-    });
-  });
+    })
 
+  //   it('Successful signup logs in a new user', function(done) {
+  //     request(app)
+  //       .post('/api/users/signup')
+  //       .set('username', 'beth')
+  //       .set('password', 'beth')
+  //       .expect(function(res) {
+  //         expect(res.headers.location).to.equal('/#/createGame');
+  //       })
+  //       .end(done);
+  //   })
+  })
+
+  // describe('POST /api/users/login', function() {
+  //   it('should login a user', function(done) {
+
+  //   })
+  // })
   // describe('POST /api/users/login', function() {
   //   it('should login a user', function(done) {
 
