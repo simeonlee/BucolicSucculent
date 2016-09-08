@@ -9,46 +9,53 @@ var Location = require('../../server/config/db-config').Location;
 var Status = require('../../server/config/db-config').Status;
 var User = require('../../server/config/db-config').User;
 
-describe ('', function() {
 
-  beforeEach(function() {
-    User.destroy({
-      where: {
-        username: 'derek'
-      }
-    });
-  });
+describe ('Signup/Login for Users', function() {
 
   describe('POST /api/users/signup', function() {
-    it('should create a user', function(done) {
+
+    beforeEach(function() {
+      User.destroy({where: { username: 'beth' }}).then(function () {});
+    });
+
+    it('should create a new user', function(done) {
       request(app)
         .post('/api/users/signup')
-        .set('username', 'derek')
-        .set('password', 'derek')
+        .set('username', 'beth')
+        .set('password', 'beth')
         .expect(function() {
-          User.findOne({ where: { 'username': 'derek' } })
+          User.findOne({ where: { 'username': 'beth' } })
             .then(function(user) {
-              expect(user.username).to.equal('derek');
+              expect(user.username).to.equal('beth');
             });
         })
         .end(done);
+    });
+
+    it('should return a token after signup', function(done) {
+      request(app)
+        .post('/api/users/signup')
+        .set('username', 'beth')
+        .set('password', 'beth')
+        .expect(function(res) {
+          expect(res.body.token).to.exist;
+          expect(res.body.user).to.equal('beth');
+        })
+        .end(done);
     })
+  });
 
-  //   it('Successful signup logs in a new user', function(done) {
-  //     request(app)
-  //       .post('/api/users/signup')
-  //       .set('username', 'beth')
-  //       .set('password', 'beth')
-  //       .expect(function(res) {
-  //         expect(res.headers.location).to.equal('/#/createGame');
-  //       })
-  //       .end(done);
-  //   })
+  describe('POST /api/users/login', function() {
+    it('should return a token and login the user', function(done) {
+      request(app)
+        .post('/api/users/login')
+        .set('username', 'beth')
+        .set('password', 'beth')
+        .expect(function(res) {
+          expect(res.body.token).to.exist;
+          expect(res.body.user).to.equal('beth');
+        })
+        .end(done);
+    })
   })
-
-  // describe('POST /api/users/login', function() {
-  //   it('should login a user', function(done) {
-
-  //   })
-  // })
 });
