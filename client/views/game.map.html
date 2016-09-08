@@ -1,5 +1,5 @@
 <div>
-  <p>hello I'm a game map view</p>
+  <!-- <p>hello I'm a game map view</p> -->
 
   <div ng-show="locationError">
     <h3 class="error">Your location wasn't found!</h3>
@@ -13,7 +13,7 @@
 
   <div class="playerProgress">
 
-    <h3>Status for Player: {{user.username}}</h3>
+    <h3>Status for Player: {{user}}</h3>
     <p ng-if="verifyFailed">You are not at this location</p> <!-- will show if user is not within 100 meters of location -->
     <h4>Locations</h4>
       <form>
