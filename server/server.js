@@ -22,3 +22,5 @@ app.listen(4200, function () {
     console.log('Synced with mySql');
   });
 });
+
+module.exports = app;
