@@ -62,3 +62,20 @@
 body {
     text-align:center;
 }
+
+.btn {
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background: #000;
+    color: #fff;
+}

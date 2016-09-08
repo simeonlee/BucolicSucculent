@@ -11,7 +11,7 @@
     <ui-gmap-markers models="map.markers" idKey="'sequence'" coords="'self'" options="'options'"></ui-gmap-markers>
   </ui-gmap-google-map>
 
-  <button ng-click="submitWaypoints()" ng-show="showMap">Start Game</button>
+  <div><a class="btn" ng-click="submitWaypoints()" ng-show="showMap">Start Game</a></div>
 
   <div class="sharePath">
     <h3 ng-if="gamePath">Share this url with your friends: <a id="gamePath" ng-href="{{ gamePath }}">{{ gamePath }}</a></h3>
