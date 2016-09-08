@@ -96,6 +96,7 @@ describe ('Signup/Login for Users', function() {
         .expect(401)
         .expect(function(res) {
           expect(res.text).to.equal('Authentication error');
+          expect(res.body.token).to.not.exist;
         })
         .end(done);
     })
@@ -108,6 +109,7 @@ describe ('Signup/Login for Users', function() {
         .expect(401)
         .expect(function(res) {
           expect(res.text).to.equal('Authentication error');
+          expect(res.body.token).to.not.exist;
         })
         .end(done);
     })
