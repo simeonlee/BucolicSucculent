@@ -29,14 +29,14 @@ module.exports = function(app, express) {
         where: {path: req.query.path},
         include: [{
           model: User,
-          where: { username: req.query.username },
+          where: { username: req.user.username },
         }]
       }).then(function (gameFound) {
         //if the user was not in the game, have player join the game
         if (!gameFound) {
           // function (User, req.query.username) 
           User.findOne({
-            where: { username: req.query.username }
+            where: { username: req.user.username }
           })
           .then( function (currentUser) {
             Game.findOne({
@@ -73,7 +73,7 @@ module.exports = function(app, express) {
                           User.findOne({
                             attributes: [],
                             where: {
-                              username: req.query.username
+                              username: req.user.username
                             },
                             include: [{
                               model: Location,
@@ -98,7 +98,7 @@ module.exports = function(app, express) {
           User.findOne({
             attributes: [],
             where: {
-              username: req.query.username
+              username: req.user.username
             },
             include: [{
               model: Location,
@@ -116,7 +116,7 @@ module.exports = function(app, express) {
       Game.findAll({
         include: [{
           model: User,
-          where: { username: req.query.username },
+          where: { username: req.user.username },
         }],
         raw: true
       }).then(function(allGames) {
@@ -129,7 +129,7 @@ module.exports = function(app, express) {
   app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     User.findOne({
       where: {
-        username: req.body.username
+        username: req.user.username
       }
     })
     .then(function (currentUser) {
@@ -160,7 +160,7 @@ module.exports = function(app, express) {
   //    {latitude: 2, longitude: 4.21412412, sequence: 2},
   //    {latitude: 2, longitude: 4, sequence: 3} ] }
 
-    var creator = req.body.username;
+    var creator = req.user.username;
     //somehow we create the code;
     var pathUrl = md5(JSON.stringify(req.body))
     // increment pathUrl
