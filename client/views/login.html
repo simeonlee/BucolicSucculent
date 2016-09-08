@@ -1,9 +1,16 @@
-<div>
-  <form id='login' ng-submit='login()'>
-
+<div id="loginContainer">
+  <form id="loginForm" ng-submit='login()'>
+	 <div id="loginHeader">
+    <h3> Login </h3>
+    </div>
+      <br>
       <input type='text' ng-model=user.username placeholder='username' required />
+      <br>
       <input type='text' ng-model=user.password placeholder='password' required />
-      <button>Submit</button>
-      
+      <br>
+      <br>
+      <div id="loginFooter">
+        <input type='submit' />
+      </div>
   </form>
 </div>

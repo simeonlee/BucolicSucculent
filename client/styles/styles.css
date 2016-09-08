@@ -4,3 +4,52 @@
 .statusComplete{
   text-decoration: line-through;
 }
+
+#loginContainer {
+    width: 50%;
+    margin:5% 0 0 25%;
+    background-color: #e5ebff;
+}
+
+#signupContainer {
+    width: 50%;
+    margin:5% 0 0 25%;
+    background-color: #e5ebff;
+}
+
+#loginForm {
+    outline:2px solid rgba(0, 0, 0, .1);
+    text-align: center;
+    padding:3%;
+    padding-bottom: 3%;
+}
+
+#signupForm {
+    outline:2px solid rgba(0, 0, 0, .1);
+    text-align: center;
+    padding:3%;
+    padding-bottom: 3%;
+}
+
+#loginHeader {
+    border-bottom: 1px solid #c9c8c5;
+    text-align: left;
+    color: white;
+}
+
+#signupHeader {
+    border-bottom: 1px solid #c9c8c5;
+    text-align: left;
+    color: white;
+}
+
+#loginFooter, #loginHeader {
+    padding:3%;
+    background-color: #363636;
+}
+
+
+#signupFooter, #signupHeader {
+    padding:3%;
+    background-color: #363636;
+}
