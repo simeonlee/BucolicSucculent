@@ -12,17 +12,19 @@ var User = require('../../server/config/db-config').User;
 
 describe ('Signup/Login for Users', function() {
 
+  beforeEach(function() {
+    User.destroy({where: { username: 'beth' }});
+    User.destroy({where: { username: 'kani' }});
+  });
+
   describe('POST /api/users/signup', function() {
 
-    beforeEach(function() {
-      User.destroy({where: { username: 'beth' }}).then(function () {});
-    });
-
-    it('should create a new user', function(done) {
+    it('should create a new user if it does not exist', function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'beth')
         .set('password', 'beth')
+        .expect(201)
         .expect(function() {
           User.findOne({ where: { 'username': 'beth' } })
             .then(function(user) {
@@ -32,28 +34,80 @@ describe ('Signup/Login for Users', function() {
         .end(done);
     });
 
-    it('should return a token after signup', function(done) {
+    it('should return a token if signup was successful', function(done) {
+      request(app)
+        .post('/api/users/signup')
+        .set('username', 'kani')
+        .set('password', 'kani')
+        .expect(201)
+        .expect(function(res) {
+          expect(res.body.token).to.exist;
+          expect(res.body.user).to.equal('kani');
+        })
+        .end(done);
+    });
+
+    it('should not let you create the same username', function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'beth')
         .set('password', 'beth')
+        .expect(201)
+        .expect(function(res) {
+          request(app)
+          .post('/api/users/signup')
+          .set('username', 'beth')
+          .set('password', '1234')
+          .expect(409)
+        })
+        .end(done);
+    });
+  });
+
+  describe('POST /api/users/login', function() {
+
+    beforeEach(function(done) {
+      request(app)
+        .post('/api/users/signup')
+        .set('username', 'beth')
+        .set('password', 'beth')
+        .expect(201)
+        .end(done)
+    });
+
+    it('should return a token if login is successful', function(done) {
+      request(app)
+        .post('/api/users/login')
+        .set('username', 'beth')
+        .set('password', 'beth')
+        .expect(200)
         .expect(function(res) {
           expect(res.body.token).to.exist;
           expect(res.body.user).to.equal('beth');
         })
         .end(done);
     })
-  });
 
-  describe('POST /api/users/login', function() {
-    it('should return a token and login the user', function(done) {
+    it('should return 401 "Authentication error" if password is wrong', function(done) {
       request(app)
         .post('/api/users/login')
         .set('username', 'beth')
-        .set('password', 'beth')
+        .set('password', '1234')
+        .expect(401)
         .expect(function(res) {
-          expect(res.body.token).to.exist;
-          expect(res.body.user).to.equal('beth');
+          expect(res.text).to.equal('Authentication error');
+        })
+        .end(done);
+    })
+
+    it('should return 401 "Authentication error" if user does not exist', function(done) {
+      request(app)
+        .post('/api/users/login')
+        .set('username', 'kani')
+        .set('password', 'kani')
+        .expect(401)
+        .expect(function(res) {
+          expect(res.text).to.equal('Authentication error');
         })
         .end(done);
     })
