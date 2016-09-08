@@ -283,7 +283,7 @@ module.exports = function(app, express) {
           var secret = 'teambsAThackreactor47';
           Utils.createToken(user, secret, function(token) {
             if ( token.token ) {
-              res.json(token);
+              res.status(201).send(token);
             } else {
               res.status(401).send('Token error');
             }
@@ -304,25 +304,30 @@ module.exports = function(app, express) {
       // Fetch the appropriate user, if they exist
 
       User.findOne({where: { username: req.headers.username }})
-      .then(function(user) { 
-        Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
-          if (err) {            
-            // bad password
-            res.status(401).send('Authentication error');
-          } else if (isMatch) {  
-            // has successfully authenticated, send a token
-            var secret = 'teambsAThackreactor47';
-            Utils.createToken(user, secret, function(token) {
-              if ( token.token ) {
-                res.json(token);
-              } else {
-                res.status(401).send('Token error');
-              }
-            });   
-          } else {            
-            res.status(401).send('Authentication error');
-          }
-        }); // comparePassword
+      .then(function(user) {
+        if(user) {
+          Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
+            if (err) {            
+              // bad password
+              res.status(401).send('Authentication error');
+            } else if (isMatch) {  
+              // has successfully authenticated, send a token
+              var secret = 'teambsAThackreactor47';
+              Utils.createToken(user, secret, function(token) {
+                if ( token.token ) {
+                  res.status(200).send(token);
+                } else {
+                  res.status(401).send('Token error');
+                }
+              });   
+            } else {            
+              res.status(401).send('Authentication error');
+            }
+          }); // comparePassword
+        }
+        else { // User does not exist in db.
+          res.status(401).send('Authentication error');
+        }
       }) // .then findOne
       .error(function(err) {   
         res.status(401).send('Authentication error');
