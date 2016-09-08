@@ -53,3 +53,12 @@
     padding:3%;
     background-color: #363636;
 }
+
+.angular-google-map {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+body {
+    text-align:center;
+}
