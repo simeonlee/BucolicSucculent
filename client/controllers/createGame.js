@@ -1,6 +1,6 @@
 angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
+.controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
 
   //check for JWT
   if (!isAuth) {
@@ -73,4 +73,4 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       sequence++; //<--- incrememnt sequence prop for next label
     });
   });
-})
+}])

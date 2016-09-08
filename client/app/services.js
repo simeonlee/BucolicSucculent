@@ -1,6 +1,6 @@
 angular.module('app.services', ['ngGeolocation'])
 
-.factory('Requests', function($http, $window) {
+.factory('Requests', ['$http', '$window', function($http, $window) {
   return {
     getGameData: function(path) {
       var params = {
@@ -42,8 +42,8 @@ angular.module('app.services', ['ngGeolocation'])
       });
     }
   };
-})
-.factory('Auth', function ($http, $location, $window) {
+}])
+.factory('Auth', ['$http', '$location', '$window',function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password
   // for a JWT from the server
@@ -98,4 +98,4 @@ angular.module('app.services', ['ngGeolocation'])
     isAuth: isAuth,
     signout: signout
   };
-});
+}]);

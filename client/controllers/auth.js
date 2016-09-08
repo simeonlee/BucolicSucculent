@@ -1,6 +1,6 @@
 angular.module('app.auth', [])
 
-.controller('AuthController', function( $window, $http, $scope, $location, Auth ) {
+.controller('AuthController', ['$window', '$http', '$scope', '$location', 'Auth', function( $window, $http, $scope, $location, Auth ) {
 
   $scope.login = function() {
     console.log($scope.user);
@@ -37,4 +37,4 @@ angular.module('app.auth', [])
       });
 
   };
-});
+}]);

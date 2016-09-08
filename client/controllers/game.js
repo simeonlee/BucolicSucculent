@@ -1,6 +1,6 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
-.controller('gameController', function($scope, data, $window, isAuth, $location) {
+.controller('gameController', ['$scope', 'data', '$window', 'isAuth', '$location', function($scope, data, $window, isAuth, $location) {
   //Check for JWT
   if (!isAuth) {
     $location.path('/login');
@@ -28,8 +28,8 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     zoom: 13
   };
 
-})
-.controller('gameMapController', function($scope, uiGmapGoogleMapApi, $geolocation, Requests) {
+}])
+.controller('gameMapController', ['$scope', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', function($scope, uiGmapGoogleMapApi, $geolocation, Requests) {
  
   //init map
   uiGmapGoogleMapApi.then(function(map) {
@@ -101,8 +101,8 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       $scope.locationError = true;
     }
   }
-})
-.controller('gameStatsController', function($scope) {
+}])
+.controller('gameStatsController', [function($scope) {
   //wishlist
 
-});
+}]);
