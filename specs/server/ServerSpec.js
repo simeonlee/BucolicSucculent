@@ -17,7 +17,7 @@ describe ('', function() {
     //     username: 'beth'
     //   }
     // });
-  })
+  });
 
   describe('POST /api/users/signup', function() {
     it('should create a user', function(done) {
@@ -25,26 +25,15 @@ describe ('', function() {
         .post('/api/users/signup')
         .set('username', 'beth')
         .set('password', 'beth')
-        .expect(function(){
+        .expect(function() {
           User.findOne({ where: { 'username': 'beth' } })
             .then(function(user) {
               expect(user.username).to.equal('beth');
             });
         })
         .end(done);
-    })
-
-  //   it('Successful signup logs in a new user', function(done) {
-  //     request(app)
-  //       .post('/api/users/signup')
-  //       .set('username', 'beth')
-  //       .set('password', 'beth')
-  //       .expect(function(res) {
-  //         expect(res.headers.location).to.equal('/#/createGame');
-  //       })
-  //       .end(done);
-  //   })
-  })
+    });
+  });
 
   // describe('POST /api/users/login', function() {
   //   it('should login a user', function(done) {
@@ -52,4 +41,4 @@ describe ('', function() {
   //   })
   // })
 
-})
+});
