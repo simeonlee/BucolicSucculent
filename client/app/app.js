@@ -61,29 +61,11 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- configure map... should live serverside
         libraries: 'drawing,geometry,visualization'
     });
-  $httpProvider.interceptors.push('AttachTokens');
-})
-.factory('AttachTokens', function ($window) {
-  // this is an $httpInterceptor
-  // its job is to stop all out going request
-  // then look in local storage and find the user's token
-  // then add it to the header so the server can validate the request
-  var attach = {
-    request: function (object) {
-      var jwt = $window.localStorage.getItem('token');
-      if (jwt) {
-        object.headers['x-access-token'] = jwt;
-      }
-      object.headers['Allow-Control-Allow-Origin'] = '*';
-      return object;
-    }
-  };
-  return attach;
 })
 .run(function ($rootScope, $location, Auth) {
 
-  // $rootScope.host = 'localhost';
-  $rootScope.host = '138.68.53.22';
+  $rootScope.host = '127.0.0.1';
+  //$rootScope.host = '138.68.53.22';
 
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready

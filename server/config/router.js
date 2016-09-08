@@ -11,7 +11,8 @@ var jwt = require('jwt-simple');
 module.exports = function(app, express) {
 
   var requireAuth = function(req, res, next) {
-    if (!req.body.username && !req.query.username) {
+    //jwt adds user struct to req - if not there user was not validated
+    if (!req.user.username) {
       res.end('Not authorized', 401);
     } else {
       next();
@@ -19,120 +20,116 @@ module.exports = function(app, express) {
   }
 
   app.get('/api/game', jwtauth, requireAuth, function(req, res) {
+    if (req.query.path) {
+      // do a query for gameId and username
+      // return game info for username
 
-    // console.log(req.query);
-    if (req.query.username) {
-      if (req.query.path) {
-        // do a query for gameId and username
-        // return game info for username
-
-        //Looks in usergame table to see if player is in game
-        Game.findOne({
-          where: {path: req.query.path},
-          include: [{
-            model: User,
-            where: { username: req.query.username },
-          }]
-        }).then(function (gameFound) {
-          //if the user was not in the game, have player join the game
-          if (!gameFound) {
-            // function (User, req.query.username) 
-            User.findOne({
-              where: { username: req.query.username }
+      //Looks in usergame table to see if player is in game
+      Game.findOne({
+        where: {path: req.query.path},
+        include: [{
+          model: User,
+          where: { username: req.user.username },
+        }]
+      }).then(function (gameFound) {
+        //if the user was not in the game, have player join the game
+        if (!gameFound) {
+          // function (User, req.query.username) 
+          User.findOne({
+            where: { username: req.user.username }
+          })
+          .then( function (currentUser) {
+            Game.findOne({
+              where: { path: req.query.path }
             })
-            .then( function (currentUser) {
-              Game.findOne({
-                where: { path: req.query.path }
-              })
-              .then(function (currentGame) {
-                var gameId = currentGame.id;
-                if (currentGame) {
-                  //Adds to the usergame relation table
-                  currentUser.addGame(currentGame);
-                  console.log('Joined the game');
+            .then(function (currentGame) {
+              var gameId = currentGame.id;
+              if (currentGame) {
+                //Adds to the usergame relation table
+                currentUser.addGame(currentGame);
+                console.log('Joined the game');
 
-                  // Find all locations of the Game
-                  Location.findAll({
-                    include: [{
-                      model: Game,
-                      where: {id: gameId}
-                    }]
-                  })
-                  .then( function (allLoc) {
-                    //force async of creation of locations for user
-                    var asyncCounter = 0;
-                    //For each location of each game, create a status row linked to both and set default status to false
-                    allLoc.forEach(function (eachLoc) {
-                      currentUser.addLocation(eachLoc)
-                      .then( function (elem) {
-                        Status.update({ status: false },
-                        { where: {
-                          locationId: elem[0][0].dataValues.locationId,
-                          userId: elem[0][0].dataValues.userId,
-                        }}).then(function() {
-                          asyncCounter++;
-                          if (asyncCounter === allLoc.length) {
-                            User.findOne({
-                              attributes: [],
+                // Find all locations of the Game
+                Location.findAll({
+                  include: [{
+                    model: Game,
+                    where: {id: gameId}
+                  }]
+                })
+                .then( function (allLoc) {
+                  //force async of creation of locations for user
+                  var asyncCounter = 0;
+                  //For each location of each game, create a status row linked to both and set default status to false
+                  allLoc.forEach(function (eachLoc) {
+                    currentUser.addLocation(eachLoc)
+                    .then( function (elem) {
+                      Status.update({ status: false },
+                      { where: {
+                        locationId: elem[0][0].dataValues.locationId,
+                        userId: elem[0][0].dataValues.userId,
+                      }}).then(function() {
+                        asyncCounter++;
+                        if (asyncCounter === allLoc.length) {
+                          User.findOne({
+                            attributes: [],
+                            where: {
+                              username: req.user.username
+                            },
+                            include: [{
+                              model: Location,
                               where: {
-                                username: req.query.username
-                              },
-                              include: [{
-                                model: Location,
-                                where: {
-                                  gameId: gameId
-                                }
-                              }]
-                            }).then(function(result) {
-                              res.send(result);
-                            });
-                          }
-                        });
+                                gameId: gameId
+                              }
+                            }]
+                          }).then(function(result) {
+                            res.send(result);
+                          });
+                        }
                       });
                     });
                   });
-                }
-              });
+                });
+              }
             });
-            // if (!gameFound)
-          } else {
-            
-            User.findOne({
-              attributes: [],
+          });
+          // if (!gameFound)
+        } else {
+          
+          User.findOne({
+            attributes: [],
+            where: {
+              username: req.user.username
+            },
+            include: [{
+              model: Location,
               where: {
-                username: req.query.username
-              },
-              include: [{
-                model: Location,
-                where: {
-                  gameId: gameFound.id
-                }
-              }]
-            }).then(function(result) {
-              res.send(result);
-            });
-          }
+                gameId: gameFound.id
+              }
+            }]
+          }).then(function(result) {
+            res.send(result);
+          });
+        }
 
-        });
-      } else {  
-        Game.findAll({
-          include: [{
-            model: User,
-            where: { username: req.query.username },
-          }],
-          raw: true
-        }).then(function(allGames) {
-          res.send(allGames);
-        });
+      });
+    } else {  
+      Game.findAll({
+        include: [{
+          model: User,
+          where: { username: req.user.username },
+        }],
+        raw: true
+      }).then(function(allGames) {
+        res.send(allGames);
+      });
 
-      }
     }
   });
 
   app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     User.findOne({
       where: {
-        username: req.body.username
+        username: req.user.username
       }
     })
     .then(function (currentUser) {
@@ -163,9 +160,8 @@ module.exports = function(app, express) {
   //    {latitude: 2, longitude: 4.21412412, sequence: 2},
   //    {latitude: 2, longitude: 4, sequence: 3} ] }
 
-    var creator = req.body.username;
+    var creator = req.user.username;
     //somehow we create the code;
-    console.log(req.body, 'ehsdlfkjs');
     var pathUrl = md5(JSON.stringify(req.body))
     // increment pathUrl
     //var pathUrl = 'somethingelse';
@@ -272,8 +268,7 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/users/signup', function(req, res) {
-    //Must be application/json content type;
-    console.log('signup username:', req.headers.username, 'password:',req.headers.password); 
+
     if (req.headers.username && req.headers.password) {   
        var user = {
         username : req.headers.username.toLowerCase(),
@@ -284,12 +279,10 @@ module.exports = function(app, express) {
       Utils.encryptPassword(user, function(err, user) {
          User.create(user)
         .then(function(user, created) {
-          //console.log('back from createOne created: ', created, ' user: ', user[0].dataValues);
           // create token and return
           var secret = 'teambsAThackreactor47';
           Utils.createToken(user, secret, function(token) {
             if ( token.token ) {
-              console.log(token, 'thistoken')
               res.json(token);
             } else {
               res.status(401).send('Token error');
@@ -313,7 +306,6 @@ module.exports = function(app, express) {
       User.findOne({where: { username: req.headers.username }})
       .then(function(user) { 
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
-          console.log('compare passwords back err ' + err + ' isMatch ' + isMatch);
           if (err) {            
             // bad password
             res.status(401).send('Authentication error');
@@ -332,8 +324,7 @@ module.exports = function(app, express) {
           }
         }); // comparePassword
       }) // .then findOne
-      .error(function(err) { 
-        console.log('send auth error');  
+      .error(function(err) {   
         res.status(401).send('Authentication error');
       }); // .error findOne
     } else {
