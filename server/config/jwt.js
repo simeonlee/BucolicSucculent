@@ -6,7 +6,6 @@ module.exports = function(req, res, next){
   var parsed_url = url.parse(req.url, true)
   // token is passed in the x-access-token header
   var token = req.headers["x-access-token"];
-  console.log('TOKEN', token);
 
   if (token) {
     var decoded = jwt.decode(token, 'teambsAThackreactor47')
