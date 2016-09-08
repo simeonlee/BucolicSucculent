@@ -2,7 +2,7 @@
 angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game'])
 
 
-.config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $httpProvider)  {
+.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $httpProvider)  {
 
     $urlRouterProvider.otherwise('/login'); // <-------------- default view TODO: SET TO DASHBOARD!
 
@@ -61,8 +61,8 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- configure map... should live serverside
         libraries: 'drawing,geometry,visualization'
     });
-})
-.run(function ($rootScope, $location, Auth) {
+}])
+.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
 
   $rootScope.host = '127.0.0.1';
   //$rootScope.host = '138.68.53.22';
@@ -79,4 +79,4 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       $location.path('/login');
     }
   });
-});
+}]);
