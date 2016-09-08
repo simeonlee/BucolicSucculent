@@ -7,6 +7,8 @@ angular.module('app.services', ['ngGeolocation'])
         username: $window.localStorage.getItem('user'), 
         path: path
       }
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
       return $http({
         method: 'GET',
         url: '/api/game',  
@@ -18,6 +20,8 @@ angular.module('app.services', ['ngGeolocation'])
         username: user,
         markers: markers, 
       }
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
       return $http({
         method: 'POST',
         url: '/api/game/create',
@@ -29,6 +33,8 @@ angular.module('app.services', ['ngGeolocation'])
         username: user,
         locationId: loc
       };
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
       return $http({
         method: 'PUT',
         url: '/api/game',
