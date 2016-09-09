@@ -284,6 +284,21 @@ var returnGamesforUser = function(req, res) {
   });
 }
 
+/****** Example data for returnGamesforUser *****/
+// {
+//   "username": "beth",
+//   "games": [
+//     {
+//       "id": 14,
+//       "path": "9ef63"
+//     },
+//     {
+//       "id": 15,
+//       "path": "3ece8"
+//     }
+//   ]
+// }
+
 var returnOtherPlayers = function(req, res) {
   User.findAll({
     attributes: ['username'],
