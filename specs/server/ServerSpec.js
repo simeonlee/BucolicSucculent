@@ -12,12 +12,17 @@ var User = require('../../server/config/db-config').User;
 
 describe ('Signup/Login for Users', function() {
 
-  beforeEach(function() {
-    User.destroy({where: { username: 'beth' }});
-    User.destroy({where: { username: 'kani' }});
-  });
+  describe('POST request /api/users/signup', function() {
 
-  describe('POST /api/users/signup', function() {
+    beforeEach(function() {
+      User.destroy({where: { username: 'beth' }});
+      User.destroy({where: { username: 'kani' }});
+    });
+
+    after(function() {
+      User.destroy({where: { username: 'beth' }});
+      User.destroy({where: { username: 'kani' }});
+    });
 
     it('should create a new user if it does not exist', function(done) {
       request(app)
@@ -66,13 +71,17 @@ describe ('Signup/Login for Users', function() {
 
   describe('POST /api/users/login', function() {
 
-    beforeEach(function(done) {
+    before(function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'beth')
         .set('password', 'beth')
         .expect(201)
         .end(done)
+    });
+
+    after(function() {
+      User.destroy({where: { username: 'beth' }});
     });
 
     it('should return a token if login is successful', function(done) {
