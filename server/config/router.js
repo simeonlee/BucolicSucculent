@@ -54,9 +54,29 @@ module.exports = function(app, express) {
         }).then(function(allGames) {
           res.send(allGames);
         });
+      } else {
+        User.findAll({
+          attributes: ['username'],
+          include: [
+            {
+              model: Location,
+              attributes: ['latitude', 'longitude'],
+            },
+            {
+              model: Game,
+              attributes: [],
+              where: {
+                path: req.query.path
+            }
+          }],
+          raw: true
+        }).then(function(allGames) {
+          res.send(allGames);
+          });
+        }
       }
     }
-  });
+  );
 
   app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     User.findOne({
