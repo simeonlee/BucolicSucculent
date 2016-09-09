@@ -7,7 +7,7 @@ var app = express();
 //hi
 app.use(bodyParser.json());
 var parser = bodyParser.json();
-app.use(express.static('./client'));
+app.use(express.static('./dist'));
 
 // initialize tokens
 app.set('jwtTokenSecret', 'teambsAThackreactor47');

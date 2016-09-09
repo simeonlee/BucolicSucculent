@@ -8,13 +8,13 @@ angular.module('app.auth', [])
     Auth.login($scope.user)
       .then(function (token) {
         if (token) {
-          $window.localStorage.setItem('token', token)
+          $window.localStorage.setItem('token', token);
           //set in in http default headers for automatic inclusion
           $http.defaults.headers.common['x-access-token'] = token;
           var redir = $window.localStorage.getItem('redir');
           if(redir) {
             $window.localStorage.removeItem('redir');
-            $location.path(redir)
+            $location.path(redir);
           } else {
             $location.path('/createGame');
           }
@@ -31,14 +31,14 @@ angular.module('app.auth', [])
     Auth.signup($scope.user)
       .then(function (token) {
         if (token) {
-          $window.localStorage.setItem('token', token)
+          $window.localStorage.setItem('token', token);
           console.log(token, 'thistoke');
           // set in in http default headers for automatic inclusion
           $http.defaults.headers.common['x-access-token'] = token;
           var redir = $window.localStorage.getItem('redir');
           if(redir) {
             $window.localStorage.removeItem('redir');
-            $location.path(redir)
+            $location.path(redir);
           } else {
             $location.path('/createGame');
           }

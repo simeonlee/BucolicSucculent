@@ -9,7 +9,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   }
 
   //Get user and markers data
-  $scope.user = $window.localStorage.getItem('user')
+  $scope.user = $window.localStorage.getItem('user');
   $scope.markers = data;
 
     // $scope.players = res.data.players; //<----------------- wishlist
@@ -20,7 +20,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     $scope.markers[ind].options = {
       label: label
     };
-  })
+  });
   
   $scope.map = { 
     center: { 
@@ -36,7 +36,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   //init map
   uiGmapGoogleMapApi.then(function(map) {
     // post rendering tasks....
-  })
+  });
   
   //create position on map
   var createMyPosition = function() {$geolocation.watchPosition({
@@ -44,7 +44,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
         maximumAge: 250,
         enableHighAccuracy: true
     });
-  }
+  };
 
   createMyPosition();
   //watch for position change
@@ -69,7 +69,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
       // create gmap latLng object for calculating distance
       $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
-  })
+  });
 
 
   $scope.validateLocation = function(locationId) { 
@@ -91,7 +91,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
               // adjust local location data
               location.statuses.status = true;
               $scope.verifyFailed = false;
-            }) 
+            }); 
           } else {
             // location not close enough... display notification
             $scope.verifyFailed = true;     
@@ -102,7 +102,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       createMyPosition();
       $scope.locationError = true;
     }
-  }
+  };
 }])
 .controller('gameStatsController', [function($scope) {
   //wishlist

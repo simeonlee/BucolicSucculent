@@ -41,7 +41,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
               return [];
             }
             return Requests.getGameData($stateParams.path).then(function(res) {
-              console.log(res.data) 
+              console.log(res.data);
               return res.data.locations;
             }); 
           }
@@ -68,8 +68,8 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 }])
 .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
 
-  $rootScope.host = '127.0.0.1';
-  //$rootScope.host = '138.68.53.22';
+  // $rootScope.host = '127.0.0.1';
+  // //$rootScope.host = '138.68.53.22';
 
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
@@ -80,7 +80,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
   // if it's not valid, we then redirect back to signin/signup
   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
-      console.log('routchangeredirect')
+      console.log('routchangeredirect');
       $location.path('/login');
     }
   });

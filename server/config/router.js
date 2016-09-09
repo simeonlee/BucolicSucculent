@@ -7,6 +7,7 @@ var express = require('express');
 var jwtauth = require('./jwt');
 var md5 = require('md5');
 var jwt = require('jwt-simple');
+var app = require('../server')
 
 module.exports = function(app, express) {
 
@@ -112,7 +113,10 @@ module.exports = function(app, express) {
         game.setCreator(currentUser)
         .then(function(){
           // when finished, send back the pathUrl
-          res.send(pathUrl);
+          var env = app.get('env')
+          var host = env === 'development' ? '127.0.0.1' : '138.68.53.22';
+          var fullUrl = 'http://' + host + ':4200/#/game/' + pathUrl + '/map';
+          res.send(fullUrl);
         })
       });
     });
