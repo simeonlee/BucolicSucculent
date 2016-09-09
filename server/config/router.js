@@ -165,7 +165,7 @@ module.exports = function(app, express) {
     var creator = req.user.username;
 
     // generate pathUrl Hash
-    var pathUrl = md5(JSON.stringify(req.body))
+    var pathUrl = md5(JSON.stringify(req.body)).slice(0,5)
 
     var locations = req.body.markers;
 
