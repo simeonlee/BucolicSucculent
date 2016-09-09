@@ -24,7 +24,7 @@ Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
 User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
 
 // Might not like the double-relationship
-// Game.belongsTo(User, {as: 'creatorId'});
+Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator'});
 
 Location.belongsTo(Game);
 Game.hasMany(Location); // needed?
