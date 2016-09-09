@@ -19,8 +19,8 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) { // for production with authentication
-  // app.get('/api/game', function(req, res) { // bypass auth for testing with postman
+  // app.get('/api/game', jwtauth, requireAuth, function(req, res) { // for production with authentication
+  app.get('/api/game', function(req, res) { // bypass auth for testing with postman
 
     // do a query for pathUrl and username
     // return the game info for username
@@ -82,7 +82,8 @@ module.exports = function(app, express) {
     })
   });
 
-  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
+  // app.post('/api/game/create', jwtauth, requireAuth, function (req, res) { // for production with authentication
+  app.post('/api/game/create', function (req, res) { // bypass auth for testing with postman
 
     // Example Data Structure
     // { 'username': 'beth',
@@ -93,7 +94,8 @@ module.exports = function(app, express) {
     //     { latitude: 7.89, longitude: 8.90, sequence: 4} ]
     // };
 
-    var creator = req.user.username;
+    // var creator = req.user.username; // for production with authentication
+    var creator = req.body.username; // bypass auth for testing with postman
 
     // generate pathUrl Hash
     var pathUrl = md5(JSON.stringify(req.body)).slice(0,5)
@@ -192,63 +194,109 @@ module.exports = function(app, express) {
 };
 
 var generateStatuses = function(req, res) {
+
   User.findOne({
-    where: { username: req.query.username }
-  })
-  .then( function (currentUser) {
+    where: {
+      username: req.query.username
+    }
+  }).then(function(currentUser) {
     Game.findOne({
       where: { path: req.query.path }
     })
-    .then(function (currentGame) {
-      var gameId = currentGame.id;
+    .then(function(currentGame){
       if (currentGame) {
-        //Adds to the usergame relation table
         currentUser.addGame(currentGame);
-        console.log('Joined the game');
-
-        // Find all locations of the Game
         Location.findAll({
-          include: [{
+          include: {
             model: Game,
-            where: {id: gameId}
-          }]
+            attributes: [],
+            where: { path: req.query.path },
+          }
+        }).then(function(allLocs) {
+          currentUser.addLocations(allLocs, {
+            status: false
+          })
+          .then(function() {
+            returnStatuses(req, res, currentGame);
+          })
         })
-        .then( function (allLoc) {
-          //force async of creation of locations for user
-          var asyncCounter = 0;
-          //For each location of each game, create a status row linked to both and set default status to false
-          allLoc.forEach(function (eachLoc) {
-            currentUser.addLocation(eachLoc)
-            .then( function (elem) {
-              Status.update({ status: false },
-              { where: {
-                locationId: elem[0][0].dataValues.locationId,
-                userId: elem[0][0].dataValues.userId,
-              }}).then(function() {
-                asyncCounter++;
-                if (asyncCounter === allLoc.length) {
-                  User.findOne({
-                    attributes: [],
-                    where: {
-                      username: req.query.username
-                    },
-                    include: [{
-                      model: Location,
-                      where: {
-                        gameId: gameId
-                      }
-                    }]
-                  }).then(function(result) {
-                    res.send(result);
-                  });
-                }
-              });
-            });
-          });
-        });
       }
-    });
-  });
+    })
+  })
+  // .then(function(currentGame) {
+
+  //   if(currentGame) {
+  //     currentUser.addGame(currentGame);
+  //     Location.findAll({
+  //       include: [{
+  //         model: Game,
+  //         where: { id: currentGame.id }
+  //       }]
+  //     })
+  //     .then(function(result) {
+  //       res.send(result);
+  //     })
+  //   }
+
+  // });
+
+  // User.findOne({
+  //   where: { username: req.query.username }
+  // })
+  // .then( function (currentUser) {
+  //   Game.findOne({
+  //     where: { path: req.query.path }
+  //   })
+  //   .then(function (currentGame) {
+  //     var gameId = currentGame.id;
+  //     if (currentGame) {
+  //       //Adds to the usergame relation table
+  //       currentUser.addGame(currentGame);
+  //       console.log('Joined the game');
+
+  //       // Find all locations of the Game
+  //       Location.findAll({
+  //         include: [{
+  //           model: Game,
+  //           where: {id: gameId}
+  //         }]
+  //       })
+  //       .then( function (allLoc) {
+  //         //force async of creation of locations for user
+  //         var asyncCounter = 0;
+  //         //For each location of each game, create a status row linked to both and set default status to false
+  //         allLoc.forEach(function (eachLoc) {
+  //           currentUser.addLocation(eachLoc)
+  //           .then( function (elem) {
+  //             Status.update({ status: false },
+  //             { where: {
+  //               locationId: elem[0][0].dataValues.locationId,
+  //               userId: elem[0][0].dataValues.userId,
+  //             }}).then(function() {
+  //               asyncCounter++;
+  //               if (asyncCounter === allLoc.length) {
+  //                 User.findOne({
+  //                   attributes: [],
+  //                   where: {
+  //                     username: req.query.username
+  //                   },
+  //                   include: [{
+  //                     model: Location,
+  //                     where: {
+  //                       gameId: gameId
+  //                     }
+  //                   }]
+  //                 }).then(function(result) {
+  //                   res.send(result);
+  //                 });
+  //               }
+  //             });
+  //           });
+  //         });
+  //       });
+  //     }
+  //   });
+  // });
 };
 
 var returnStatuses = function(req, res, gameFound) {
