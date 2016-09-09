@@ -286,20 +286,66 @@ var returnGamesforUser = function(req, res) {
 var returnOtherPlayers = function(req, res) {
   User.findAll({
     attributes: ['username'],
-    include: [
-      {
-        model: Location,
-        attributes: ['latitude', 'longitude'],
-      },
-      {
+    include: [{
+      model: Location,
+      through: {attributes: ['status']},
+      attributes: ['sequence', 'latitude', 'longitude'],
+      include: [{
         model: Game,
         attributes: [],
         where: {
           path: req.query.path
-      }
+        }
+      }]
     }],
-    raw: true
-  }).then(function(allGames) {
-    res.send(allGames);
+    order: [['username', 'ASC'], [Location, 'sequence', 'ASC']],
+  }).then(function(allPlayers) {
+    res.send(allPlayers);
   });
 };
+
+/****** Example data for returnOtherPlayers *****/
+// [
+//   {
+//     "username": "beth",
+//     "locations": [
+//       {
+//         "sequence": 1,
+//         "latitude": 37.78631777032694,
+//         "longitude": -122.42096275091171,
+//         "statuses": {
+//           "status": true
+//         }
+//       },
+//       {
+//         "sequence": 2,
+//         "latitude": 37.778991539440696,
+//         "longitude": -122.44156211614609,
+//         "statuses": {
+//           "status": false
+//         }
+//       }
+//     ]
+//   },
+//   {
+//     "username": "derek",
+//     "locations": [
+//       {
+//         "sequence": 1,
+//         "latitude": 37.78631777032694,
+//         "longitude": -122.42096275091171,
+//         "statuses": {
+//           "status": false
+//         }
+//       },
+//       {
+//         "sequence": 2,
+//         "latitude": 37.778991539440696,
+//         "longitude": -122.44156211614609,
+//         "statuses": {
+//           "status": true
+//         }
+//       }
+//     ]
+//   }
+// ]
