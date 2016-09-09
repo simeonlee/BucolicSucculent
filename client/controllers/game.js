@@ -3,6 +3,8 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 .controller('gameController', ['$scope', 'data', '$window', 'isAuth', '$location', function($scope, data, $window, isAuth, $location) {
   //Check for JWT
   if (!isAuth) {
+    var redir = $location.$$path;
+    $window.localStorage.setItem('redir', redir);
     $location.path('/login');
   }
 
