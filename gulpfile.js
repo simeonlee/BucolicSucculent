@@ -8,6 +8,7 @@ var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var mainBowerFiles = require('gulp-main-bower-files');
 var ngAnnotate = require('gulp-ng-annotate');
+var shell = require('gulp-shell');
 
 gulp.task('nodemon', function() {
   nodemon({
@@ -93,6 +94,6 @@ gulp.task('prodStart', function() {
   runSequence(
     'set-prod',
     'build',
-    'nodemon'
+    'forever'
   );
 });
