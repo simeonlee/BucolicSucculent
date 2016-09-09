@@ -78,10 +78,7 @@ module.exports = function(app, express) {
           res.send(result);
         });
       });
-
     })
-    // res.send('This is the POST for /game');
-
   });
 
   app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
