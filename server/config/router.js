@@ -20,10 +20,11 @@ module.exports = function(app, express) {
   }
 
   app.get('/api/game', jwtauth, requireAuth, function(req, res) {
-    if (req.query.path) {
-      // do a query for gameId and username
-      // return game info for username
+    
+    // do a query for gameId and username
+    // return game info for username
 
+    if (req.query.path) {
       //Looks in usergame table to see if player is in game
       Game.findOne({
         where: {path: req.query.path},
