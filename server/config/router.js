@@ -83,7 +83,7 @@ module.exports = function(app, express) {
   // app.post('/api/game/create', function (req, res) {                     // bypass auth for testing with postman
 
     // Example Data Structure
-    // { 'username': 'beth',
+    // { 
     //   'markers': [
     //     { latitude: 1.23, longitude: 2.34, sequence: 1},
     //     { latitude: 3.45, longitude: 4.56, sequence: 2},
