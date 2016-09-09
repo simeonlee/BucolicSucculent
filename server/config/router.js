@@ -55,28 +55,10 @@ module.exports = function(app, express) {
           res.send(allGames);
         });
       } else {
-        User.findAll({
-          attributes: ['username'],
-          include: [
-            {
-              model: Location,
-              attributes: ['latitude', 'longitude'],
-            },
-            {
-              model: Game,
-              attributes: [],
-              where: {
-                path: req.query.path
-            }
-          }],
-          raw: true
-        }).then(function(allGames) {
-          res.send(allGames);
-          });
-        }
+        returnOtherPlayers(req, res);
       }
     }
-  );
+  });
 
   app.put('/api/game', jwtauth, requireAuth, function (req, res) {
     User.findOne({
@@ -286,5 +268,26 @@ var returnStatuses = function(req, res, gameFound) {
     }]
   }).then(function(result) {
     res.send(result);
+  });
+};
+
+var returnOtherPlayers = function(req, res) {
+  User.findAll({
+    attributes: ['username'],
+    include: [
+      {
+        model: Location,
+        attributes: ['latitude', 'longitude'],
+      },
+      {
+        model: Game,
+        attributes: [],
+        where: {
+          path: req.query.path
+      }
+    }],
+    raw: true
+  }).then(function(allGames) {
+    res.send(allGames);
   });
 };
