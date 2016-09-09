@@ -35,63 +35,7 @@ module.exports = function(app, express) {
         //if the user was not in the game, have player join the game
         if (!gameFound) {
           // function (User, req.query.username) 
-          User.findOne({
-            where: { username: req.user.username }
-          })
-          .then( function (currentUser) {
-            Game.findOne({
-              where: { path: req.query.path }
-            })
-            .then(function (currentGame) {
-              var gameId = currentGame.id;
-              if (currentGame) {
-                //Adds to the usergame relation table
-                currentUser.addGame(currentGame);
-                console.log('Joined the game');
-
-                // Find all locations of the Game
-                Location.findAll({
-                  include: [{
-                    model: Game,
-                    where: {id: gameId}
-                  }]
-                })
-                .then( function (allLoc) {
-                  //force async of creation of locations for user
-                  var asyncCounter = 0;
-                  //For each location of each game, create a status row linked to both and set default status to false
-                  allLoc.forEach(function (eachLoc) {
-                    currentUser.addLocation(eachLoc)
-                    .then( function (elem) {
-                      Status.update({ status: false },
-                      { where: {
-                        locationId: elem[0][0].dataValues.locationId,
-                        userId: elem[0][0].dataValues.userId,
-                      }}).then(function() {
-                        asyncCounter++;
-                        if (asyncCounter === allLoc.length) {
-                          User.findOne({
-                            attributes: [],
-                            where: {
-                              username: req.user.username
-                            },
-                            include: [{
-                              model: Location,
-                              where: {
-                                gameId: gameId
-                              }
-                            }]
-                          }).then(function(result) {
-                            res.send(result);
-                          });
-                        }
-                      });
-                    });
-                  });
-                });
-              }
-            });
-          });
+          generateStatuses(req, res);
           // if (!gameFound)
         } else {
           
@@ -259,3 +203,63 @@ module.exports = function(app, express) {
     }
   });
 };
+
+var generateStatuses = function(req, res) {
+  User.findOne({
+    where: { username: req.user.username }
+  })
+  .then( function (currentUser) {
+    Game.findOne({
+      where: { path: req.query.path }
+    })
+    .then(function (currentGame) {
+      var gameId = currentGame.id;
+      if (currentGame) {
+        //Adds to the usergame relation table
+        currentUser.addGame(currentGame);
+        console.log('Joined the game');
+
+        // Find all locations of the Game
+        Location.findAll({
+          include: [{
+            model: Game,
+            where: {id: gameId}
+          }]
+        })
+        .then( function (allLoc) {
+          //force async of creation of locations for user
+          var asyncCounter = 0;
+          //For each location of each game, create a status row linked to both and set default status to false
+          allLoc.forEach(function (eachLoc) {
+            currentUser.addLocation(eachLoc)
+            .then( function (elem) {
+              Status.update({ status: false },
+              { where: {
+                locationId: elem[0][0].dataValues.locationId,
+                userId: elem[0][0].dataValues.userId,
+              }}).then(function() {
+                asyncCounter++;
+                if (asyncCounter === allLoc.length) {
+                  User.findOne({
+                    attributes: [],
+                    where: {
+                      username: req.user.username
+                    },
+                    include: [{
+                      model: Location,
+                      where: {
+                        gameId: gameId
+                      }
+                    }]
+                  }).then(function(result) {
+                    res.send(result);
+                  });
+                }
+              });
+            });
+          });
+        });
+      }
+    });
+  });
+}
