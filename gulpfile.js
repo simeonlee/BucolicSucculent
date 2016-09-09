@@ -9,6 +9,7 @@ var runSequence = require('run-sequence');
 var mainBowerFiles = require('gulp-main-bower-files');
 var ngAnnotate = require('gulp-ng-annotate');
 var shell = require('gulp-shell');
+var watch = require('gulp-watch');
 
 gulp.task('nodemon', function() {
   nodemon({
@@ -35,12 +36,14 @@ gulp.task('clean', function() {
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
   gulp.src(['./client/**/*.css', '!./client/lib/**'])
+    .pipe(watch(['./client/**/*.css', '!./client/lib/**']))
     .pipe(minifyCSS(opts))
     .pipe(gulp.dest('./dist/'))
 });
 
 gulp.task('minify-js', function() {
   gulp.src(['./client/**/*.js', '!./client/lib/**'])
+    .pipe(watch(['./client/**/*.js', '!./client/lib/**']))
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('./dist/'))
@@ -48,6 +51,7 @@ gulp.task('minify-js', function() {
 
 gulp.task('bower-files', function(){
     return gulp.src('./bower.json')
+        .pipe(watch('./bower.json'))
         .pipe(mainBowerFiles( ))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/lib'));
@@ -55,6 +59,7 @@ gulp.task('bower-files', function(){
 
 gulp.task('copy-html-files', function () {
   gulp.src('./client/**/*.html')
+    .pipe(watch('./client/**/*.html'))
     .pipe(gulp.dest('dist/'));
 });
 
@@ -73,6 +78,8 @@ gulp.task('forever', shell.task([
 gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
+
+gulp.task('watch')
  
 gulp.task('default', ['lint', 'nodemon']);
 
@@ -86,6 +93,7 @@ gulp.task('build', function() {
 gulp.task('devStart', function() {
   runSequence(
     'set-dev',
+    'build',
     'default'
   );
 });

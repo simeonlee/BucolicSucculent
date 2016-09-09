@@ -41,6 +41,7 @@
     "gulp-nodemon": "^2.1.0",
     "gulp-shell": "^0.5.2",
     "gulp-uglify": "^2.0.0",
+    "gulp-watch": "^4.3.9",
     "jasmine-core": "^2.5.0",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
