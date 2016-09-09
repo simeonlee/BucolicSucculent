@@ -19,7 +19,8 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
+  // app.get('/api/game', jwtauth, requireAuth, function(req, res) { // for production with authentication
+  app.get('/api/game', function(req, res) { // for testing with postman
 
     // do a query for pathUrl and username
     // return the game info for username
