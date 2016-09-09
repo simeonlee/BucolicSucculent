@@ -38,7 +38,7 @@ angular.module('app.auth', [])
           var redir = $window.localStorage.getItem('redir');
           if(redir) {
             $window.localStorage.removeItem('redir');
-            $location.path(redir)
+            $location.path(redir);
           } else {
             $location.path('/createGame');
           }
