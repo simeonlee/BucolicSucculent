@@ -216,55 +216,7 @@ module.exports = function(app, express) {
       // }
       });
     });
-
-
-    // {
-    //   map: {
-    //     center: {
-    //       latitude: 37.7836881, //<------- dummy data
-    //       longitude: -122.40904010000001
-    //     },
-    //     zoom: 13,
-    //     markers: [{
-    //       "id": 1,
-    //       "coords": {
-    //         "latitude": 37.76922210201123,
-    //         "longitude": -122.46047973632812
-    //       },
-    //       "options": {
-    //         "label": "Golden Gate Bridge",
-    //         "visible": true
-    //       }
-    //     }, {
-    //       "id": 2,
-    //       "coords": {
-    //         "latitude": 37.76392978442336,
-    //         "longitude": -122.43318557739258
-    //       },
-    //       "options": {
-    //         "label": "2",
-    //         "visible": true
-    //       }
-    //     }, {
-    //       "id": 3,
-    //       "coords": {
-    //         "latitude": 37.7897092979573,
-    //         "longitude": -122.40589141845703
-    //       },
-    //       "options": {
-    //         "label": "3",
-    //         "visible": true
-    //       }
-    //     }]
-    //   },
-    //   players: [{
-
-    //   }]
-    // }
-
-
     res.send(pathUrl);
-
   });
 
   app.post('/api/users/signup', function(req, res) {
