@@ -34,7 +34,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         resolve: {
           data: function($stateParams, Requests) {
             return Requests.getGameData($stateParams.path).then(function(res) {
-              console.log(res.data)
+              console.log(res.data) 
               return res.data.locations;
             }); 
           },
