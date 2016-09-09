@@ -3,7 +3,7 @@ angular.module('app.auth', [])
 .controller('AuthController', ['$window', '$http', '$scope', '$location', 'Auth', function( $window, $http, $scope, $location, Auth ) {
 
   $scope.login = function() {
-    console.log($scope.user);
+    // console.log($scope.user);
     // once we login, we have a token we need to store and use in subsequent calls
     Auth.login($scope.user)
       .then(function (token) {
