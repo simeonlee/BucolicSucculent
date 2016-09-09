@@ -152,7 +152,6 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
-    //This is when the creator makes a game and clicks create game
 
     // Example Data Structure
     // { 'username': 'beth',
@@ -164,11 +163,9 @@ module.exports = function(app, express) {
     // };
 
     var creator = req.user.username;
-    //somehow we create the code;
+
+    // generate pathUrl Hash
     var pathUrl = md5(JSON.stringify(req.body))
-    // increment pathUrl
-    //var pathUrl = 'somethingelse';
-    // hash it?
 
     var locations = req.body.markers;
 
