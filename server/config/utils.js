@@ -25,7 +25,6 @@ exports.encryptPassword = function(user, cb) {
 
 // compare to encrypted password
 exports.comparePassword = function(pwd, user, cb) {
-  // console.log('compare Password', pwd, 'to', user.password) <----throws and error if user is not in db
   bcrypt.compare(pwd, user.password, function(err, isMatch) {
     if (err) {
       return cb(err);
@@ -41,7 +40,6 @@ exports.findByUsername = function (username, cb) {
 
 exports.createToken = function (user, secret, cb) {
   // has successfully authenticated, send a token
-  // console.log('create token', user.dataValues.id, secret);
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode(
     {

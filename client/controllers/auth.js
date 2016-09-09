@@ -22,7 +22,6 @@ angular.module('app.auth', [])
       })
       .catch(function (error) {
         console.error(error);
-
       });
   };
 
@@ -32,7 +31,6 @@ angular.module('app.auth', [])
       .then(function (token) {
         if (token) {
           $window.localStorage.setItem('token', token);
-          console.log(token, 'thistoke');
           // set in in http default headers for automatic inclusion
           $http.defaults.headers.common['x-access-token'] = token;
           var redir = $window.localStorage.getItem('redir');
