@@ -233,9 +233,11 @@ var returnStatuses = function(req, res, gameFound) {
     },
     include: [{
       model: Location,
+      attributes: ['id', 'sequence', 'latitude', 'longitude'],
       where: {
         gameId: gameFound.id
-      }
+      },
+      through: { attributes: ['status']}
     }]
   }).then(function(result) {
     res.send(result);
@@ -250,15 +252,8 @@ var returnStatuses = function(req, res, gameFound) {
 //       "sequence": 1,
 //       "latitude": 1.243,
 //       "longitude": 2.334,
-//       "createdAt": "2016-09-09T07:50:52.000Z",
-//       "updatedAt": "2016-09-09T07:50:52.000Z",
-//       "gameId": 29,
 //       "statuses": {
 //         "status": false,
-//         "createdAt": "2016-09-09T07:51:00.000Z",
-//         "updatedAt": "2016-09-09T07:51:00.000Z",
-//         "locationId": 117,
-//         "userId": 2
 //       }
 //     },
 //     {
@@ -266,15 +261,9 @@ var returnStatuses = function(req, res, gameFound) {
 //       "sequence": 2,
 //       "latitude": 3.345,
 //       "longitude": 4.564,
-//       "createdAt": "2016-09-09T07:50:52.000Z",
-//       "updatedAt": "2016-09-09T07:50:52.000Z",
 //       "gameId": 29,
 //       "statuses": {
-//         "status": false,
-//         "createdAt": "2016-09-09T07:51:00.000Z",
-//         "updatedAt": "2016-09-09T07:51:00.000Z",
-//         "locationId": 118,
-//         "userId": 2
+//         "status": true,
 //       }
 //     }
 //   ]
