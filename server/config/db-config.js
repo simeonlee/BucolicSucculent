@@ -23,11 +23,10 @@ Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
 User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
 
-// Might not like the double-relationship
 Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator'});
 
 Location.belongsTo(Game);
-Game.hasMany(Location); // needed?
+Game.hasMany(Location);
 
 module.exports = {
   db: db,
