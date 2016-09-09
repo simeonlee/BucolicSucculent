@@ -271,13 +271,14 @@ var returnStatuses = function(req, res, gameFound) {
 };
 
 var returnGamesforUser = function(req, res) {
-  Game.findAll({
+  User.findOne({
+    attributes: ['username'],
+    where: { username: req.query.username },
     include: [{
-      attributes: [],
-      model: User,
-      where: { username: req.query.username },
-    }],
-    raw: true
+      model: Game,
+      through: {attributes: []},
+      attributes: ['id', 'path']
+    }]
   }).then(function(allGames) {
     res.send(allGames);
   });
