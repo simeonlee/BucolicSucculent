@@ -144,9 +144,24 @@ describe('New Game Creation', function() {
       .end(done)
   });
 
-  after(function() {
-    User.destroy({where: { username: 'beth' }});
-  })
+  after(function(done) {
+    Location.destroy({
+      where: {},
+      include: {
+        model: Game,
+        where: { path: pathUrl }
+      }
+    })
+    .then(function() {
+      Game.destroy({ where: { path: pathUrl } })
+      .then(function() {
+        User.destroy({ where: { username: 'beth' } })
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
 
   it('create a new game with valid credentials', function(done) {
     request(app)
