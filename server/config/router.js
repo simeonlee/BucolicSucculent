@@ -169,47 +169,18 @@ module.exports = function(app, express) {
 
     var locations = req.body.markers;
 
-    User.findOne({
-      where: {
-        username: creator
-      }
-    })
+    User.findOne({ where: { username: creator } })
     .then(function(currentUser) {
       Game.create({
         creatorId: currentUser.dataValues.id,
         path: pathUrl,
-        // Locations: [
-        //   {lat: 1.0, lng: 1.0, sequence: 1},
-        // ]
-      }
-      // , { include: [Location] } 
-
-      )
-      .then(function(currentGame) {
-        // currentUser.addGame(currentGame);
-        locations.forEach(function (elem) {
-          Location.create(elem)
-          .then(function(loc) {
-            loc.setGame(currentGame);
-          });
-        });
-        // Location.bulkCreate(locations)
-        // .then(function (arrLocations) {
-        //   console.log(arrLocations);
-        //   arrLocations.forEach(function (eachLoc) {
-        //     console.log(eachLoc);
-        //     eachLoc.setGame(currentGame);
-        //   });
-        // });
-      // iterate through locations(waypoints)
-      // for(var i = 0; i < locations.length; i++) {
-      //   Location.create({
-
-      //   })
-      // }
+        locations: locations
+      }, { include: [Location] })
+      .then(function(game) {
+      res.send(pathUrl);
       });
     });
-    res.send(pathUrl);
+
   });
 
   app.post('/api/users/signup', function(req, res) {
