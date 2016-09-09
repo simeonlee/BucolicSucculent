@@ -10,7 +10,7 @@ var Status = require('../../server/config/db-config').Status;
 var User = require('../../server/config/db-config').User;
 
 
-describe ('Signup/Login for Users', function() {
+xdescribe ('Signup/Login for Users', function() {
 
   describe('POST request /api/users/signup', function() {
 
@@ -123,4 +123,50 @@ describe ('Signup/Login for Users', function() {
         .end(done);
     })
   })
+});
+
+describe('New Game Creation', function() {
+
+  var token;
+  var user;
+  var pathUrl;
+
+  before(function(done) {
+    request(app)
+      .post('/api/users/signup')
+      .set('username', 'beth')
+      .set('password', 'beth')
+      .expect(201)
+      .expect(function(res) {
+        token = res.body.token;
+        user = res.body.user;
+      })
+      .end(done)
+  });
+
+  after(function() {
+    User.destroy({where: { username: 'beth' }});
+  })
+
+  it('create a new game with valid credentials', function(done) {
+    request(app)
+      .post('/api/game/create')
+      .set('username', user)
+      .set('X-ACCESS-TOKEN', token)
+      .send({
+        'markers': [
+          { latitude: 1.23, longitude: 2.34, sequence: 1},
+          { latitude: 3.45, longitude: 4.56, sequence: 2},
+          { latitude: 5.67, longitude: 6.78, sequence: 3},
+          { latitude: 7.89, longitude: 8.90, sequence: 4} ]
+      })
+      .expect(function(res) {
+        expect(res.text).to.exist;
+        expect(res.text.length).to.equal(5);
+        pathUrl = res.text;
+      })
+      .end(done);
+  });
+
+
 });
