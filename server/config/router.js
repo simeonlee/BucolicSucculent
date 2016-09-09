@@ -218,11 +218,11 @@ var generateStatuses = function(req, res) {
           })
           .then(function() {
             returnStatuses(req, res, currentGame);
-          })
-        })
+          });
+        });
       }
-    })
-  })
+    });
+  });
 };
 
 var returnStatuses = function(req, res, gameFound) {
@@ -241,6 +241,44 @@ var returnStatuses = function(req, res, gameFound) {
     res.send(result);
   });
 };
+
+/****** Example data for returnStatuses *****/
+// {
+//   "locations": [
+//     {
+//       "id": 117,
+//       "sequence": 1,
+//       "latitude": 1.243,
+//       "longitude": 2.334,
+//       "createdAt": "2016-09-09T07:50:52.000Z",
+//       "updatedAt": "2016-09-09T07:50:52.000Z",
+//       "gameId": 29,
+//       "statuses": {
+//         "status": false,
+//         "createdAt": "2016-09-09T07:51:00.000Z",
+//         "updatedAt": "2016-09-09T07:51:00.000Z",
+//         "locationId": 117,
+//         "userId": 2
+//       }
+//     },
+//     {
+//       "id": 118,
+//       "sequence": 2,
+//       "latitude": 3.345,
+//       "longitude": 4.564,
+//       "createdAt": "2016-09-09T07:50:52.000Z",
+//       "updatedAt": "2016-09-09T07:50:52.000Z",
+//       "gameId": 29,
+//       "statuses": {
+//         "status": false,
+//         "createdAt": "2016-09-09T07:51:00.000Z",
+//         "updatedAt": "2016-09-09T07:51:00.000Z",
+//         "locationId": 118,
+//         "userId": 2
+//       }
+//     }
+//   ]
+// }
 
 var returnGamesforUser = function(req, res) {
   User.findOne({
