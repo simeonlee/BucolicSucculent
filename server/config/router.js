@@ -19,8 +19,8 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) { // for production with authentication
-  // app.get('/api/game', function(req, res) { // bypass auth for testing with postman
+  app.get('/api/game', jwtauth, requireAuth, function(req, res) {   // for production with authentication
+  // app.get('/api/game', function(req, res) {                      // bypass auth for testing with postman
 
     // do a query for pathUrl and username
     // return the game info for username
@@ -60,8 +60,8 @@ module.exports = function(app, express) {
   });
 
   app.put('/api/game', jwtauth, requireAuth, function (req, res) {  // for production with authentication
-  // app.put('/api/game', function (req, res) {                     // bypass auth for testing with postman
     User.findOne({ where: { username: req.user.username } })        // for production with authentication
+  // app.put('/api/game', function (req, res) {                     // bypass auth for testing with postman
     // User.findOne({ where: { username: req.body.username } })     // bypass auth for testing with postman
     .then(function (currentUser) {
       Status.findOne({
@@ -79,8 +79,8 @@ module.exports = function(app, express) {
     })
   });
 
-  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) { // for production with authentication
-  // app.post('/api/game/create', function (req, res) { // bypass auth for testing with postman
+  app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {  // for production with authentication
+  // app.post('/api/game/create', function (req, res) {                     // bypass auth for testing with postman
 
     // Example Data Structure
     // { 'username': 'beth',
@@ -91,8 +91,8 @@ module.exports = function(app, express) {
     //     { latitude: 7.89, longitude: 8.90, sequence: 4} ]
     // };
 
-    var creator = req.user.username; // for production with authentication
-    // var creator = req.body.username; // bypass auth for testing with postman
+    var creator = req.user.username;                                        // for production with authentication
+    // var creator = req.body.username;                                     // bypass auth for testing with postman
 
     // generate pathUrl Hash
     var pathUrl = md5(JSON.stringify(req.body)).slice(0,5)
