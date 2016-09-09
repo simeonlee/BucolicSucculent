@@ -32,29 +32,12 @@ module.exports = function(app, express) {
           where: { username: req.user.username },
         }]
       }).then(function (gameFound) {
-        //if the user was not in the game, have player join the game
+        //if the user was not in the game, have player join the game and generate statuses
         if (!gameFound) {
-          // function (User, req.query.username) 
           generateStatuses(req, res);
-          // if (!gameFound)
         } else {
-          
-          User.findOne({
-            attributes: [],
-            where: {
-              username: req.user.username
-            },
-            include: [{
-              model: Location,
-              where: {
-                gameId: gameFound.id
-              }
-            }]
-          }).then(function(result) {
-            res.send(result);
-          });
+          returnStatuses(req, res, gameFound);
         }
-
       });
     } else {  
       Game.findAll({
@@ -262,4 +245,21 @@ var generateStatuses = function(req, res) {
       }
     });
   });
-}
+};
+
+var returnStatuses = function(req, res, gameFound) {
+  User.findOne({
+    attributes: [],
+    where: {
+      username: req.user.username
+    },
+    include: [{
+      model: Location,
+      where: {
+        gameId: gameFound.id
+      }
+    }]
+  }).then(function(result) {
+    res.send(result);
+  });
+};
