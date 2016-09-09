@@ -154,11 +154,14 @@ module.exports = function(app, express) {
   app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
     //This is when the creator makes a game and clicks create game
 
-  //   { username: 'beth',
-  // markers:
-  //  [ {latitude: 2, longitude: 4, sequence: 1},
-  //    {latitude: 2, longitude: 4.21412412, sequence: 2},
-  //    {latitude: 2, longitude: 4, sequence: 3} ] }
+    // Example Data Structure
+    // { 'username': 'beth',
+    //   'markers': [
+    //     { latitude: 1.23, longitude: 2.34, sequence: 1},
+    //     { latitude: 3.45, longitude: 4.56, sequence: 2},
+    //     { latitude: 5.67, longitude: 6.78, sequence: 3},
+    //     { latitude: 7.89, longitude: 8.90, sequence: 4} ]
+    // };
 
     var creator = req.user.username;
     //somehow we create the code;
@@ -166,13 +169,6 @@ module.exports = function(app, express) {
     // increment pathUrl
     //var pathUrl = 'somethingelse';
     // hash it?
-
-    // var locations = [
-    //   {latitude: 2, longitude: 4, sequence: 1},
-    //   {latitude: 2, longitude: 6, sequence: 2},
-    //   {latitude: 4, longitude: 5, sequence: 3},
-    //   {latitude: 6, longitude: 7, sequence: 4}
-    // ];
 
     var locations = req.body.markers;
 
