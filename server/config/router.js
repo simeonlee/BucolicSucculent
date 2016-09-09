@@ -228,6 +228,9 @@ var generateStatuses = function(req, res) {
             returnStatuses(req, res, currentGame);
           });
         });
+      } else {
+        // return an 422 error.
+        res.status(422).send('Game at URL path does not exist.')
       }
     });
   });
