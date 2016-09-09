@@ -41,17 +41,18 @@ module.exports = function(app, express) {
           returnStatuses(req, res, gameFound);
         }
       });
-    } else {  
-      Game.findAll({
-        include: [{
-          model: User,
-          where: { username: req.user.username },
-        }],
-        raw: true
-      }).then(function(allGames) {
-        res.send(allGames);
-      });
-
+    } else {
+      if (req.query.username) {
+        Game.findAll({
+          include: [{
+            model: User,
+            where: { username: req.user.username },
+          }],
+          raw: true
+        }).then(function(allGames) {
+          res.send(allGames);
+        });
+      }
     }
   });
 
