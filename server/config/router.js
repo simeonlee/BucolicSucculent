@@ -30,7 +30,7 @@ module.exports = function(app, express) {
         where: {path: req.query.path},
         include: [{
           model: User,
-          where: { username: req.user.username },
+          where: { username: req.query.username },
         }]
       }).then(function (gameFound) {
         if (!gameFound) {
@@ -45,8 +45,9 @@ module.exports = function(app, express) {
       if (req.query.username) {
         Game.findAll({
           include: [{
+            attributes: [],
             model: User,
-            where: { username: req.user.username },
+            where: { username: req.query.username },
           }],
           raw: true
         }).then(function(allGames) {
