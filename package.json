@@ -31,13 +31,19 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "gulp-connect": "^5.0.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-filter": "^4.0.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-main-bower-files": "^1.5.3",
+    "gulp-minify-css": "^1.2.4",
     "gulp-nodemon": "^2.1.0",
     "jasmine-core": "^2.5.0",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.0.2",
     "mocha": "^3.0.2",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.0",
+    "run-sequence": "^1.2.2"
   }
 }

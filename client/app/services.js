@@ -6,7 +6,7 @@ angular.module('app.services', ['ngGeolocation'])
       var params = {
         username: $window.localStorage.getItem('user'), 
         path: path
-      }
+      };
       var token = $window.localStorage.getItem('token');
       $http.defaults.headers.common['x-access-token'] = token;
       return $http({
@@ -19,7 +19,7 @@ angular.module('app.services', ['ngGeolocation'])
       var data = {
         username: user,
         markers: markers, 
-      }
+      };
       var token = $window.localStorage.getItem('token');
       $http.defaults.headers.common['x-access-token'] = token;
       return $http({

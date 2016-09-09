@@ -13,7 +13,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
   $scope.submitWaypoints = function() {
 
     //get user for ajax request
-    $scope.user = $window.localStorage.getItem('user')
+    $scope.user = $window.localStorage.getItem('user');
     // get waypoints from map and submit to server to create createGame
     Requests.createGame($scope.user, $scope.map.markers) 
       .then(function(res) {
@@ -52,7 +52,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         visible: false
         // draggable: true, //<------------- WISHLIST fix draggable marker coords saving and uncomment
       },
-    }
+    };
     //for each game, the first marker gets labelled '1'
     var sequence = 1;
 
@@ -73,4 +73,4 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       sequence++; //<--- incrememnt sequence prop for next label
     });
   });
-}])
+}]);
