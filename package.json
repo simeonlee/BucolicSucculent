@@ -4,7 +4,8 @@
   "description": "location-based interactive experience",
   "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "test": "mocha specs/**/*.js"
   },
   "repository": {
     "type": "git",
