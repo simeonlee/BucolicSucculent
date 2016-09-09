@@ -43,10 +43,18 @@ module.exports = function(app, express) {
         }
       });
     } else {
+      // if query only includes the username
       if (req.query.username) {
+        // return all the games and game info associated to that user
         returnGamesforUser(req, res);
       } else {
-        returnOtherPlayers(req, res);
+        if (req.query.path) {
+          // if query only includes the path, return game info on all other users in the game
+          returnOtherPlayers(req, res);
+        } else {
+          // if path or username is not provided, it is an invalid query
+          res.status(400).send('Invalid query');
+        }
       }
     }
   });
