@@ -172,12 +172,14 @@ module.exports = function(app, express) {
     User.findOne({ where: { username: creator } })
     .then(function(currentUser) {
       Game.create({
-        creatorId: currentUser.dataValues.id,
         path: pathUrl,
         locations: locations
       }, { include: [Location] })
       .then(function(game) {
-      res.send(pathUrl);
+        game.setCreator(currentUser)
+        .then(function(){
+          res.send(pathUrl);
+        })
       });
     });
 
