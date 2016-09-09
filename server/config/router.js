@@ -170,14 +170,18 @@ module.exports = function(app, express) {
     var locations = req.body.markers;
 
     User.findOne({ where: { username: creator } })
+    // Find the creator in the User table
     .then(function(currentUser) {
+      // then create a Game and its locations
       Game.create({
         path: pathUrl,
         locations: locations
       }, { include: [Location] })
       .then(function(game) {
+        // then set the creatorId foreign key for the Game
         game.setCreator(currentUser)
         .then(function(){
+          // when finished, send back the pathUrl
           res.send(pathUrl);
         })
       });
