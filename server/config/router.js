@@ -32,10 +32,11 @@ module.exports = function(app, express) {
           where: { username: req.user.username },
         }]
       }).then(function (gameFound) {
-        //if the user was not in the game, have player join the game and generate statuses
         if (!gameFound) {
+          //if the user is new to game, have player join the game and generate statuses
           generateStatuses(req, res);
         } else {
+          // if user already started the game, return their saved statuses
           returnStatuses(req, res, gameFound);
         }
       });
