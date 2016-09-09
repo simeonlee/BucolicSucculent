@@ -9,7 +9,7 @@ var runSequence = require('run-sequence');
 var mainBowerFiles = require('gulp-main-bower-files');
 var ngAnnotate = require('gulp-ng-annotate');
 
-gulp.task('develop', function() {
+gulp.task('nodemon', function() {
   nodemon({
     script: 'server/server.js',
     ext: 'html js'
@@ -56,8 +56,24 @@ gulp.task('copy-html-files', function () {
   gulp.src('./client/**/*.html')
     .pipe(gulp.dest('dist/'));
 });
+
+gulp.task('set-prod', function() {
+    return process.env.NODE_ENV = 'production';
+});
+
+gulp.task('set-dev', function() {
+    return process.env.NODE_ENV = 'development';
+});
+
+gulp.task('forever', shell.task([
+  'forever start server/server.js'
+]));
+
+gulp.task('stop', shell.task([
+  'forever stop server/server.js'
+]));
  
-gulp.task('default', ['lint', 'develop']);
+gulp.task('default', ['lint', 'nodemon']);
 
 gulp.task('build', function() {
   runSequence(
@@ -65,3 +81,18 @@ gulp.task('build', function() {
     ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'bower-files']
   );
 })
+
+gulp.task('devStart', function() {
+  runSequence(
+    'set-dev',
+    'default'
+  );
+});
+
+gulp.task('prodStart', function() {
+  runSequence(
+    'set-prod',
+    'build',
+    'nodemon'
+  );
+});
