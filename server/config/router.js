@@ -195,23 +195,17 @@ module.exports = function(app, express) {
 };
 
 var generateStatuses = function(req, res) {
-  // Find the current User in the User Table...
   User.findOne({
     where: {
       username: req.query.username
     }
   }).then(function(currentUser) {
-    // Then find the current Game in the Game Table via the given Path
     Game.findOne({
       where: { path: req.query.path }
     })
     .then(function(currentGame){
-      // If a game at the path exists...
       if (currentGame) {
-        // Add the current User to the current Game
         currentUser.addGame(currentGame);
-
-        // Then find all the locations associated to the current Game...
         Location.findAll({
           include: {
             model: Game,
@@ -219,19 +213,13 @@ var generateStatuses = function(req, res) {
             where: { path: req.query.path },
           }
         }).then(function(allLocs) {
-          // And initialize the status of each location for the User
           currentUser.addLocations(allLocs, {
             status: false
           })
           .then(function() {
-            // When complete, return Statuses to client.
             returnStatuses(req, res, currentGame);
           });
         });
-      // If the game at the path DOES NOT exist
-      } else {
-        // return an 422 error.
-        res.status(422).send('Game at URL path does not exist.')
       }
     });
   });
