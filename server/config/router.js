@@ -194,7 +194,7 @@ module.exports = function(app, express) {
 
 var generateStatuses = function(req, res) {
   User.findOne({
-    where: { username: req.user.username }
+    where: { username: req.query.username }
   })
   .then( function (currentUser) {
     Game.findOne({
@@ -231,7 +231,7 @@ var generateStatuses = function(req, res) {
                   User.findOne({
                     attributes: [],
                     where: {
-                      username: req.user.username
+                      username: req.query.username
                     },
                     include: [{
                       model: Location,
@@ -256,7 +256,7 @@ var returnStatuses = function(req, res, gameFound) {
   User.findOne({
     attributes: [],
     where: {
-      username: req.user.username
+      username: req.query.username
     },
     include: [{
       model: Location,
