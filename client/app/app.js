@@ -32,14 +32,18 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         templateUrl: '../views/game.html',
         controller: 'gameController',
         resolve: {
-          data: function($stateParams, Requests) {
+          isAuth: function(Auth) {
+            return Auth.isAuth();
+          },
+          data: function($stateParams, Requests, Auth) {
+            //Only fetch for gamedata if logged in
+            if(!Auth.isAuth()) {
+              return [];
+            }
             return Requests.getGameData($stateParams.path).then(function(res) {
               console.log(res.data) 
               return res.data.locations;
             }); 
-          },
-          isAuth: function(Auth) {
-            return Auth.isAuth();
           }
         }
       })
@@ -76,6 +80,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
   // if it's not valid, we then redirect back to signin/signup
   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
+      console.log('routchangeredirect')
       $location.path('/login');
     }
   });
