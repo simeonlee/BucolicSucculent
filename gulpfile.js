@@ -78,8 +78,6 @@ gulp.task('forever', shell.task([
 gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
-
-gulp.task('watch')
  
 gulp.task('default', ['lint', 'nodemon']);
 
