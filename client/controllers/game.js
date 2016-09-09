@@ -76,7 +76,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
     if ($scope.myLatLng) {
       $scope.locationError = false;
-      console.log('checking location: ', locationId);
+      // console.log('checking location: ', locationId);
       var pointToCheck;
       $scope.markers.forEach(function(location) {
         if (location.id === locationId) { // get specific marker data
