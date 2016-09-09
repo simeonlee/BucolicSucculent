@@ -1,14 +1,12 @@
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
-var source = require('vinyl-source-stream');
-var concat = require('gulp-concat');
+// var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var mainBowerFiles = require('gulp-main-bower-files');
-var gulpFilter = require('gulp-filter');
 var ngAnnotate = require('gulp-ng-annotate');
 
 gulp.task('develop', function() {

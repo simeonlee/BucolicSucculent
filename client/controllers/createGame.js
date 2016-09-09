@@ -20,7 +20,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
         // get back hashed game url and display
         var gameUrl = res.data;
-        $scope.gamePath = 'http://' + $rootScope.host + ':4200/#/game/' + gameUrl + '/map'; //<------ to be game url
+        $scope.gamePath = gameUrl; //<------ to be game url
       });
 
       // hide map on game creation
