@@ -19,110 +19,43 @@ module.exports = function(app, express) {
     }
   }
 
-  app.get('/api/game', jwtauth, requireAuth, function(req, res) {
-    if (req.query.path) {
-      // do a query for gameId and username
-      // return game info for username
+  app.get('/api/game', jwtauth, requireAuth, function(req, res) { // for production with authentication
+  // app.get('/api/game', function(req, res) { // bypass auth for testing with postman
 
+    // do a query for pathUrl and username
+    // return the game info for username
+
+    if (req.query.path && req.query.username) {
       //Looks in usergame table to see if player is in game
       Game.findOne({
         where: {path: req.query.path},
         include: [{
           model: User,
-          where: { username: req.user.username },
+          where: { username: req.query.username },
         }]
       }).then(function (gameFound) {
-        //if the user was not in the game, have player join the game
         if (!gameFound) {
-          // function (User, req.query.username) 
-          User.findOne({
-            where: { username: req.user.username }
-          })
-          .then( function (currentUser) {
-            Game.findOne({
-              where: { path: req.query.path }
-            })
-            .then(function (currentGame) {
-              var gameId = currentGame.id;
-              if (currentGame) {
-                //Adds to the usergame relation table
-                currentUser.addGame(currentGame);
-                console.log('Joined the game');
-
-                // Find all locations of the Game
-                Location.findAll({
-                  include: [{
-                    model: Game,
-                    where: {id: gameId}
-                  }]
-                })
-                .then( function (allLoc) {
-                  //force async of creation of locations for user
-                  var asyncCounter = 0;
-                  //For each location of each game, create a status row linked to both and set default status to false
-                  allLoc.forEach(function (eachLoc) {
-                    currentUser.addLocation(eachLoc)
-                    .then( function (elem) {
-                      Status.update({ status: false },
-                      { where: {
-                        locationId: elem[0][0].dataValues.locationId,
-                        userId: elem[0][0].dataValues.userId,
-                      }}).then(function() {
-                        asyncCounter++;
-                        if (asyncCounter === allLoc.length) {
-                          User.findOne({
-                            attributes: [],
-                            where: {
-                              username: req.user.username
-                            },
-                            include: [{
-                              model: Location,
-                              where: {
-                                gameId: gameId
-                              }
-                            }]
-                          }).then(function(result) {
-                            res.send(result);
-                          });
-                        }
-                      });
-                    });
-                  });
-                });
-              }
-            });
-          });
-          // if (!gameFound)
+          //if the user is new to game, have player join the game and generate statuses
+          generateStatuses(req, res);
         } else {
-          
-          User.findOne({
-            attributes: [],
-            where: {
-              username: req.user.username
-            },
-            include: [{
-              model: Location,
-              where: {
-                gameId: gameFound.id
-              }
-            }]
-          }).then(function(result) {
-            res.send(result);
-          });
+          // if user already started the game, return their saved statuses
+          returnStatuses(req, res, gameFound);
         }
-
       });
-    } else {  
-      Game.findAll({
-        include: [{
-          model: User,
-          where: { username: req.user.username },
-        }],
-        raw: true
-      }).then(function(allGames) {
-        res.send(allGames);
-      });
-
+    } else {
+      // if query only includes the username
+      if (req.query.username) {
+        // return all the games and game info associated to that user
+        returnGamesforUser(req, res);
+      } else {
+        if (req.query.path) {
+          // if query only includes the path, return game info on all other users in the game
+          returnOtherPlayers(req, res);
+        } else {
+          // if path or username is not provided, it is an invalid query
+          res.status(400).send('Invalid query');
+        }
+      }
     }
   });
 
@@ -152,118 +85,40 @@ module.exports = function(app, express) {
   });
 
   app.post('/api/game/create', jwtauth, requireAuth, function (req, res) {
-    //This is when the creator makes a game and clicks create game
 
-  //   { username: 'beth',
-  // markers:
-  //  [ {latitude: 2, longitude: 4, sequence: 1},
-  //    {latitude: 2, longitude: 4.21412412, sequence: 2},
-  //    {latitude: 2, longitude: 4, sequence: 3} ] }
+    // Example Data Structure
+    // { 'username': 'beth',
+    //   'markers': [
+    //     { latitude: 1.23, longitude: 2.34, sequence: 1},
+    //     { latitude: 3.45, longitude: 4.56, sequence: 2},
+    //     { latitude: 5.67, longitude: 6.78, sequence: 3},
+    //     { latitude: 7.89, longitude: 8.90, sequence: 4} ]
+    // };
 
     var creator = req.user.username;
-    //somehow we create the code;
-    var pathUrl = md5(JSON.stringify(req.body))
-    // increment pathUrl
-    //var pathUrl = 'somethingelse';
-    // hash it?
 
-    // var locations = [
-    //   {latitude: 2, longitude: 4, sequence: 1},
-    //   {latitude: 2, longitude: 6, sequence: 2},
-    //   {latitude: 4, longitude: 5, sequence: 3},
-    //   {latitude: 6, longitude: 7, sequence: 4}
-    // ];
+    // generate pathUrl Hash
+    var pathUrl = md5(JSON.stringify(req.body)).slice(0,5)
 
     var locations = req.body.markers;
 
-    User.findOne({
-      where: {
-        username: creator
-      }
-    })
+    User.findOne({ where: { username: creator } })
+    // Find the creator in the User table
     .then(function(currentUser) {
+      // then create a Game and its locations
       Game.create({
-        creatorId: currentUser.dataValues.id,
         path: pathUrl,
-        // Locations: [
-        //   {lat: 1.0, lng: 1.0, sequence: 1},
-        // ]
-      }
-      // , { include: [Location] } 
-
-      )
-      .then(function(currentGame) {
-        // currentUser.addGame(currentGame);
-        locations.forEach(function (elem) {
-          Location.create(elem)
-          .then(function(loc) {
-            loc.setGame(currentGame);
-          });
-        });
-        // Location.bulkCreate(locations)
-        // .then(function (arrLocations) {
-        //   console.log(arrLocations);
-        //   arrLocations.forEach(function (eachLoc) {
-        //     console.log(eachLoc);
-        //     eachLoc.setGame(currentGame);
-        //   });
-        // });
-      // iterate through locations(waypoints)
-      // for(var i = 0; i < locations.length; i++) {
-      //   Location.create({
-
-      //   })
-      // }
+        locations: locations
+      }, { include: [Location] })
+      .then(function(game) {
+        // then set the creatorId foreign key for the Game
+        game.setCreator(currentUser)
+        .then(function(){
+          // when finished, send back the pathUrl
+          res.send(pathUrl);
+        })
       });
     });
-
-
-    // {
-    //   map: {
-    //     center: {
-    //       latitude: 37.7836881, //<------- dummy data
-    //       longitude: -122.40904010000001
-    //     },
-    //     zoom: 13,
-    //     markers: [{
-    //       "id": 1,
-    //       "coords": {
-    //         "latitude": 37.76922210201123,
-    //         "longitude": -122.46047973632812
-    //       },
-    //       "options": {
-    //         "label": "Golden Gate Bridge",
-    //         "visible": true
-    //       }
-    //     }, {
-    //       "id": 2,
-    //       "coords": {
-    //         "latitude": 37.76392978442336,
-    //         "longitude": -122.43318557739258
-    //       },
-    //       "options": {
-    //         "label": "2",
-    //         "visible": true
-    //       }
-    //     }, {
-    //       "id": 3,
-    //       "coords": {
-    //         "latitude": 37.7897092979573,
-    //         "longitude": -122.40589141845703
-    //       },
-    //       "options": {
-    //         "label": "3",
-    //         "visible": true
-    //       }
-    //     }]
-    //   },
-    //   players: [{
-
-    //   }]
-    // }
-
-
-    res.send(pathUrl);
 
   });
 
@@ -337,3 +192,176 @@ module.exports = function(app, express) {
     }
   });
 };
+
+var generateStatuses = function(req, res) {
+  User.findOne({
+    where: { username: req.query.username }
+  })
+  .then( function (currentUser) {
+    Game.findOne({
+      where: { path: req.query.path }
+    })
+    .then(function (currentGame) {
+      var gameId = currentGame.id;
+      if (currentGame) {
+        //Adds to the usergame relation table
+        currentUser.addGame(currentGame);
+        console.log('Joined the game');
+
+        // Find all locations of the Game
+        Location.findAll({
+          include: [{
+            model: Game,
+            where: {id: gameId}
+          }]
+        })
+        .then( function (allLoc) {
+          //force async of creation of locations for user
+          var asyncCounter = 0;
+          //For each location of each game, create a status row linked to both and set default status to false
+          allLoc.forEach(function (eachLoc) {
+            currentUser.addLocation(eachLoc)
+            .then( function (elem) {
+              Status.update({ status: false },
+              { where: {
+                locationId: elem[0][0].dataValues.locationId,
+                userId: elem[0][0].dataValues.userId,
+              }}).then(function() {
+                asyncCounter++;
+                if (asyncCounter === allLoc.length) {
+                  User.findOne({
+                    attributes: [],
+                    where: {
+                      username: req.query.username
+                    },
+                    include: [{
+                      model: Location,
+                      where: {
+                        gameId: gameId
+                      }
+                    }]
+                  }).then(function(result) {
+                    res.send(result);
+                  });
+                }
+              });
+            });
+          });
+        });
+      }
+    });
+  });
+};
+
+var returnStatuses = function(req, res, gameFound) {
+  User.findOne({
+    attributes: [],
+    where: {
+      username: req.query.username
+    },
+    include: [{
+      model: Location,
+      where: {
+        gameId: gameFound.id
+      }
+    }]
+  }).then(function(result) {
+    res.send(result);
+  });
+};
+
+var returnGamesforUser = function(req, res) {
+  User.findOne({
+    attributes: ['username'],
+    where: { username: req.query.username },
+    include: [{
+      model: Game,
+      through: {attributes: []},
+      attributes: ['id', 'path']
+    }]
+  }).then(function(allGames) {
+    res.send(allGames);
+  });
+}
+
+/****** Example data for returnGamesforUser *****/
+// {
+//   "username": "beth",
+//   "games": [
+//     {
+//       "id": 14,
+//       "path": "9ef63"
+//     },
+//     {
+//       "id": 15,
+//       "path": "3ece8"
+//     }
+//   ]
+// }
+
+var returnOtherPlayers = function(req, res) {
+  User.findAll({
+    attributes: ['username'],
+    include: [{
+      model: Location,
+      through: {attributes: ['status']},
+      attributes: ['sequence', 'latitude', 'longitude'],
+      include: [{
+        model: Game,
+        attributes: [],
+        where: {
+          path: req.query.path
+        }
+      }]
+    }],
+    order: [['username', 'ASC'], [Location, 'sequence', 'ASC']],
+  }).then(function(allPlayers) {
+    res.send(allPlayers);
+  });
+};
+
+/****** Example data for returnOtherPlayers *****/
+// [
+//   {
+//     "username": "beth",
+//     "locations": [
+//       {
+//         "sequence": 1,
+//         "latitude": 37.78631777032694,
+//         "longitude": -122.42096275091171,
+//         "statuses": {
+//           "status": true
+//         }
+//       },
+//       {
+//         "sequence": 2,
+//         "latitude": 37.778991539440696,
+//         "longitude": -122.44156211614609,
+//         "statuses": {
+//           "status": false
+//         }
+//       }
+//     ]
+//   },
+//   {
+//     "username": "derek",
+//     "locations": [
+//       {
+//         "sequence": 1,
+//         "latitude": 37.78631777032694,
+//         "longitude": -122.42096275091171,
+//         "statuses": {
+//           "status": false
+//         }
+//       },
+//       {
+//         "sequence": 2,
+//         "latitude": 37.778991539440696,
+//         "longitude": -122.44156211614609,
+//         "statuses": {
+//           "status": true
+//         }
+//       }
+//     ]
+//   }
+// ]
