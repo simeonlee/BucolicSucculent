@@ -28,11 +28,11 @@ module.exports = function(app, express) {
     if (req.query.path && req.query.username) {
       //Looks in usergame table to see if player is in game
       Game.findOne({
-        where: {path: req.query.path},
-        include: [{
+        where: { path: req.query.path },
+        include: {
           model: User,
           where: { username: req.query.username },
-        }]
+        }
       }).then(function (gameFound) {
         if (!gameFound) {
           //if the user is new to game, have player join the game and generate statuses
@@ -196,15 +196,10 @@ module.exports = function(app, express) {
 
 var generateStatuses = function(req, res) {
   // Find the current User in the User Table...
-  User.findOne({
-    where: {
-      username: req.query.username
-    }
-  }).then(function(currentUser) {
+  User.findOne({ where: { username: req.query.username } })
+  .then(function(currentUser) {
     // Then find the current Game in the Game Table via the given Path
-    Game.findOne({
-      where: { path: req.query.path }
-    })
+    Game.findOne({ where: { path: req.query.path } })
     .then(function(currentGame){
       // If a game at the path exists...
       if (currentGame) {
@@ -215,14 +210,11 @@ var generateStatuses = function(req, res) {
         Location.findAll({
           include: {
             model: Game,
-            attributes: [],
             where: { path: req.query.path },
           }
         }).then(function(allLocs) {
           // And initialize the status of each location for the User
-          currentUser.addLocations(allLocs, {
-            status: false
-          })
+          currentUser.addLocations(allLocs, { status: false })
           .then(function() {
             // When complete, return Statuses to client.
             returnStatuses(req, res, currentGame);
@@ -241,17 +233,13 @@ var returnStatuses = function(req, res, gameFound) {
   // With it's associated game and location statuses
   User.findOne({
     attributes: [],
-    where: {
-      username: req.query.username
-    },
-    include: [{
+    where: { username: req.query.username },
+    include: {
       model: Location,
       attributes: ['id', 'sequence', 'latitude', 'longitude'],
-      where: {
-        gameId: gameFound.id
-      },
+      where: { gameId: gameFound.id },
       through: { attributes: ['status']}
-    }]
+    }
   }).then(function(result) {
     res.send(result);
   });
@@ -288,11 +276,11 @@ var returnGamesforUser = function(req, res) {
   User.findOne({
     attributes: ['username'],
     where: { username: req.query.username },
-    include: [{
+    include: {
       model: Game,
       through: {attributes: []},
       attributes: ['id', 'path']
-    }]
+    }
   }).then(function(allGames) {
     res.send(allGames);
   });
@@ -318,18 +306,16 @@ var returnOtherPlayers = function(req, res) {
   // and return each of their locations and statuses.
   User.findAll({
     attributes: ['username'],
-    include: [{
+    include: {
       model: Location,
-      through: {attributes: ['status']},
       attributes: ['sequence', 'latitude', 'longitude'],
-      include: [{
+      through: { attributes: ['status'] },
+      include: {
         model: Game,
         attributes: [],
-        where: {
-          path: req.query.path
-        }
-      }]
-    }],
+        where: { path: req.query.path }
+      }
+    },
     order: [['username', 'ASC'], [Location, 'sequence', 'ASC']],
   }).then(function(allPlayers) {
     res.send(allPlayers);
