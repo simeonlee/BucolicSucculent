@@ -9,6 +9,7 @@ var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var mainBowerFiles = require('gulp-main-bower-files');
 var gulpFilter = require('gulp-filter');
+var ngAnnotate = require('gulp-ng-annotate');
 
 gulp.task('develop', function() {
   nodemon({
@@ -21,14 +22,14 @@ gulp.task('develop', function() {
 });
 
 gulp.task('lint', function() {
-  gulp.src(['./client/**/*.js', '!./client/lib/**'])
+  gulp.src(['./client/**/*.js', '!./client/lib/**']) //, './server/**/*.js' add to lint serverside js
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('clean', function() {
-  gulp.src('./dist/*')
+  return gulp.src('./dist/*')
     .pipe(clean({force: true}));
 });
 
@@ -41,18 +42,14 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-js', function() {
   gulp.src(['./client/**/*.js', '!./client/lib/**'])
+    .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('./dist/'))
 });
 
-gulp.task("bower-files", function(){
-  var filterJS = gulpFilter('**/*.js', { restore: true });
+gulp.task('bower-files', function(){
     return gulp.src('./bower.json')
-        .pipe(mainBowerFiles({
-          overrides: {
-
-          }
-        }))
+        .pipe(mainBowerFiles( ))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/lib'));
 });
@@ -66,7 +63,7 @@ gulp.task('default', ['lint', 'develop']);
 
 gulp.task('build', function() {
   runSequence(
-    ['clean'],
+    'clean',
     ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'bower-files']
   );
 })
