@@ -59,7 +59,8 @@ module.exports = function(app, express) {
     }
   });
 
-  app.put('/api/game', jwtauth, requireAuth, function (req, res) {
+  // app.put('/api/game', jwtauth, requireAuth, function (req, res) { // for production with authentication
+  app.put('/api/game', function (req, res) { // bypass auth for testing with postman
     User.findOne({
       where: {
         username: req.user.username
