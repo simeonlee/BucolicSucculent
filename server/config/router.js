@@ -44,16 +44,7 @@ module.exports = function(app, express) {
       });
     } else {
       if (req.query.username) {
-        Game.findAll({
-          include: [{
-            attributes: [],
-            model: User,
-            where: { username: req.query.username },
-          }],
-          raw: true
-        }).then(function(allGames) {
-          res.send(allGames);
-        });
+        returnGamesforUser(req, res);
       } else {
         returnOtherPlayers(req, res);
       }
@@ -270,6 +261,19 @@ var returnStatuses = function(req, res, gameFound) {
     res.send(result);
   });
 };
+
+var returnGamesforUser = function(req, res) {
+  Game.findAll({
+    include: [{
+      attributes: [],
+      model: User,
+      where: { username: req.query.username },
+    }],
+    raw: true
+  }).then(function(allGames) {
+    res.send(allGames);
+  });
+}
 
 var returnOtherPlayers = function(req, res) {
   User.findAll({
