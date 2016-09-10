@@ -132,6 +132,13 @@ describe('New Game Creation', function() {
   var token;
   var user;
   var pathUrl;
+  var locations = {
+    'markers': [
+      { latitude: 1.23, longitude: 2.34, sequence: 1},
+      { latitude: 3.45, longitude: 4.56, sequence: 2},
+      { latitude: 5.67, longitude: 6.78, sequence: 3},
+      { latitude: 7.89, longitude: 8.90, sequence: 4} ]
+  };
 
   before(function(done) {
     request(app)
@@ -155,14 +162,9 @@ describe('New Game Creation', function() {
       .post('/api/game/create')
       .set('username', user)
       .set('X-ACCESS-TOKEN', token)
-      .send({
-        'markers': [
-          { latitude: 1.23, longitude: 2.34, sequence: 1},
-          { latitude: 3.45, longitude: 4.56, sequence: 2},
-          { latitude: 5.67, longitude: 6.78, sequence: 3},
-          { latitude: 7.89, longitude: 8.90, sequence: 4} ]
-      })
+      .send(locations)
       .end(function(err, res) {
+        
         expect(res.text).to.exist;
         pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
 
