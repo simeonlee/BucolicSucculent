@@ -163,7 +163,8 @@ describe('New Game Creation', function() {
       .expect(function(res) {
         expect(res.text).to.exist;
         pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
-        console.log('pathUrl', pathUrl);
+        Game.findOne({ where: { path: pathUrl } })
+        .then(function(gameFound) { expect(gameFound).to.exist; });
       })
       .end(done);
   });
