@@ -104,6 +104,16 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
   $rootScope.signOut = function() {
     Auth.signout();
   };
+
+  // hide navbar game specific options when not applicable
+  $rootScope.gameNav = function() {
+    return ($location.path() !== '/createGame' && $location.path() !== '/dashboard');
+  };
+
+  // hide navbar on login and signup
+  $rootScope.hideNav = function() {
+    return ($location.path() === '/login' || $location.path() === '/signup');
+  };
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
   // however, we want to make sure the user is authorized
