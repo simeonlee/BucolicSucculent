@@ -4,9 +4,9 @@
   <h3>Players</h3>
     <ul class="players">
       <div ng-repeat="player in players">
-        <li>{{player.name}}</li>
+        <li>{{player.username}}</li>
         <ul class="locations">
-          <li ng-repeat="location in player.locations">{{location.id}}: {{location.status}}</li>
+          <li ng-repeat="location in player.locations">{{location.sequence}}: {{location.statuses.status}}</li>
         </ul>
       </div>
     </ul>

@@ -15,6 +15,18 @@ angular.module('app.services', ['ngGeolocation'])
         params: params
       });
     },
+    getGameStats: function(path) {
+      var params = {
+        path: path
+      };
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
+      return $http({
+        method: 'GET',
+        url: '/api/game',  
+        params: params
+      });
+    },
     createGame: function(user, markers) {
       var data = {
         username: user,

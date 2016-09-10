@@ -57,7 +57,19 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       .state('game.stats', { //child view of game view
         url: '/stats',
         templateUrl: '../views/game.stats.html',
-        controller: 'gameStatsController'
+        controller: 'gameStatsController', 
+        resolve: {
+          data: function($stateParams, Requests, Auth) {
+            //Only fetch for gamedata if logged in
+            if(!Auth.isAuth()) {
+              return [];
+            }
+            return Requests.getGameStats($stateParams.path).then(function(res) {
+              console.log(res.data);
+              return res.data;
+            }); 
+          }
+        }
       })
       .state('dashboard', {
         url: '/dashboard',
@@ -84,12 +96,14 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       //////////////////// 
 
       uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- configure map... should live serverside
+        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- apiKey restricted!
         libraries: 'drawing,geometry,visualization'
     });
 }])
 .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
-
+  $rootScope.signOut = function() {
+    Auth.signout();
+  };
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
   // however, we want to make sure the user is authorized

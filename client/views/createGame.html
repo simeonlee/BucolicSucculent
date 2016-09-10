@@ -1,5 +1,12 @@
 <div>
   <h1>Create a New Game~</h1>
+  <div class="navigation">
+    <ul>
+      <li><a ui-sref="dashboard">Dashboard</a></li>
+      <li><a ui-sref="createGame">New Game</a></li>
+      <li><button ng-click="signOut()">Sign Out</button></li>
+    </ul>
+  </div>
 
   <!-- Map to choose waypoints -->
   <ui-gmap-google-map center='map.center' zoom='map.zoom' ng-show="showMap">
