@@ -15,25 +15,25 @@ describe ('Signup/Login for Users', function() {
   describe('POST request /api/users/signup', function() {
 
     beforeEach(function() {
-      User.destroy({where: { username: 'beth' }});
-      User.destroy({where: { username: 'kani' }});
+      User.destroy({where: { username: 'test1' }});
+      User.destroy({where: { username: 'test2' }});
     });
 
     after(function() {
-      User.destroy({where: { username: 'beth' }});
-      User.destroy({where: { username: 'kani' }});
+      User.destroy({where: { username: 'test1' }});
+      User.destroy({where: { username: 'test2' }});
     });
 
     it('should create a new user', function(done) {
       request(app)
         .post('/api/users/signup')
-        .set('username', 'beth')
-        .set('password', 'beth')
+        .set('username', 'test1')
+        .set('password', 'test1')
         .expect(201)
         .end(function() {
-          User.findOne({ where: { 'username': 'beth' } })
+          User.findOne({ where: { 'username': 'test1' } })
             .then(function(user) {
-              expect(user.username).to.equal('beth');
+              expect(user.username).to.equal('test1');
             })
             .then(done)
             .catch(function(err) { throw err; })
@@ -43,12 +43,12 @@ describe ('Signup/Login for Users', function() {
     it('should return a token', function(done) {
       request(app)
         .post('/api/users/signup')
-        .set('username', 'kani')
-        .set('password', 'kani')
+        .set('username', 'test2')
+        .set('password', 'test2')
         .expect(201)
         .expect(function(res) {
           expect(res.body.token).to.exist;
-          expect(res.body.user).to.equal('kani');
+          expect(res.body.user).to.equal('test2');
         })
         .end(done);
     });
@@ -56,14 +56,14 @@ describe ('Signup/Login for Users', function() {
     it('should not let you create the duplicate username', function(done) {
       request(app)
         .post('/api/users/signup')
-        .set('username', 'beth')
-        .set('password', 'beth')
+        .set('username', 'test1')
+        .set('password', 'test1')
         .expect(201)
         .expect()
         .end(function(res) {
           request(app)
           .post('/api/users/signup')
-          .set('username', 'beth')
+          .set('username', 'test1')
           .set('password', '1234')
           .expect(409)
           .end(done);
@@ -76,25 +76,25 @@ describe ('Signup/Login for Users', function() {
     before(function(done) {
       request(app)
         .post('/api/users/signup')
-        .set('username', 'beth')
-        .set('password', 'beth')
+        .set('username', 'test1')
+        .set('password', 'test1')
         .expect(201)
         .end(done)
     });
 
     after(function() {
-      User.destroy({where: { username: 'beth' }});
+      User.destroy({where: { username: 'test1' }});
     });
 
     it('should return a token', function(done) {
       request(app)
         .post('/api/users/login')
-        .set('username', 'beth')
-        .set('password', 'beth')
+        .set('username', 'test1')
+        .set('password', 'test1')
         .expect(200)
         .expect(function(res) {
           expect(res.body.token).to.exist;
-          expect(res.body.user).to.equal('beth');
+          expect(res.body.user).to.equal('test1');
         })
         .end(done);
     })
@@ -102,7 +102,7 @@ describe ('Signup/Login for Users', function() {
     it('should return 401 if password is wrong', function(done) {
       request(app)
         .post('/api/users/login')
-        .set('username', 'beth')
+        .set('username', 'test1')
         .set('password', '1234')
         .expect(401)
         .expect(function(res) {
@@ -115,8 +115,8 @@ describe ('Signup/Login for Users', function() {
     it('should return 401 if user does not exist', function(done) {
       request(app)
         .post('/api/users/login')
-        .set('username', 'kani')
-        .set('password', 'kani')
+        .set('username', 'test2')
+        .set('password', 'test2')
         .expect(401)
         .expect(function(res) {
           expect(res.text).to.equal('Authentication error');
@@ -143,8 +143,8 @@ describe('New Game Creation', function() {
   before(function(done) {
     request(app)
       .post('/api/users/signup')
-      .set('username', 'beth')
-      .set('password', 'beth')
+      .set('username', 'test1')
+      .set('password', 'test1')
       .expect(201)
       .expect(function(res) {
         token = res.body.token;
@@ -154,7 +154,7 @@ describe('New Game Creation', function() {
   });
 
   after(function() {
-    User.destroy({ where: { username: 'beth' } });
+    User.destroy({ where: { username: 'test1' } });
   });
   describe('POST request /api/game/create', function() {
     it('create a new game with valid credentials', function(done) {
