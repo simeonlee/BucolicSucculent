@@ -129,7 +129,7 @@ describe('New Game Creation', function() {
 
   var token;
   var user;
-  var pathUrl;
+  var URL;
 
   before(function(done) {
     request(app)
@@ -144,23 +144,8 @@ describe('New Game Creation', function() {
       .end(done)
   });
 
-  after(function(done) {
-    Location.destroy({
-      where: {},
-      include: {
-        model: Game,
-        where: { path: pathUrl }
-      }
-    })
-    .then(function() {
-      Game.destroy({ where: { path: pathUrl } })
-      .then(function() {
-        User.destroy({ where: { username: 'beth' } })
-        .then(function() {
-          done();
-        });
-      });
-    });
+  after(function() {
+    User.destroy({ where: { username: 'beth' } });
   });
 
   it('create a new game with valid credentials', function(done) {
@@ -177,8 +162,6 @@ describe('New Game Creation', function() {
       })
       .expect(function(res) {
         expect(res.text).to.exist;
-        expect(res.text.length).to.equal(5);
-        pathUrl = res.text;
       })
       .end(done);
   });
