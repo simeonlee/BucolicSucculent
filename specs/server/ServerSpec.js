@@ -167,14 +167,13 @@ describe('New Game Creation', function() {
         Game.findOne({ where: { path: pathUrl } })
         .then(function(gameFound) {
           expect(gameFound).to.exist;
-
-          Location.findAll({ include: { model: Game, where: { path: pathUrl } }})
-          .then(function(locationsFound) {
-            expect(locationsFound).to.exist;
-            expect(locationsFound.length).to.equal(4);
-            done();
-          });
-        });
+          return Location.findAll({ include: { model: Game, where: { path: pathUrl } }});
+        })
+        .then(function(locationsFound) {
+          expect(locationsFound).to.exist;
+          expect(locationsFound.length).to.equal(4);
+        })
+        .then(done);
       });
   });
 
