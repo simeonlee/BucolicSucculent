@@ -17,16 +17,16 @@ var Location = require('../locations/locations')(db);
 var Status = require('../status/status')(db);
 var User = require('../users/users')(db);
 
-User.belongsToMany(Game, {through: 'usergame', foreignKey: 'userId'});
+User.belongsToMany(Game, {through: 'usergame', foreignKey: 'userId'}); // on delete, cascade
 Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 
 Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
-User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
+User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'}); // on delete, cascade 
 
 Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator'});
 
 Location.belongsTo(Game);
-Game.hasMany(Location);
+Game.hasMany(Location); // on delete, cascade
 
 module.exports = {
   db: db,
