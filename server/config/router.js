@@ -278,7 +278,7 @@ var returnGamesforUser = function(req, res) {
     where: { username: req.query.username },
     include: {
       model: Game,
-      through: {attributes: []},
+      through: {attributes: ['createdAt']},
       attributes: ['id', 'path']
     }
   }).then(function(allGames) {
@@ -293,10 +293,16 @@ var returnGamesforUser = function(req, res) {
 //     {
 //       "id": 14,
 //       "path": "9ef63"
+//       "usergame": {
+//         "createdAt": "2016-09-09T22:07:07.000Z"
+//       }
 //     },
 //     {
 //       "id": 15,
 //       "path": "3ece8"
+//       "usergame": {
+//         "createdAt": "2016-09-09T23:05:22.000Z"
+//       }
 //     }
 //   ]
 // }
