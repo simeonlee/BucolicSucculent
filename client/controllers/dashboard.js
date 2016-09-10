@@ -1,6 +1,6 @@
 angular.module('app.dashboard', [])
 
-.controller('dashboardController', ['$scope', 'data', 'isAuth', function($scope, data, isAuth) {
+.controller('dashboardController', ['$scope', 'data', 'isAuth', '$location', '$window', function($scope, data, isAuth, $location, $window) {
    if (!isAuth) {
     var redir = $location.$$path;
     $window.localStorage.setItem('redir', redir);
@@ -9,6 +9,10 @@ angular.module('app.dashboard', [])
 
   $scope.user = data.username;
   $scope.games = data.games;
+
+  $scope.goToGame = function(path) {
+    $location.path('/game/' + path + '/map');
+  };
 }]);
 
 // I’ve updated my PR

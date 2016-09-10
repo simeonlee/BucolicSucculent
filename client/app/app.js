@@ -63,7 +63,6 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         controller: 'dashboardController',
         resolve: {
           isAuth: function(Auth) {
-            console.log('checkauth');
             return Auth.isAuth();
           },
           data: function(Requests, Auth) {

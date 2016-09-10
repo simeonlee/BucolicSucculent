@@ -47,7 +47,6 @@ module.exports = function(app, express) {
       // if query only includes the username
       if (req.query.username) {
         // return all the games and game info associated to that user
-        console.log('yo')
         returnGamesforUser(req, res);
       } else {
         if (req.query.path) {

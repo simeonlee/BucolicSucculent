@@ -95,7 +95,6 @@ angular.module('app.services', ['ngGeolocation'])
   };
 
   var isAuth = function () {
-    console.log('yes');
     return !!$window.localStorage.getItem('token');
   };
 
