@@ -30,13 +30,14 @@ xdescribe ('Signup/Login for Users', function() {
         .set('username', 'beth')
         .set('password', 'beth')
         .expect(201)
-        .expect(function() {
+        .end(function() {
           User.findOne({ where: { 'username': 'beth' } })
             .then(function(user) {
               expect(user.username).to.equal('beth');
-            });
-        })
-        .end(done);
+            })
+            .then(done)
+            .catch(function(err) { throw err; })
+        });
     });
 
     it('should return a token if signup was successful', function(done) {
@@ -58,14 +59,15 @@ xdescribe ('Signup/Login for Users', function() {
         .set('username', 'beth')
         .set('password', 'beth')
         .expect(201)
-        .expect(function(res) {
+        .expect()
+        .end(function(res) {
           request(app)
           .post('/api/users/signup')
           .set('username', 'beth')
           .set('password', '1234')
           .expect(409)
-        })
-        .end(done);
+          .end(done);
+        });
     });
   });
 
@@ -173,9 +175,8 @@ describe('New Game Creation', function() {
           expect(locationsFound).to.exist;
           expect(locationsFound.length).to.equal(4);
         })
-        .then(done);
+        .then(done)
+        .catch(function(err) { throw err; });
       });
   });
-
-
 });
