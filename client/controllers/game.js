@@ -105,7 +105,5 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   };
 }])
 .controller('gameStatsController', ['$scope', 'data', function($scope, data) {
-  console.log(data)
   $scope.players = data;
-
 }]);
