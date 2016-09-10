@@ -17,7 +17,7 @@ gulp.task('nodemon', function() {
     ext: 'html js'
   })
   .on('restart', function() {
-    console.log('nodemon restarted server!')
+    console.log('nodemon restarted server!');
   });
 });
 
@@ -35,18 +35,18 @@ gulp.task('clean', function() {
 
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
-  gulp.src(['./client/**/*.css', '!./client/lib/**'])
+  return gulp.src(['./client/**/*.css', '!./client/lib/**'])
     .pipe(watch(['./client/**/*.css', '!./client/lib/**']))
     .pipe(minifyCSS(opts))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('minify-js', function() {
-  gulp.src(['./client/**/*.js', '!./client/lib/**'])
+  return gulp.src(['./client/**/*.js', '!./client/lib/**'])
     .pipe(watch(['./client/**/*.js', '!./client/lib/**']))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('bower-files', function(){
@@ -58,7 +58,7 @@ gulp.task('bower-files', function(){
 });
 
 gulp.task('copy-html-files', function () {
-  gulp.src('./client/**/*.html')
+  gulp.src(['./client/**/*.html', './client/*.ico'])
     .pipe(watch('./client/**/*.html'))
     .pipe(gulp.dest('dist/'));
 });
@@ -86,7 +86,7 @@ gulp.task('build', function() {
     'clean',
     ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'bower-files']
   );
-})
+});
 
 gulp.task('devStart', function() {
   runSequence(

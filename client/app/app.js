@@ -1,10 +1,10 @@
 
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game', 'app.dashboard'])
 
 
 .config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $httpProvider)  {
 
-    $urlRouterProvider.otherwise('/login'); // <-------------- default view TODO: SET TO DASHBOARD!
+    $urlRouterProvider.otherwise('/dashboard'); // <-------------- default view TODO: SET TO DASHBOARD!
 
     $stateProvider
       .state('login', {
@@ -34,7 +34,14 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         resolve: {
           isAuth: function(Auth) {
             return Auth.isAuth();
-          },
+          }
+        }
+      })
+      .state('game.map', { //child view of game view ---- link to here on game join
+        url: '/map',
+        templateUrl: '../views/game.map.html',
+        controller: 'gameMapController',
+        resolve: {
           data: function($stateParams, Requests, Auth) {
             //Only fetch for gamedata if logged in
             if(!Auth.isAuth()) {
@@ -47,30 +54,66 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
           }
         }
       })
-      .state('game.map', { //child view of game view ---- link to here on game join
-        url: '/map',
-        templateUrl: '../views/game.map.html',
-        controller: 'gameMapController'
-      })
       .state('game.stats', { //child view of game view
         url: '/stats',
         templateUrl: '../views/game.stats.html',
-        controller: 'gameStatsController'
+        controller: 'gameStatsController', 
+        resolve: {
+          data: function($stateParams, Requests, Auth) {
+            //Only fetch for gamedata if logged in
+            if(!Auth.isAuth()) {
+              return [];
+            }
+            return Requests.getGameStats($stateParams.path).then(function(res) {
+              console.log(res.data);
+              return res.data;
+            }); 
+          }
+        }
+      })
+      .state('dashboard', {
+        url: '/dashboard',
+        templateUrl: '../views/dashboard.html',
+        controller: 'dashboardController',
+        resolve: {
+          isAuth: function(Auth) {
+            return Auth.isAuth();
+          },
+          data: function(Requests, Auth) {
+            //Only fetch for data if logged in
+            if(!Auth.isAuth()) {
+              return [];
+            }
+            return Requests.getUserData().then(function(res) {
+              console.log(res.data, 'dashboard data');
+              return res.data;
+            }); 
+          }
+        }
       });
 
 
       //////////////////// 
 
       uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- configure map... should live serverside
+        key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- apiKey restricted!
         libraries: 'drawing,geometry,visualization'
     });
 }])
 .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
+  $rootScope.signOut = function() {
+    Auth.signout();
+  };
 
-  // $rootScope.host = '127.0.0.1';
-  // //$rootScope.host = '138.68.53.22';
+  // hide navbar game specific options when not applicable
+  $rootScope.gameNav = function() {
+    return ($location.path() !== '/createGame' && $location.path() !== '/dashboard');
+  };
 
+  // hide navbar on login and signup
+  $rootScope.hideNav = function() {
+    return ($location.path() === '/login' || $location.path() === '/signup');
+  };
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
   // however, we want to make sure the user is authorized

@@ -1,6 +1,6 @@
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
-.controller('gameController', ['$scope', 'data', '$window', 'isAuth', '$location', function($scope, data, $window, isAuth, $location) {
+.controller('gameController', ['$scope', '$window', 'isAuth', '$location', function($scope, $window, isAuth, $location) {
   //Check for JWT
   if (!isAuth) {
     var redir = $location.$$path;
@@ -8,6 +8,10 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     $location.path('/login');
   }
 
+
+}])
+.controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window) {
+ 
   //Get user and markers data
   $scope.user = $window.localStorage.getItem('user');
   $scope.markers = data;
@@ -29,10 +33,6 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     }, 
     zoom: 13
   };
-
-}])
-.controller('gameMapController', ['$scope', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', function($scope, uiGmapGoogleMapApi, $geolocation, Requests) {
- 
   //init map
   uiGmapGoogleMapApi.then(function(map) {
     // post rendering tasks....
@@ -104,7 +104,6 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     }
   };
 }])
-.controller('gameStatsController', [function($scope) {
-  //wishlist
-
+.controller('gameStatsController', ['$scope', 'data', function($scope, data) {
+  $scope.players = data;
 }]);

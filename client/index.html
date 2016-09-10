@@ -10,7 +10,7 @@
     <meta name="author" content="Bucolic Succulent">
 
     <!-- Styles -->
-    <!-- <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="styles/styles.css" rel="stylesheet" >
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -24,6 +24,28 @@
   <body ng-app='app' >
     <div class="top"><h1>Bucolic Succulent Scavenger Hunt</h1>
     <h2>A location based interactive experience!</h2></div>
+    <nav ng-hide="hideNav()" class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/#/dashboard">
+            <img class="BSicon" alt="Bucolic Succulent" src="./favicon.ico">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a ui-sref="dashboard">Dashboard</a></li>
+            <li><a ui-sref="createGame">New Game</a></li>
+            <li ng-show="gameNav()"><a ui-sref="game.map">Map</a></li>
+            <li ng-show="gameNav()"><a ui-sref="game.stats">Game Stats</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><button type="button" class="btn btn-default navbar-btn" ng-click="signOut()">Sign Out</button></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
     <!-- <div class="container">
       <div class="row">
         <p> Organize a New Game: Select locations from a map, then share with your friends and delight in visiting each spot while exploring your city
@@ -36,9 +58,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script> -->
 
-    <!-- This loads the googlemaps api which we will do on the server? -->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM&callback=" async defer></script>  -->
-
     <!-- loads map api stuff -->
     <script src='lib/lodash/lodash.js'></script>
     <script src="lib/angular/angular.js"></script>
@@ -46,9 +65,12 @@
     <script src='lib/angular-simple-logger/dist/angular-simple-logger.js'></script>
     <script src='lib/angular-google-maps/dist/angular-google-maps.js'></script>
     <script src="lib/ngGeolocation/ngGeolocation.js"></script>
+    <script   src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
    
     <!-- Angular Modules -->
     <script src="app/services.js"></script>
+    <script src="controllers/dashboard.js"></script>
     <script src="controllers/game.js"></script>
     <script src="controllers/createGame.js"></script>
     <script src="controllers/auth.js"></script>
