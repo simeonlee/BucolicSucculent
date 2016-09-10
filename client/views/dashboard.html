@@ -2,8 +2,8 @@
   <h1>Welcome {{user}}!</h1>
   <h3>Here is a list of games you are currently in:</h3>
   <ul>
-    <div ng-repeat="game in games track by $index" ng-click="goToGame(game.path)">
-      <li>Game #{{$index + 1}}<br>joined {{game.usergame.createdAt | date:'medium'}}</li>
+    <div ng-repeat="game in games track by $index">
+      <li ng-click="goToGame(game.path)">Game #{{$index + 1}}<br>joined {{game.usergame.createdAt | date:'medium'}}</li>
 
   </ul>
 
