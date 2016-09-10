@@ -23,7 +23,7 @@ Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
 User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
 
-Game.belongsTo(User, {foreignKey: { name: 'creatorId' }, as: 'creator', onDelete: 'cascade'}); // on User delete, cascade delete all games User created
+Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator', onDelete: 'cascade'}); // on User delete, cascade delete all games User created
 
 Location.belongsTo(Game, { onDelete: 'cascade' }); // on Game delete, cascade delete all Locations in that game
 Game.hasMany(Location); 
