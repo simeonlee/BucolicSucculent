@@ -156,29 +156,30 @@ describe('New Game Creation', function() {
   after(function() {
     User.destroy({ where: { username: 'beth' } });
   });
+  describe('POST request /api/game/create', function() {
+    it('create a new game with valid credentials', function(done) {
+      request(app)
+        .post('/api/game/create')
+        .set('username', user)
+        .set('X-ACCESS-TOKEN', token)
+        .send(locations)
+        .end(function(err, res) {
 
-  it('create a new game with valid credentials', function(done) {
-    request(app)
-      .post('/api/game/create')
-      .set('username', user)
-      .set('X-ACCESS-TOKEN', token)
-      .send(locations)
-      .end(function(err, res) {
+          expect(res.text).to.exist;
+          pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
 
-        expect(res.text).to.exist;
-        pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
-
-        Game.findOne({ where: { path: pathUrl } })
-        .then(function(gameFound) {
-          expect(gameFound).to.exist;
-          return Location.findAll({ include: { model: Game, where: { path: pathUrl } }});
-        })
-        .then(function(locationsFound) {
-          expect(locationsFound).to.exist;
-          expect(locationsFound.length).to.equal(4);
-        })
-        .then(done)
-        .catch(function(err) { throw err; });
-      });
+          Game.findOne({ where: { path: pathUrl } })
+          .then(function(gameFound) {
+            expect(gameFound).to.exist;
+            return Location.findAll({ include: { model: Game, where: { path: pathUrl } }});
+          })
+          .then(function(locationsFound) {
+            expect(locationsFound).to.exist;
+            expect(locationsFound.length).to.equal(4);
+          })
+          .then(done)
+          .catch(function(err) { throw err; });
+        });
+    });
   });
 });
