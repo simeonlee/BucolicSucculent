@@ -160,13 +160,22 @@ describe('New Game Creation', function() {
           { latitude: 5.67, longitude: 6.78, sequence: 3},
           { latitude: 7.89, longitude: 8.90, sequence: 4} ]
       })
-      .expect(function(res) {
+      .end(function(err, res) {
         expect(res.text).to.exist;
         pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
+
         Game.findOne({ where: { path: pathUrl } })
-        .then(function(gameFound) { expect(gameFound).to.exist; });
-      })
-      .end(done);
+        .then(function(gameFound) {
+          expect(gameFound).to.exist;
+
+          Location.findAll({ include: { model: Game, where: { path: pathUrl } }})
+          .then(function(locationsFound) {
+            expect(locationsFound).to.exist;
+            expect(locationsFound.length).to.equal(4);
+            done();
+          });
+        });
+      });
   });
 
 
