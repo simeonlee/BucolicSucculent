@@ -68,9 +68,6 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 }])
 .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
 
-  // $rootScope.host = '127.0.0.1';
-  // //$rootScope.host = '138.68.53.22';
-
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
   // however, we want to make sure the user is authorized
