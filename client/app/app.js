@@ -1,5 +1,5 @@
 
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game', 'app.dashboard'])
 
 
 .config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $httpProvider)  {
@@ -56,6 +56,27 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         url: '/stats',
         templateUrl: '../views/game.stats.html',
         controller: 'gameStatsController'
+      })
+      .state('dashboard', {
+        url: '/dashboard',
+        templateUrl: '../views/dashboard.html',
+        controller: 'dashboardController',
+        resolve: {
+          isAuth: function(Auth) {
+            console.log('checkauth');
+            return Auth.isAuth();
+          },
+          data: function(Requests, Auth) {
+            //Only fetch for data if logged in
+            if(!Auth.isAuth()) {
+              return [];
+            }
+            return Requests.getUserData().then(function(res) {
+              console.log(res.data, 'dashboard data');
+              return res.data;
+            }); 
+          }
+        }
       });
 
 

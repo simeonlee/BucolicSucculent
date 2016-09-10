@@ -43,7 +43,7 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-js', function() {
   return gulp.src(['./client/**/*.js', '!./client/lib/**'])
-    // .pipe(watch(['./client/**/*.js', '!./client/lib/**']))
+    .pipe(watch(['./client/**/*.js', '!./client/lib/**']))
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('./dist/'));
@@ -51,7 +51,7 @@ gulp.task('minify-js', function() {
 
 gulp.task('bower-files', function(){
     return gulp.src('./bower.json')
-        // .pipe(watch('./bower.json'))
+        .pipe(watch('./bower.json'))
         .pipe(mainBowerFiles( ))
         .pipe(uglify())
         .pipe(gulp.dest('./dist/lib'));
@@ -59,7 +59,7 @@ gulp.task('bower-files', function(){
 
 gulp.task('copy-html-files', function () {
   gulp.src(['./client/**/*.html', './client/*.ico'])
-    // .pipe(watch('./client/**/*.html'))
+    .pipe(watch('./client/**/*.html'))
     .pipe(gulp.dest('dist/'));
 });
 

@@ -40,6 +40,18 @@ angular.module('app.services', ['ngGeolocation'])
         url: '/api/game',
         data: data
       });
+    },
+    getUserData: function() {
+      var params = {
+        username: $window.localStorage.getItem('user')
+      };
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
+      return $http({
+        method: 'GET',
+        url: '/api/game',
+        params: params
+      });
     }
   };
 }])
@@ -83,6 +95,7 @@ angular.module('app.services', ['ngGeolocation'])
   };
 
   var isAuth = function () {
+    console.log('yes');
     return !!$window.localStorage.getItem('token');
   };
 
