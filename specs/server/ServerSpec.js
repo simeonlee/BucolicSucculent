@@ -10,7 +10,7 @@ var Status = require('../../server/config/db-config').Status;
 var User = require('../../server/config/db-config').User;
 
 
-xdescribe ('Signup/Login for Users', function() {
+describe ('Signup/Login for Users', function() {
 
   describe('POST request /api/users/signup', function() {
 
@@ -24,7 +24,7 @@ xdescribe ('Signup/Login for Users', function() {
       User.destroy({where: { username: 'kani' }});
     });
 
-    it('should create a new user if it does not exist', function(done) {
+    it('should create a new user', function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'beth')
@@ -40,7 +40,7 @@ xdescribe ('Signup/Login for Users', function() {
         });
     });
 
-    it('should return a token if signup was successful', function(done) {
+    it('should return a token', function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'kani')
@@ -53,7 +53,7 @@ xdescribe ('Signup/Login for Users', function() {
         .end(done);
     });
 
-    it('should not let you create the same username', function(done) {
+    it('should not let you create the duplicate username', function(done) {
       request(app)
         .post('/api/users/signup')
         .set('username', 'beth')
@@ -86,7 +86,7 @@ xdescribe ('Signup/Login for Users', function() {
       User.destroy({where: { username: 'beth' }});
     });
 
-    it('should return a token if login is successful', function(done) {
+    it('should return a token', function(done) {
       request(app)
         .post('/api/users/login')
         .set('username', 'beth')
@@ -99,7 +99,7 @@ xdescribe ('Signup/Login for Users', function() {
         .end(done);
     })
 
-    it('should return 401 "Authentication error" if password is wrong', function(done) {
+    it('should return 401 if password is wrong', function(done) {
       request(app)
         .post('/api/users/login')
         .set('username', 'beth')
@@ -112,7 +112,7 @@ xdescribe ('Signup/Login for Users', function() {
         .end(done);
     })
 
-    it('should return 401 "Authentication error" if user does not exist', function(done) {
+    it('should return 401 if user does not exist', function(done) {
       request(app)
         .post('/api/users/login')
         .set('username', 'kani')
@@ -133,7 +133,7 @@ describe('New Game Creation', function() {
   var user;
   var pathUrl;
   var locations = {
-    'markers': [
+    markers: [
       { latitude: 1.23, longitude: 2.34, sequence: 1},
       { latitude: 3.45, longitude: 4.56, sequence: 2},
       { latitude: 5.67, longitude: 6.78, sequence: 3},
@@ -164,7 +164,7 @@ describe('New Game Creation', function() {
       .set('X-ACCESS-TOKEN', token)
       .send(locations)
       .end(function(err, res) {
-        
+
         expect(res.text).to.exist;
         pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
 
