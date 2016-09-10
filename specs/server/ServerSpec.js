@@ -129,7 +129,7 @@ describe('New Game Creation', function() {
 
   var token;
   var user;
-  var URL;
+  var pathUrl;
 
   before(function(done) {
     request(app)
@@ -162,6 +162,8 @@ describe('New Game Creation', function() {
       })
       .expect(function(res) {
         expect(res.text).to.exist;
+        pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
+        console.log('pathUrl', pathUrl);
       })
       .end(done);
   });
