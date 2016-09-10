@@ -4,7 +4,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 
 .config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $httpProvider)  {
 
-    $urlRouterProvider.otherwise('/login'); // <-------------- default view TODO: SET TO DASHBOARD!
+    $urlRouterProvider.otherwise('/dashboard'); // <-------------- default view TODO: SET TO DASHBOARD!
 
     $stateProvider
       .state('login', {

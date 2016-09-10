@@ -16,7 +16,7 @@ angular.module('app.auth', [])
             $window.localStorage.removeItem('redir');
             $location.path(redir);
           } else {
-            $location.path('/createGame');
+            $location.path('/dashboard');
           }
         }
       })
@@ -40,7 +40,7 @@ angular.module('app.auth', [])
             $window.localStorage.removeItem('redir');
             $location.path(redir);
           } else {
-            $location.path('/createGame');
+            $location.path('/dashboard');
           }
         }
       })
