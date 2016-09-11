@@ -6,9 +6,6 @@ var app = express();
 app.use(bodyParser.json());
 app.use(express.static('./dist'));
 
-// initialize tokens
-app.set('jwtTokenSecret', 'teambsAThackreactor47');
-
 var db = require('./config/db-config').db;
 require('./config/router')(app, express);
 

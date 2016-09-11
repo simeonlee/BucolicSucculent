@@ -1,6 +1,4 @@
 var bcrypt = require('bcrypt-nodejs');
-var moment = require('moment');
-var jwt = require('jwt-simple');
 
 exports.encryptPassword = function(user, cb) {
 
@@ -28,28 +26,3 @@ exports.comparePassword = function(pwd, user, cb) {
     cb(null, isMatch);
   });
 };
-
-// get user from database
-exports.findByUsername = function (username, cb) {
-  User.findOne({ username: username }, cb);
-};
-
-exports.createToken = function (user, secret, cb) {
-  // has successfully authenticated, send a token
-  var expires = moment().add(7, 'days').valueOf();
-  var token = jwt.encode(
-    {
-      iss: user.dataValues.id,
-      exp: expires
-    }, 
-    secret
-  );
-  //    expires : expires,
-  //    user : user.toJSON()        
-  cb ({
-    token : token,
-    user: user.dataValues.username
-  });
-};
-
-

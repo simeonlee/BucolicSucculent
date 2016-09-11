@@ -1,11 +1,7 @@
 var Sequelize = require('sequelize');
+var settings = require('../../settings').db;
 
-var config = {
-  username: 'root',
-  password: 'root'
-};
-
-var db = new Sequelize('Scavenger', 'root', 'root', {
+var db = new Sequelize('Scavenger', settings.username, settings.password, {
   host: 'localhost',
   dialect: 'mysql',
   port: 3306,

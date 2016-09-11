@@ -1,0 +1,9 @@
+{
+  "db": {
+    "username": "root",
+    "password": "root"
+  },
+  "token": {
+    "secret": "teambsAThackreactor47"
+  }
+}
