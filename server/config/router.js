@@ -19,13 +19,17 @@ module.exports = function(app, express) {
     res.send(fullUrl);
   };
 
+  /**** for production with authentication ****/
   app.route('/api/game')
-    .get(jwtauth, requireAuth, helpers.joinGame)                                // for production with authentication
-    .put(jwtauth, requireAuth, helpers.updateStatus)                            // for production with authentication
-    .post(jwtauth, requireAuth, helpers.createGame, detectEnvironment);         // for production with authentication
-    // .get('/api/game', helpers.joinGame)                                      // bypass auth for testing with postman
-    // .put('/api/game', helpers.updateStatus)                                  // bypass auth for testing with postman
-    // .post(helpers.createGame, detectEnvironment);                            // bypass auth for testing with postman
+    .get(jwtauth, requireAuth, helpers.joinGame)
+    .put(jwtauth, requireAuth, helpers.updateStatus)
+    .post(jwtauth, requireAuth, helpers.createGame, detectEnvironment);
+
+  /**** for development and testing to bypass authentication ****/
+  // app.route('/api/game')
+  //   .get('/api/game', helpers.joinGame)
+  //   .put('/api/game', helpers.updateStatus)
+  //   .post(helpers.createGame, detectEnvironment);
 
   app.post('/api/users/signup', helpers.createUser);
 
