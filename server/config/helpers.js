@@ -49,19 +49,18 @@ exports.updateStatus = function (req, res) {
   User.findOne({ where: { username: req.user.username } })        // for production with authentication
   // User.findOne({ where: { username: req.body.username } })     // bypass auth for testing with postman
   .then(function (currentUser) {
-    Status.findOne({
+    return Status.findOne({
       where: {
         userId: currentUser.id,
         locationId: req.body.locationId
       }
-    })
-    .then(function(currentStatus) {
-      currentStatus.update({ status: true })
-      .then(function(result) {
-        res.send(result);
-      });
     });
   })
+  .then(function(currentStatus) {
+    return currentStatus.update({ status: true }); })
+  .then(function(result) {
+    res.send(result);
+  });
 };
 
 exports.createGame = function(req, res, next) {
@@ -87,19 +86,19 @@ exports.createGame = function(req, res, next) {
   // Find the creator in the User table
   .then(function(currentUser) {
     // then create a Game and its locations
-    Game.create({
+    return Game.create({
       path: pathUrl,
       locations: locations
     }, { include: [Location] })
     .then(function(game) {
       // then set the creatorId foreign key for the Game
-      game.setCreator(currentUser)
-      .then(function(){
-        // when finished, send back the pathUrl
-        req.pathUrl = pathUrl;
-        next();
-      });
+      return game.setCreator(currentUser);
     });
+  })
+  .then(function(){
+    // when finished, send back the pathUrl
+    req.pathUrl = pathUrl;
+    next();
   });
 };
 
@@ -177,32 +176,30 @@ var generateStatuses = function(req, res) {
   User.findOne({ where: { username: req.query.username } })
   .then(function(currentUser) {
     // Then find the current Game in the Game Table via the given Path
-    Game.findOne({ where: { path: req.query.path } })
-    .then(function(currentGame){
+    return Game.findOne({ where: { path: req.query.path } }) })
+  .then(function(currentGame){
       // If a game at the path exists...
-      if (currentGame) {
-        // Add the current User to the current Game
-        currentUser.addGame(currentGame);
+    if (currentGame) {
+      // Add the current User to the current Game
+      currentUser.addGame(currentGame);
 
-        // Then find all the locations associated to the current Game...
-        Location.findAll({
-          include: {
-            model: Game,
-            where: { path: req.query.path },
-          }
-        }).then(function(allLocs) {
-          // And initialize the status of each location for the User
-          currentUser.addLocations(allLocs, { status: false })
-          .then(function() {
-            // When complete, return Statuses to client.
-            returnStatuses(req, res, currentGame);
-          });
-        });
-      } else {
-        // return an 422 error.
-        res.status(422).send('Game at URL path does not exist.')
+      // Then find all the locations associated to the current Game...
+    return Location.findAll({
+      include: {
+        model: Game,
+        where: { path: req.query.path },
       }
-    });
+    })
+  } else {
+    // if currentGame does not exist, end response and return an 422 error.
+    res.status(422).send('Game at URL path does not exist.')
+  }})
+  .then(function(allLocs) {
+    // Initialize the status of each location for the User
+    return currentUser.addLocations(allLocs, { status: false }) })
+  .then(function() {
+    // When complete, return Statuses to client.
+    returnStatuses(req, res, currentGame);
   });
 };
 
