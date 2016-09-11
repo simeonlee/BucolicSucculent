@@ -1,5 +1,4 @@
 var helpers = require('./helpers');
-var express = require('express');
 var jwtauth = require('./jwt');
 
 module.exports = function(app, express) {
