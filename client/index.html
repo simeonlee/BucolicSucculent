@@ -22,37 +22,35 @@
 
   </head>
   <body ng-app='app' >
-    <div class="top"><h1>Bucolic Succulent Scavenger Hunt</h1>
-    <h2>A location based interactive experience!</h2></div>
-    <nav ng-hide="hideNav()" class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/#/dashboard">
-            <img class="BSicon" alt="Bucolic Succulent" src="./favicon.ico">
-          </a>
+    <div class="app">
+        <div class="top">
+            <h1>Bucolic Succulent Scavenger Hunt</h1>
+            <h2>A location based interactive experience!</h2>
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a ui-sref="dashboard">Dashboard</a></li>
-            <li><a ui-sref="createGame">New Game</a></li>
-            <li ng-show="gameNav()"><a ui-sref="game.map">Map</a></li>
-            <li ng-show="gameNav()"><a ui-sref="game.stats">Game Stats</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><button type="button" class="btn btn-default btn-xs navbar-btn" ng-click="signOut()">Sign Out</button></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+        <nav ng-hide="hideNav()" class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/#/dashboard">
+                <img class="BSicon" alt="Bucolic Succulent" src="./favicon.ico">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a ui-sref="dashboard">Dashboard</a></li>
+                <li><a ui-sref="createGame">New Game</a></li>
+                <li ng-show="gameNav()"><a ui-sref="game.map">Map</a></li>
+                <li ng-show="gameNav()"><a ui-sref="game.stats">Game Stats</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><button type="button" class="btn btn-default btn-xs navbar-btn" ng-click="signOut()">Sign Out</button></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+    </div>
 
 
-    <!-- <div class="container">
-      <div class="row">
-        <p> Organize a New Game: Select locations from a map, then share with your friends and delight in visiting each spot while exploring your city
-        </p>
-      </div>
-    </div> -->
-    <div ui-view></div>
+        <div ui-view></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->

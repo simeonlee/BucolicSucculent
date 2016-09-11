@@ -60,6 +60,12 @@ body {
     text-align:center;
 }
 
+.app {
+    width: 80%;
+    margin: auto;
+    background-color: #E2F9B8;
+}
+
 .btn {
     border: 1px solid #000;
     border-radius: 5px;
@@ -91,6 +97,14 @@ th {
 }
 #playerTable{
     width: 200px;
-    display: inline-flex;
-    justify-content: space-between;
+    border: 3px solid #939F5C;
+    margin: 30px;
+}
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.tablePlayerName {
+    background-color: #939F5C;
 }
