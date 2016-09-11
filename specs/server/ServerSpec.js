@@ -243,8 +243,7 @@ describe('Game Creation', function() {
           },{
             model: Game,
             where: { path: pathUrl }
-          }],
-          raw: true
+          }]
         }).then(function(result) {
           expect(result.length).to.equal(2);
           done();
@@ -264,6 +263,29 @@ describe('Game Creation', function() {
             done();
           })
       });
+    });
+    describe('When given the game Path', function() {
+
+      before(function(done) {
+        done();
+      });
+
+      it('returns all the players in the game and their statuses', function(done) {
+        done();
+      });
+
+    });
+
+    describe('When given the Username', function() {
+
+      before(function(done) {
+        done();
+      });
+
+      it('returns all the games the User is playing', function(done) {
+        done();
+      });
+
     });
 
   });
