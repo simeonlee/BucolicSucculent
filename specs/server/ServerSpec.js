@@ -149,10 +149,10 @@ describe('Creating and Joining Games', function() {
     })
   });
 
-  // after(function() {
-  //   User.destroy({ where: { username: 'test1' } });
-  //   User.destroy({ where: { username: 'test2' } });
-  // });
+  after(function() {
+    User.destroy({ where: { username: 'test1' } });
+    User.destroy({ where: { username: 'test2' } });
+  });
 
   describe('POST request /api/game/create', function() {
 
@@ -168,10 +168,10 @@ describe('Creating and Joining Games', function() {
         .set('username', user)
         .set('X-ACCESS-TOKEN', token)
         .send(locations)
-        .end(function(err, res) {
+        .expect(function(res) {
           pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
-          done();
         })
+        .end(done);
     });
 
     it('should create a new game in the db', function(done) {
@@ -213,9 +213,7 @@ describe('Creating and Joining Games', function() {
           .set('X-ACCESS-TOKEN', token)
           .query({ path: pathUrl })
           .query({ username: 'test1' })
-          .end(function(err, res) {
-            done();
-          })
+          .end(done)
       });
 
       it('generates Statuses for each Location (creates relation between User/Game and User/Location)', function(done) {
@@ -240,11 +238,11 @@ describe('Creating and Joining Games', function() {
           .set('X-ACCESS-TOKEN', token)
           .query({ path: pathUrl })
           .query({ username: 'test1' })
-          .end(function(err, res) {
+          .expect(function(res) {
             expect(res.body.locations[0].statuses.status).to.equal(false);
             expect(res.body.locations[1].statuses.status).to.equal(false);
-            done();
           })
+          .end(done);
       });
     });
 
@@ -265,8 +263,10 @@ describe('Creating and Joining Games', function() {
           .set('username', user)
           .set('X-ACCESS-TOKEN', token)
           .send(locations2)
-          .end(function(err, res) {
+          .expect(function(res) {
             pathUrl2 = res.text.substring(res.text.length-9, res.text.length-4);
+          })
+          .end(function() {
             // and have user join new game
             request(app)
               .get('/api/game')
@@ -274,9 +274,7 @@ describe('Creating and Joining Games', function() {
               .set('X-ACCESS-TOKEN', token)
               .query({ path: pathUrl2 })
               .query({ username: 'test1' })
-              .end(function(err, res) {
-                done();
-              });
+              .end(done);
           });
       })
 
@@ -286,7 +284,7 @@ describe('Creating and Joining Games', function() {
           .set('username', user)
           .set('X-ACCESS-TOKEN', token)
           .query({ username: 'test1' })
-          .end(function(err, res) {
+          .expect(function(res) {
             expect(res.body.username).to.equal('test1');
             expect(res.body.games.length).to.equal(2);
             expect(res.body.games[0].id).to.exist;
@@ -295,8 +293,8 @@ describe('Creating and Joining Games', function() {
             expect(res.body.games[1].id).to.exist;
             expect(res.body.games[1].path).to.equal(pathUrl2);
             expect(res.body.games[1].usergame).to.exist;
-            done();
-          });
+          })
+          .end(done);
       });
 
     });
@@ -321,23 +319,20 @@ describe('Creating and Joining Games', function() {
             })
             .end(function() {
               // have the both users join the game
-
               request(app)
                 .get('/api/game')
                 .set('username', user)
                 .set('X-ACCESS-TOKEN', token)
                 .query({ path: pathUrl })
                 .query({ username: 'test1' })
-                .end(function(err, res) {
+                .end(function() {
                   request(app)
                     .get('/api/game')
                     .set('username', user2)
                     .set('X-ACCESS-TOKEN', token2)
                     .query({ path: pathUrl })
                     .query({ username: 'test2' })
-                    .end(function(err, res) {
-                      done();
-                    })
+                    .end(done);
                 })
             })
           });
@@ -349,7 +344,7 @@ describe('Creating and Joining Games', function() {
           .set('username', user2)
           .set('X-ACCESS-TOKEN', token2)
           .query({ path: pathUrl })
-          .end(function(err, res) {
+          .expect(function(res) {
             expect(res.body.length).to.equal(2);
             expect(res.body[1].username).to.equal('test2');
             expect(res.body[1].locations.length).to.equal(2);
@@ -361,9 +356,91 @@ describe('Creating and Joining Games', function() {
             expect(res.body[1].locations[1].latitude).to.equal(3.45);
             expect(res.body[1].locations[1].longitude).to.equal(4.56);
             expect(res.body[1].locations[1].statuses.status).to.exist;
-            done();
-          });
+          })
+          .end(done);
       });
     });
+  });
+});
+
+describe('Interacting with Game', function() {
+
+  var token;
+  var user;
+  var pathUrl;
+  var locationId;
+
+  var locations = {
+    markers: [
+      { latitude: 9.87, longitude: 8.76, sequence: 1},
+      { latitude: 7.65, longitude: 6.54, sequence: 2} ]
+  };
+
+  before(function(done) {
+    User.destroy({ where: { username: 'test3' } })
+    .then(function() {
+      request(app)
+        .post('/api/users/signup')
+        .set('username', 'test3')
+        .set('password', 'test3')
+        .expect(201)
+        .expect(function(res) {
+          token = res.body.token;
+          user = res.body.user;
+        })
+        .end(function(){
+          request(app)
+            .post('/api/game/create')
+            .set('username', user)
+            .set('X-ACCESS-TOKEN', token)
+            .send(locations)
+            .expect(function(res){
+              pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
+            })
+            .end(done);
+        });
+    })
+  });
+
+  after(function() {
+    User.destroy({ where: { username: 'test3' } });
+  });
+
+  describe('PUT request /api/game', function() {
+
+    before(function(done) {
+      request(app)
+        .get('/api/game')
+        .set('username', user)
+        .set('X-ACCESS-TOKEN', token)
+        .query({ path: pathUrl })
+        .query({ username: 'test3' })
+        .expect(function(res) {
+          locationId = res.body.locations[1].id;
+        })
+        .end(function() {
+          request(app)
+            .put('/api/game')
+            .set('username', user)
+            .set('X-ACCESS-TOKEN', token)
+            .send({ locationId: locationId })
+            .end(done)
+        });
+    });
+
+    it('should update the status of the location', function(done) {
+      request(app)
+        .get('/api/game')
+        .set('username', user)
+        .set('X-ACCESS-TOKEN', token)
+        .query({ path: pathUrl })
+        .query({ username: 'test3' })
+        .expect(function(res) {
+          expect(res.body.locations[0].statuses.status).to.equal(false);
+          expect(res.body.locations[1].statuses.status).to.equal(true);
+        })
+        .end(done);
+    });
+
   });
 });
