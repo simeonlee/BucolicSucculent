@@ -111,8 +111,8 @@ exports.createUser = function(req, res) {
     
     // create it
     Utils.encryptPassword(user, function(err, user) {
-       User.create(user)
-      .then(function(user, created) {
+      User.create(user)
+      .then(function(user) {
         // create token and return
         var secret = 'teambsAThackreactor47';
         Utils.createToken(user, secret, function(token) {
