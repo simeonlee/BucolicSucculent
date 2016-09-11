@@ -10,7 +10,7 @@ var Status = require('../../server/config/db-config').Status;
 var User = require('../../server/config/db-config').User;
 
 
-describe ('Signup/Login for Users', function() {
+xdescribe ('Signup/Login for Users', function() {
 
   describe('POST request /api/users/signup', function() {
 
@@ -156,7 +156,8 @@ describe('New Game Creation', function() {
   after(function() {
     User.destroy({ where: { username: 'test1' } });
   });
-  describe('POST request /api/game/create', function() {
+
+  xdescribe('POST request /api/game/create', function() {
     it('create a new game with valid credentials', function(done) {
       request(app)
         .post('/api/game/create')
@@ -181,5 +182,24 @@ describe('New Game Creation', function() {
           .catch(function(err) { throw err; });
         });
     });
+  });
+
+  describe('GET request /api/game', function() {
+
+    describe('When given both the game Path and the Username', function() {
+      it('generates Statuses for each Location if initial join', function() {
+
+      });
+      it('initializes all Statuses as false', function() {
+
+      });
+      it('returns the statuses when player has joined the game', function() {
+
+      });
+      it('returns the saved statuses if game has been previously joined', function() {
+
+      });
+    });
+
   });
 });
