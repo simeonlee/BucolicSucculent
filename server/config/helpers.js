@@ -3,9 +3,7 @@ var Location = require('./db-config').Location;
 var Status = require('./db-config').Status;
 var User = require('./db-config').User;
 var Utils = require('./utils');
-var jwtauth = require('./jwt');
 var md5 = require('md5');
-var jwt = require('jwt-simple');
 
 exports.joinGame = function(req, res) {
 
