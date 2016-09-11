@@ -16,10 +16,14 @@
     <h3>Status for Player: {{user}}</h3>
     <p ng-if="verifyFailed">You are not at this location</p> <!-- will show if user is not within 100 meters of location -->
     <h4>Locations</h4>
-      <form>
-        <div ng-repeat="location in markers"> <!-- populate list of locations and their status with checkboxes -->
+      <!-- <form>
+        <div ng-repeat="location in markers">  populate list of locations and their status with checkboxes 
           <input ng-change="validateLocation({{location.id}})" ng-model="validateMe" type="checkbox" value="{{location.sequence}}" ng-checked="location.statuses.status" ng-disabled="location.statuses.status"><span ng-class="{statusComplete: location.statuses.status}">Location: {{location.sequence}}</span><br>
         </div>
-      </form>
+      </form> -->
+
+    <div class="btn-group btn-group-lg" role="group">
+      <div ng-repeat="location in markers" ng-click="validateLocation(location.id)" ng-model="validateMe" class="btn btn-primary" ng-class="{disabled: location.statuses.status}" role="group">{{location.sequence}}</div>
+    </div>
   </div>
 </div>
