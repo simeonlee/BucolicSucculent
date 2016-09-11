@@ -154,17 +154,10 @@ describe('Creating and Joining Games', function() {
     User.destroy({ where: { username: 'test2' } });
   });
 
-  describe('POST request /api/game/create', function() {
-
-    var locations = {
-      markers: [
-        { latitude: 1.23, longitude: 2.34, sequence: 1},
-        { latitude: 3.45, longitude: 4.56, sequence: 2} ]
-    };
-
-    before(function(done) {
+  describe('POST request /api/game', function() {
+    it('create a new game with valid credentials', function(done) {
       request(app)
-        .post('/api/game/create')
+        .post('/api/game')
         .set('username', user)
         .set('X-ACCESS-TOKEN', token)
         .send(locations)
