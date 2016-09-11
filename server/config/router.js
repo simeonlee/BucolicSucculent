@@ -23,15 +23,13 @@ module.exports = function(app, express) {
   app.route('/api/game')
     .get(jwtauth, requireAuth, helpers.joinGame)
     .put(jwtauth, requireAuth, helpers.updateStatus)
-    .post(jwtauth, requireAuth, helpers.createGame, detectEnvironment)
-    .delete(jwtauth, requireAuth, helpers.deleteGame);
+    .post(jwtauth, requireAuth, helpers.createGame, detectEnvironment);
 
   /**** for development and testing to bypass authentication ****/
   // app.route('/api/game')
   //   .get(helpers.joinGame)
   //   .put(helpers.updateStatus)
-  //   .post(helpers.createGame, detectEnvironment)
-  //   .delete(helpers.deleteGame);
+  //   .post(helpers.createGame, detectEnvironment);
 
   app.post('/api/users/signup', helpers.createUser);
 
