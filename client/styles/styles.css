@@ -85,7 +85,12 @@ body {
 th {
     text-align: center;
 }
-#dashboard{
+#dashboardTable{
     width: 60%;
     margin: auto;
+}
+#playerTable{
+    width: 200px;
+    display: inline-flex;
+    justify-content: space-between;
 }

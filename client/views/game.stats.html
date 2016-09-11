@@ -2,13 +2,23 @@
   <h2>Current Game Stats</h2>
 
   <h3>Players</h3>
-    <ul class="players">
-      <div ng-repeat="player in players">
-        <li>{{player.username}}</li>
-        <ul class="locations">
-          <li ng-repeat="location in player.locations">{{location.sequence}}: {{location.statuses.status}}</li>
-        </ul>
-      </div>
-    </ul>
+    <div ng-repeat="player in players" id="playerTable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="tablePlayerName" colspan="2">{{player.username}}</th>
+          </tr>
+          </tr>
+            <th>Location</th>
+            <th>Status</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="location in player.locations">
+            <td>{{location.sequence}}</td>
+            <td>{{location.statuses.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
 </div>
