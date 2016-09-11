@@ -82,3 +82,10 @@ body {
     color: red;
     background-color: yellow;
 }
+th {
+    text-align: center;
+}
+table {
+    width: 60% !important;
+    margin: auto;
+}
