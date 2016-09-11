@@ -16,7 +16,8 @@
         <tbody>
           <tr ng-repeat="location in player.locations">
             <td>{{location.sequence}}</td>
-            <td>{{location.statuses.status}}</td>
+            <td ng-if="location.statuses.status === true"><span class="found glyphicon glyphicon-ok"></span></td>
+            <td ng-if="location.statuses.status === false"><span class="notFound glyphicon glyphicon-remove"></span></td>
           </tr>
         </tbody>
       </table>

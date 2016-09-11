@@ -108,6 +108,15 @@ th {
 .tablePlayerName {
     background-color: #939F5C;
 }
+h1 {
+    margin-top: 30px;
+}
+.found {
+    color: green;
+}
+.notFound {
+    color: red;
+}
 
 /*color pallete!*/
 /*https://coolors.co/313715-d16014-939f5c-bbce8a-e2f9b8*/
