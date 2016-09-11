@@ -1,5 +1,3 @@
-// placeholder for server utility functions
-// that are not related to database
 var bcrypt = require('bcrypt-nodejs');
 var moment = require('moment');
 var jwt = require('jwt-simple');
@@ -10,15 +8,15 @@ exports.encryptPassword = function(user, cb) {
 
   // generate a salt
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
+    if (err) { return next(err); }
 
     // hash the password along with our new salt
     bcrypt.hash(user.password, salt, null, function(err, hash) {
-        if (err) return cb(err, user);
+        if (err) { return cb(err); }
 
         // override the cleartext password with the hashed one
         user.password = hash;
-        cb(err, user);
+        cb(null, user);
     });
   });
 };
@@ -26,9 +24,7 @@ exports.encryptPassword = function(user, cb) {
 // compare to encrypted password
 exports.comparePassword = function(pwd, user, cb) {
   bcrypt.compare(pwd, user.password, function(err, isMatch) {
-    if (err) {
-      return cb(err);
-    }
+    if (err) { return cb(err); }
     cb(null, isMatch);
   });
 };
