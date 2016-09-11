@@ -48,7 +48,6 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
               return [];
             }
             return Requests.getGameData($stateParams.path).then(function(res) {
-              console.log(res.data);
               return res.data.locations;
             }); 
           }
@@ -123,7 +122,6 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
   // if it's not valid, we then redirect back to signin/signup
   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
-      console.log('routchangeredirect');
       $location.path('/login');
     }
   });

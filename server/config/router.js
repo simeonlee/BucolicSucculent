@@ -262,7 +262,6 @@ var returnStatuses = function(req, res, gameFound) {
 //       "sequence": 2,
 //       "latitude": 3.345,
 //       "longitude": 4.564,
-//       "gameId": 29,
 //       "statuses": {
 //         "status": true,
 //       }

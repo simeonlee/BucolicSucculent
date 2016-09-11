@@ -9,7 +9,7 @@ var db = new Sequelize('Scavenger', 'root', 'root', {
   host: 'localhost',
   dialect: 'mysql',
   port: 3306,
-  logging: console.log,
+  logging: false,
 });
 
 var Game = require('../games/games')(db);
@@ -23,11 +23,10 @@ Game.belongsToMany(User, {through: 'usergame', foreignKey: 'gameId'});
 Location.belongsToMany(User, {through: 'statuses', foreignKey: 'locationId'});
 User.belongsToMany(Location, {through: 'statuses', foreignKey: 'userId'});
 
-// Might not like the double-relationship
-Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator'});
+Game.belongsTo(User, {foreignKey: 'creatorId', as: 'creator', onDelete: 'cascade'}); // on User delete, cascade delete all games User created
 
-Location.belongsTo(Game);
-Game.hasMany(Location); // needed?
+Location.belongsTo(Game, { onDelete: 'cascade' }); // on Game delete, cascade delete all Locations in that game
+Game.hasMany(Location); 
 
 module.exports = {
   db: db,

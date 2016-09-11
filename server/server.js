@@ -17,9 +17,9 @@ require('./config/router')(app, express);
 
 
 app.listen(4200, function () {
-  console.log('Example app listening on port 4200!');
+  console.log('Server listening on port 4200!');
   db.sync().then(function() {
-    console.log('Synced with mySql');
+    // console.log('Synced with mySql');
   });
 });
 
