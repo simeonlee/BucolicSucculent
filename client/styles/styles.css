@@ -1,9 +1,6 @@
 .angular-google-map-container { 
   height: 400px; 
 }
-.statusComplete{
-  text-decoration: line-through;
-}
 
 #loginContainer {
     width: 50%;
@@ -63,14 +60,17 @@ body {
     text-align:center;
 }
 
+.app {
+    width: 80%;
+    margin: auto;
+    background-color: #E2F9B8;
+}
+
 .btn {
     border: 1px solid #000;
     border-radius: 5px;
     color: #000;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 10px 30px;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -84,3 +84,39 @@ body {
     border: 2px solid #222;
     position: ;
 }
+.error{
+    color: red;
+    background-color: yellow;
+}
+th {
+    text-align: center;
+}
+#dashboardTable{
+    width: 60%;
+    margin: auto;
+}
+#playerTable{
+    width: 200px;
+    border: 3px solid #939F5C;
+    margin: 30px;
+}
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.tablePlayerName {
+    background-color: #939F5C;
+}
+h1 {
+    margin-top: 30px;
+}
+.found {
+    color: green;
+}
+.notFound {
+    color: red;
+}
+
+/*color pallete!*/
+/*https://coolors.co/313715-d16014-939f5c-bbce8a-e2f9b8*/
