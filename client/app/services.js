@@ -36,7 +36,7 @@ angular.module('app.services', ['ngGeolocation'])
       $http.defaults.headers.common['x-access-token'] = token;
       return $http({
         method: 'POST',
-        url: '/api/game/create',
+        url: '/api/game',
         data: data
       });
     },
