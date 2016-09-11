@@ -259,7 +259,7 @@ describe('Creating and Joining Games', function() {
       before(function(done) {
         // create a 2nd game
         request(app)
-          .post('/api/game/create')
+          .post('/api/game')
           .set('username', user)
           .set('X-ACCESS-TOKEN', token)
           .send(locations2)
@@ -390,7 +390,7 @@ describe('Interacting with Game', function() {
         })
         .end(function(){
           request(app)
-            .post('/api/game/create')
+            .post('/api/game')
             .set('username', user)
             .set('X-ACCESS-TOKEN', token)
             .send(locations)
