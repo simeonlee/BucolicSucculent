@@ -250,7 +250,7 @@ describe('Game Creation', function() {
         });
       });
 
-      it('returns the statuses for players who joined the game', function(done) {
+      it('returns the statuses (default is false) for players who joined the game', function(done) {
         request(app)
           .get('/api/game')
           .set('username', user)
