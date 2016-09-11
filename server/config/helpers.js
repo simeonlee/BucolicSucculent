@@ -176,30 +176,31 @@ var generateStatuses = function(req, res) {
   User.findOne({ where: { username: req.query.username } })
   .then(function(currentUser) {
     // Then find the current Game in the Game Table via the given Path
-    return Game.findOne({ where: { path: req.query.path } }) })
-  .then(function(currentGame){
-      // If a game at the path exists...
-    if (currentGame) {
-      // Add the current User to the current Game
-      currentUser.addGame(currentGame);
+    Game.findOne({ where: { path: req.query.path } })
+    .then(function(currentGame){
+        // If a game at the path exists...
+      if (currentGame) {
+        // Add the current User to the current Game
+        currentUser.addGame(currentGame);
 
-      // Then find all the locations associated to the current Game...
-    return Location.findAll({
-      include: {
-        model: Game,
-        where: { path: req.query.path },
-      }
-    })
-  } else {
-    // if currentGame does not exist, end response and return an 422 error.
-    res.status(422).send('Game at URL path does not exist.')
-  }})
-  .then(function(allLocs) {
-    // Initialize the status of each location for the User
-    return currentUser.addLocations(allLocs, { status: false }) })
-  .then(function() {
-    // When complete, return Statuses to client.
-    returnStatuses(req, res, currentGame);
+        // Then find all the locations associated to the current Game...
+        Location.findAll({
+          include: {
+            model: Game,
+            where: { path: req.query.path },
+          }
+        })
+        .then(function(allLocs) {
+          // Initialize the status of each location for the User
+          return currentUser.addLocations(allLocs, { status: false }) })
+        .then(function() {
+          // When complete, return Statuses to client.
+          returnStatuses(req, res, currentGame);
+        });
+      } else {
+        // if currentGame does not exist, end response and return an 422 error.
+        res.status(422).send('Game at URL path does not exist.')
+    }});
   });
 };
 
