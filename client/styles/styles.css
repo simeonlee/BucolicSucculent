@@ -1,9 +1,6 @@
 .angular-google-map-container { 
   height: 400px; 
 }
-.statusComplete{
-  text-decoration: line-through;
-}
 
 #loginContainer {
     width: 50%;
@@ -68,9 +65,6 @@ body {
     border-radius: 5px;
     color: #000;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 10px 30px;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -83,4 +77,8 @@ body {
     border-radius: 50%;
     border: 2px solid #222;
     position: ;
+}
+.error{
+    color: red;
+    background-color: yellow;
 }
