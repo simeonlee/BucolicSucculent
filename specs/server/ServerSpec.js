@@ -155,7 +155,14 @@ describe('Creating and Joining Games', function() {
   });
 
   describe('POST request /api/game', function() {
-    it('create a new game with valid credentials', function(done) {
+
+    var locations = {
+      markers: [
+        { latitude: 1.23, longitude: 2.34, sequence: 1},
+        { latitude: 3.45, longitude: 4.56, sequence: 2} ]
+    };
+
+    before(function(done) {
       request(app)
         .post('/api/game')
         .set('username', user)
