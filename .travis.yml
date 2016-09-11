@@ -4,4 +4,4 @@ node_js:
 services:
   - mysql
 before_script:
-  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - echo "DROP DATABASE scavenger; CREATE DATABASE scavenger; USE scavenger; USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
