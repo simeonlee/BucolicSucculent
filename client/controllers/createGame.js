@@ -24,7 +24,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       });
 
       // hide map on game creation
-    $scope.showMap = false;
+      $scope.showMap = false;
   };
 
   $scope.map = { 
@@ -43,9 +43,9 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     $scope.createOptions = {
       drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControlOptions: {
-        position: google.maps.ControlPosition.TOP_CENTER,
+      position: google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
-          google.maps.drawing.overlayType.MARKER,
+          google.maps.drawing.OverlayType.MARKER,
         ]
       },
       markerOptions: {
