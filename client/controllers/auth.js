@@ -21,6 +21,8 @@ angular.module('app.auth', [])
         }
       })
       .catch(function (error) {
+        $window.alert('Username does not yet exist! Please Sign-up');
+        $location.path('/signup');
         console.error(error);
       });
   };
@@ -43,6 +45,7 @@ angular.module('app.auth', [])
         }
       })
       .catch(function (error) {
+        $window.alert('Username already exists!');
         console.error(error);
       });
 
