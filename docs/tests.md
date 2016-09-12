@@ -1,6 +1,7 @@
 Server-Side Tests:
 
     - Uses Mocha/Chai and supertest
+    - integrated with TravisCI and github for testing on all Pull Requests
 
      Signup/Login for Users
 
