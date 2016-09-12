@@ -34,7 +34,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     zoom: 13
   };
   //init map
-  uiGmapGoogleMapApi.then(function(map) {
+  uiGmapGoogleMapApi.then(function() {
     // post rendering tasks....
   });
   
@@ -49,7 +49,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
   createMyPosition();
   //watch for position change
-  $scope.$on('$geolocation.position.changed', function(newValue) {
+  $scope.$on('$geolocation.position.changed', function() {
     $scope.circle = {
       center: {
         latitude: $geolocation.position.coords.latitude,
@@ -88,7 +88,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
           if (distanceBetween <= 100) { //<---------- ok within 100 meters
 
             // make call to server to update location status for player
-            Requests.updateLocStatus($scope.user, locationId).then(function(res) {    
+            Requests.updateLocStatus($scope.user, locationId).then(function() {    
               // adjust local location data
               location.statuses.status = true;
               $scope.verifyFailed = false;
