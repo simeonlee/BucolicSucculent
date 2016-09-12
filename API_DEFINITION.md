@@ -16,7 +16,8 @@ SIGN UP
     "username": "Sam"
     "password": "hr47"
   }
-  Advanced Content: server passes back an authenticated jwt?
+3.  server passes back an authenticated jwt which is stored in the 
+  client headers and retransmitted with every subsequent request.
 
 LOGIN
 1.  user fills out login page and submits ->
@@ -25,6 +26,9 @@ LOGIN
     "username": "Sam"
     "password": "hr47"
   }
+
+2.  server passes back an authenticated jwt which is stored in the 
+  client headers and retransmitted with every subsequent request.
 
 
 CREATING/JOINING A GAME
