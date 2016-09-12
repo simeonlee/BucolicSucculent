@@ -1,15 +1,13 @@
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
-// var concat = require('gulp-concat');
+var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
-var mainBowerFiles = require('gulp-main-bower-files');
 var ngAnnotate = require('gulp-ng-annotate');
 var shell = require('gulp-shell');
-var watch = require('gulp-watch');
 
 gulp.task('nodemon', function() {
   nodemon({
@@ -36,30 +34,28 @@ gulp.task('clean', function() {
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
   return gulp.src(['./client/**/*.css', '!./client/lib/**'])
-    .pipe(watch(['./client/**/*.css', '!./client/lib/**']))
     .pipe(minifyCSS(opts))
     .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('minify-js', function() {
-  return gulp.src(['./client/**/*.js', '!./client/lib/**'])
-    .pipe(watch(['./client/**/*.js', '!./client/lib/**']))
+  return gulp.src(['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'])
+    .pipe(concat('build.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('bower-files', function(){
-    return gulp.src('./bower.json')
-        .pipe(watch('./bower.json'))
-        .pipe(mainBowerFiles( ))
+    return gulp.src(['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'])
+        .pipe(concat('lib.js'))
+        .pipe(ngAnnotate())
         .pipe(uglify())
         .pipe(gulp.dest('./dist/lib'));
 });
 
 gulp.task('copy-html-files', function () {
   gulp.src(['./client/**/*.html', './client/*.ico'])
-    .pipe(watch('./client/**/*.html'))
     .pipe(gulp.dest('dist/'));
 });
 
