@@ -4,12 +4,12 @@
 | /api/game?username&gameId        |    GET    |    empty     |    Find or create JSON of game information for that user to render front-end |
 | /api/game?username&gameId        |    PUT    |     JSON     |                                               Return updated location status |
 | /api/game                        |    POST   |     JSON     |                 Create a new game given the locations and return the game id |
-| /api/users/signup                |    POST   |     JSON     |       Creates the account in the db and Return authentication somehow (jwt?) |
-| /api/users/login                 |    POST   |     JSON     |                                         Return authentication somehow (jwt?) |
+| /api/users/signup                |    POST   |     JSON     |       Creates the account in the db and Return authentication somehow (jwt) |
+| /api/users/login                 |    POST   |     JSON     |                                         Return authentication somehow (jwt) |
 
 
 SIGN UP
-1. user goes to home page '/' -> redirects to login?
+1. user goes to home page '/' -> redirects to login
 2. user clicks sign up and fills out form and submits ->
   POST /api/users/signup  (submits stringifed JSON object with username and password)
   {
