@@ -5,13 +5,13 @@
 #loginContainer {
     width: 50%;
     margin:5% 0 0 25%;
-    background-color: #e5ebff;
+    background-color: #468C77;
 }
 
 #signupContainer {
     width: 50%;
     margin:5% 0 0 25%;
-    background-color: #e5ebff;
+    background-color: #468C77;
 }
 
 #loginForm {
@@ -63,7 +63,7 @@ body {
 .app {
     width: 80%;
     margin: auto;
-    background-color: #E2F9B8;
+    background-color: #468C77;
 }
 
 .btn {
@@ -97,7 +97,7 @@ th {
 }
 #playerTable{
     width: 200px;
-    border: 3px solid #939F5C;
+    border: 3px solid #468C77;
     margin: 30px;
 }
 .flex-container {
@@ -106,10 +106,18 @@ th {
     flex-wrap: wrap;
 }
 .tablePlayerName {
-    background-color: #939F5C;
+    background-color: #468C77;
 }
 h1 {
+    letter-spacing: 1px;
     margin-top: 30px;
+}
+.mainheader {
+    color: white;
+    text-shadow: 2px 2px black;
+}
+body {
+    font-family: 'Lato', sans-serif !important;
 }
 .found {
     color: green;
