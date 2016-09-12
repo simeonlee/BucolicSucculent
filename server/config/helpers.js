@@ -3,6 +3,7 @@ var Location = require('./db-config').Location;
 var Status = require('./db-config').Status;
 var User = require('./db-config').User;
 var Utils = require('./utils');
+var jwt = require('./jwt');
 var md5 = require('md5');
 
 exports.joinGame = function(req, res) {
@@ -111,11 +112,10 @@ exports.createUser = function(req, res) {
     
     // create it
     Utils.encryptPassword(user, function(err, user) {
-       User.create(user)
-      .then(function(user, created) {
+      User.create(user)
+      .then(function(user) {
         // create token and return
-        var secret = 'teambsAThackreactor47';
-        Utils.createToken(user, secret, function(token) {
+        jwt.createToken(user, function(token) {
           if ( token.token ) {
             res.status(201).send(token);
           } else {
@@ -141,13 +141,12 @@ exports.loginUser = function(req, res) {
     .then(function(user) {
       if(user) {
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
-          if (err) {            
-            // bad password
-            res.status(401).send('Authentication error');
-          } else if (isMatch) {  
-            // has successfully authenticated, send a token
-            var secret = 'teambsAThackreactor47';
-            Utils.createToken(user, secret, function(token) {
+          // bad password
+          if (err) { return res.status(401).send('Authentication error'); }
+
+          // has successfully authenticated, send a token
+          if (isMatch) {
+            jwt.createToken(user, function(token) {
               if ( token.token ) {
                 res.status(200).send(token);
               } else {

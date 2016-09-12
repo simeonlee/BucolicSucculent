@@ -1,16 +1,8 @@
 var helpers = require('./helpers');
-var jwtauth = require('./jwt');
+var jwtAuth = require('./jwt').jwtAuth;
+var requireAuth = require('./jwt').requireAuth;
 
 module.exports = function(app, express) {
-
-  var requireAuth = function(req, res, next) {
-    //jwt adds user struct to req - if not there user was not validated
-    if (!req.user.username) {
-      res.end('Not authorized', 401);
-    } else {
-      next();
-    }
-  };
 
   var detectEnvironment = function(req, res) {
     var env = app.get('env')
@@ -21,9 +13,9 @@ module.exports = function(app, express) {
 
   /**** for production with authentication ****/
   app.route('/api/game')
-    .get(jwtauth, requireAuth, helpers.joinGame)
-    .put(jwtauth, requireAuth, helpers.updateStatus)
-    .post(jwtauth, requireAuth, helpers.createGame, detectEnvironment);
+    .get(jwtAuth, requireAuth, helpers.joinGame)
+    .put(jwtAuth, requireAuth, helpers.updateStatus)
+    .post(jwtAuth, requireAuth, helpers.createGame, detectEnvironment);
 
   /**** for development and testing to bypass authentication ****/
   // app.route('/api/game')
