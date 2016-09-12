@@ -36,7 +36,7 @@ describe ('Signup/Login for Users', function() {
               expect(user.username).to.equal('test1');
             })
             .then(done)
-            .catch(function(err) { throw err; })
+            .catch(function(err) { throw err; });
         });
     });
 
@@ -79,7 +79,7 @@ describe ('Signup/Login for Users', function() {
         .set('username', 'test1')
         .set('password', 'test1')
         .expect(201)
-        .end(done)
+        .end(done);
     });
 
     after(function() {
@@ -97,7 +97,7 @@ describe ('Signup/Login for Users', function() {
           expect(res.body.user).to.equal('test1');
         })
         .end(done);
-    })
+    });
 
     it('should return 401 if password is wrong', function(done) {
       request(app)
@@ -110,7 +110,7 @@ describe ('Signup/Login for Users', function() {
           expect(res.body.token).to.not.exist;
         })
         .end(done);
-    })
+    });
 
     it('should return 401 if user does not exist', function(done) {
       request(app)
@@ -123,15 +123,13 @@ describe ('Signup/Login for Users', function() {
           expect(res.body.token).to.not.exist;
         })
         .end(done);
-    })
-  })
+    });
+  });
 });
 
 describe('Creating and Joining Games', function() {
 
-  var token;
-  var user;
-  var pathUrl;
+  var token, user, pathUrl;
 
   before(function(done) {
     User.destroy({ where: { username: 'test1' } })
@@ -145,8 +143,8 @@ describe('Creating and Joining Games', function() {
           token = res.body.token;
           user = res.body.user;
         })
-        .end(done)
-    })
+        .end(done);
+    });
   });
 
   after(function() {
@@ -169,7 +167,7 @@ describe('Creating and Joining Games', function() {
         .set('X-ACCESS-TOKEN', token)
         .send(locations)
         .expect(function(res) {
-          pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
+          pathUrl = res.text.substring(res.text.length - 9, res.text.length - 4);
         })
         .end(done);
     });
@@ -213,7 +211,7 @@ describe('Creating and Joining Games', function() {
           .set('X-ACCESS-TOKEN', token)
           .query({ path: pathUrl })
           .query({ username: 'test1' })
-          .end(done)
+          .end(done);
       });
 
       it('generates Statuses for each Location (creates relation between User/Game and User/Location)', function(done) {
@@ -221,7 +219,7 @@ describe('Creating and Joining Games', function() {
           include: [{
             model: User,
             where: { username: 'test1' }
-          },{
+          }, {
             model: Game,
             where: { path: pathUrl }
           }]
@@ -264,7 +262,7 @@ describe('Creating and Joining Games', function() {
           .set('X-ACCESS-TOKEN', token)
           .send(locations2)
           .expect(function(res) {
-            pathUrl2 = res.text.substring(res.text.length-9, res.text.length-4);
+            pathUrl2 = res.text.substring(res.text.length - 9, res.text.length - 4);
           })
           .end(function() {
             // and have user join new game
@@ -276,7 +274,7 @@ describe('Creating and Joining Games', function() {
               .query({ username: 'test1' })
               .end(done);
           });
-      })
+      });
 
       it('returns all the games the User is playing', function(done) {
         request(app)
@@ -301,8 +299,7 @@ describe('Creating and Joining Games', function() {
 
     describe('When given the game Path', function() {
 
-      var token2;
-      var user2;
+      var token2, user2;
 
       before(function(done) {
         // create another user
@@ -333,9 +330,9 @@ describe('Creating and Joining Games', function() {
                     .query({ path: pathUrl })
                     .query({ username: 'test2' })
                     .end(done);
-                })
-            })
-          });
+                });
+            });
+        });
       });
 
       it('returns all the players in the game and their statuses', function(done) {
@@ -365,10 +362,7 @@ describe('Creating and Joining Games', function() {
 
 describe('Interacting with Game', function() {
 
-  var token;
-  var user;
-  var pathUrl;
-  var locationId;
+  var token, user, pathUrl, locationId;
 
   var locations = {
     markers: [
@@ -388,18 +382,18 @@ describe('Interacting with Game', function() {
           token = res.body.token;
           user = res.body.user;
         })
-        .end(function(){
+        .end(function() {
           request(app)
             .post('/api/game')
             .set('username', user)
             .set('X-ACCESS-TOKEN', token)
             .send(locations)
-            .expect(function(res){
-              pathUrl = res.text.substring(res.text.length-9, res.text.length-4);
+            .expect(function(res) {
+              pathUrl = res.text.substring(res.text.length - 9, res.text.length - 4);
             })
             .end(done);
         });
-    })
+    });
   });
 
   after(function() {
@@ -424,7 +418,7 @@ describe('Interacting with Game', function() {
             .set('username', user)
             .set('X-ACCESS-TOKEN', token)
             .send({ locationId: locationId })
-            .end(done)
+            .end(done);
         });
     });
 
