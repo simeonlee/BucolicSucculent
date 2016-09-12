@@ -2,10 +2,30 @@
 ARCHITECTURAL OVERVIEW: SERVER
 
   DATABASE
+  Uses a relational database with mySql.
+  The database utilizes 5 tables:
+  Users
+    - Stores usernames and encrypted passwords of all users
+  Games
+    - Stores foreign Key to User Table for the game's creator and the pathUrl
+  Locations
+    - Stores latitude, longitude, sequence order, and the foreign key to Game table
+  UserGame
+    - Stores many-to-many relationship between Users/Games
+  Statuses
+    - Stores many-to-many relationships between Users/Locations and the current status.
 
   SEQUELIZE
+    - ORM used to interact with mySql database through javascript.
 
   ROUTING
+    - 3 endpoints set up on server to handle RESTful requests.
+    - /api/game, GET, POST, PUT
+      - Used to create Games, have users join new games, and to retrieve up-to-date game data for client
+    - /api/users/signup, POST
+      - Used to create new users into the database, and pass authentication token
+    - /api/users/login, POST
+      - Used to login existing users and pass authentication token
 
   JWT
 
