@@ -42,11 +42,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.9",
-    "jasmine-core": "^2.5.0",
     "jshint": "^2.9.3",
-    "karma": "^1.2.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-jasmine": "^1.0.2",
     "mocha": "^3.0.2",
     "run-sequence": "^1.2.2",
     "supertest": "^2.0.0"
