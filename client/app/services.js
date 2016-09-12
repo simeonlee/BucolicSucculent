@@ -67,7 +67,7 @@ angular.module('app.services', ['ngGeolocation'])
     }
   };
 }])
-.factory('Auth', ['$http', '$location', '$window',function ($http, $location, $window) {
+.factory('Auth', ['$http', '$location', '$window', function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password
   // for a JWT from the server
@@ -79,9 +79,9 @@ angular.module('app.services', ['ngGeolocation'])
       method: 'POST',
       url: '/api/users/login',
       headers: {
-        "Content-Type": 'application/json; charset=utf-8',
-        "username": user.username,
-        "password": user.password
+        'Content-Type': 'application/json; charset=utf-8',
+        'username': user.username,
+        'password': user.password
       }
     })
     .then(function (resp) {
@@ -95,9 +95,9 @@ angular.module('app.services', ['ngGeolocation'])
       method: 'POST',
       url: '/api/users/signup',
       headers: {
-        "Content-Type": 'application/json; charset=utf-8',
-        "username": user.username,
-        "password": user.password
+        'Content-Type': 'application/json; charset=utf-8',
+        'username': user.username,
+        'password': user.password
       }
     })
     .then(function (resp) {

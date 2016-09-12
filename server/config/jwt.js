@@ -4,26 +4,26 @@ var jwt = require('jwt-simple');
 var moment = require('moment');
 var settings = require('../../settings').token;
 
-exports.jwtAuth = function(req, res, next){
-  var parsed_url = url.parse(req.url, true)
+exports.jwtAuth = function(req, res, next) {
+
   // token is passed in the x-access-token header
-  var token = req.headers["x-access-token"];
+  var token = req.headers['x-access-token'];
 
   if (token) {
-    var decoded = jwt.decode(token, settings.secret)
+    var decoded = jwt.decode(token, settings.secret);
     if (decoded) {
       // check expiration date
       if (decoded.exp <= Date.now()) {
         res.end('Access token has expired', 400);
       }
       // get user data and attach
-      User.findOne({ where: { 'id': decoded.iss } }).then(function(user){
+      User.findOne({ where: { 'id': decoded.iss } }).then(function(user) {
         if (user) {       
           req.user = user;
           return next();
         }
-      })
-    } else {     
+      });
+    } else {
       // token didn't decode
       return next();
     }
@@ -53,7 +53,7 @@ exports.createToken = function (user, cb) {
     settings.secret
   );
   cb ({
-    token : token,
+    token: token,
     user: user.dataValues.username
   });
 };

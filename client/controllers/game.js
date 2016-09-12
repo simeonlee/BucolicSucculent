@@ -19,7 +19,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     // $scope.players = res.data.players; //<----------------- wishlist
 
   //Add labels to markers according to sequence number
-  $scope.markers.forEach(function(marker, ind){
+  $scope.markers.forEach(function(marker, ind) {
     var label = marker.sequence.toString();
     $scope.markers[ind].options = {
       label: label
@@ -39,10 +39,11 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   });
   
   //create position on map
-  var createMyPosition = function() {$geolocation.watchPosition({
-        timeout: 60000,
-        maximumAge: 250,
-        enableHighAccuracy: true
+  var createMyPosition = function() {
+    $geolocation.watchPosition({
+      timeout: 60000,
+      maximumAge: 250,
+      enableHighAccuracy: true
     });
   };
 
@@ -50,25 +51,25 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   //watch for position change
   $scope.$on('$geolocation.position.changed', function(newValue) {
     $scope.circle = {
-        center: {
-          latitude: $geolocation.position.coords.latitude,
-          longitude: $geolocation.position.coords.longitude
-        },
-        radius: 100,
-        stroke: {
-          color: 'blue',
-          weight: 1,
-          opacity: 0.4
-        },
-        clickable: false,
-        fill: {
-          color: 'blue',
-          opacity: 0.3
-        }
-      };  
+      center: {
+        latitude: $geolocation.position.coords.latitude,
+        longitude: $geolocation.position.coords.longitude
+      },
+      radius: 100,
+      stroke: {
+        color: 'blue',
+        weight: 1,
+        opacity: 0.4
+      },
+      clickable: false,
+      fill: {
+        color: 'blue',
+        opacity: 0.3
+      }
+    };  
 
       // create gmap latLng object for calculating distance
-      $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
+    $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   });
 
 
