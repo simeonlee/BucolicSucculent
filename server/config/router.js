@@ -7,7 +7,8 @@ module.exports = function(app, express) {
   var detectEnvironment = function(req, res) {
     var env = app.get('env');
     var host = env === 'development' ? '127.0.0.1' : '138.68.53.22';
-    var fullUrl = 'http://' + host + ':4200/#/game/' + req.pathUrl + '/map';
+    var port = env === 'development' ? '4200' : '';
+    var fullUrl = 'http://' + host + ':' + port + '/#/game/' + req.pathUrl + '/map';
     res.send(fullUrl);
   };
 

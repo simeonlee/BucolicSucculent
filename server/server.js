@@ -9,8 +9,11 @@ app.use(express.static('./dist'));
 var db = require('./config/db-config').db;
 require('./config/router')(app, express);
 
-app.listen(4200, function () {
-  console.log('Server listening on port 4200!');
+var port = app.get('env') === 'development' ? 4200 : 80;
+
+
+app.listen(port, function () {
+  console.log('Server listening on port ' + port +'!');
   db.sync().then(function() {
     // console.log('Synced with mySql');
   });
