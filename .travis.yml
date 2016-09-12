@@ -4,4 +4,5 @@ node_js:
 services:
   - mysql
 before_script:
+  - mysql -e 'create database myapp_test;'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\nCREATE DATABASE scavenger;" | mysql -u root
