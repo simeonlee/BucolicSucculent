@@ -97,7 +97,7 @@ th {
 }
 #playerTable{
     width: 200px;
-    border: 3px solid #939F5C;
+    border: 3px solid #468C77;
     margin: 30px;
 }
 .flex-container {
@@ -106,7 +106,7 @@ th {
     flex-wrap: wrap;
 }
 .tablePlayerName {
-    background-color: #939F5C;
+    background-color: #468C77;
 }
 h1 {
     letter-spacing: 1px;
