@@ -37,7 +37,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
   $scope.map.markers = []; //<--------- save marker coords here
 
-  uiGmapGoogleMapApi.then(function(map) { //<------- create map (promise) and after
+  uiGmapGoogleMapApi.then(function() { //<------- create map (promise) and after
 
     //API marker creation tool
     $scope.createOptions = {
