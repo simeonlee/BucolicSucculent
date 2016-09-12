@@ -1,3 +1,8 @@
 language: node_js
 node_js:
   - "6"
+services:
+  - mysql
+before_script:
+  - mysql -e 'CREATE DATABASE Scavenger;'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
