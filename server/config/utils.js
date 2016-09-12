@@ -10,11 +10,11 @@ exports.encryptPassword = function(user, cb) {
 
     // hash the password along with our new salt
     bcrypt.hash(user.password, salt, null, function(err, hash) {
-        if (err) { return cb(err); }
+      if (err) { return cb(err); }
 
         // override the cleartext password with the hashed one
-        user.password = hash;
-        cb(null, user);
+      user.password = hash;
+      cb(null, user);
     });
   });
 };

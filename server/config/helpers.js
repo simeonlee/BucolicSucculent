@@ -58,7 +58,8 @@ exports.updateStatus = function (req, res) {
     });
   })
   .then(function(currentStatus) {
-    return currentStatus.update({ status: true }); })
+    return currentStatus.update({ status: true });
+  })
   .then(function(result) {
     res.send(result);
   });
@@ -79,7 +80,7 @@ exports.createGame = function(req, res, next) {
   // var creator = req.body.username;      // bypass auth for testing with postman
 
   // generate pathUrl Hash
-  var pathUrl = md5(JSON.stringify(req.body)).slice(0,5)
+  var pathUrl = md5(JSON.stringify(req.body)).slice(0, 5);
 
   var locations = req.body.markers;
 
@@ -96,7 +97,7 @@ exports.createGame = function(req, res, next) {
       return game.setCreator(currentUser);
     });
   })
-  .then(function(){
+  .then(function() {
     // when finished, send back the pathUrl
     req.pathUrl = pathUrl;
     next();
@@ -105,9 +106,9 @@ exports.createGame = function(req, res, next) {
 
 exports.createUser = function(req, res) {
   if (req.headers.username && req.headers.password) {   
-     var user = {
-      username : req.headers.username.toLowerCase(),
-      password : req.headers.password
+    var user = {
+      username: req.headers.username.toLowerCase(),
+      password: req.headers.password
     };
     
     // create it
@@ -124,7 +125,7 @@ exports.createUser = function(req, res) {
         });  
       })
       .catch(function(err) {
-        res.status(409).send('Username already exists or other err: '+ err);
+        res.status(409).send('Username already exists or other err: ' + err);
       });
     });
   } else {
@@ -139,7 +140,7 @@ exports.loginUser = function(req, res) {
 
     User.findOne({where: { username: req.headers.username }})
     .then(function(user) {
-      if(user) {
+      if (user) {
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
           // bad password
           if (err) { return res.status(401).send('Authentication error'); }
@@ -157,8 +158,7 @@ exports.loginUser = function(req, res) {
             res.status(401).send('Authentication error');
           }
         }); // comparePassword
-      }
-      else { // User does not exist in db.
+      } else { // User does not exist in db.
         res.status(401).send('Authentication error');
       }
     }) // .then findOne
@@ -191,15 +191,17 @@ var generateStatuses = function(req, res) {
         })
         .then(function(allLocs) {
           // Initialize the status of each location for the User
-          return currentUser.addLocations(allLocs, { status: false }) })
+          return currentUser.addLocations(allLocs, { status: false });
+        })
         .then(function() {
           // When complete, return Statuses to client.
           returnStatuses(req, res, currentGame);
         });
       } else {
         // if currentGame does not exist, end response and return an 422 error.
-        res.status(422).send('Game at URL path does not exist.')
-    }});
+        res.status(422).send('Game at URL path does not exist.');
+      }
+    });
   });
 };
 
@@ -258,7 +260,7 @@ var returnGamesforUser = function(req, res) {
   }).then(function(allGames) {
     res.send(allGames);
   });
-}
+};
 
 /****** Example data for returnGamesforUser *****/
 // {

@@ -1,7 +1,7 @@
 angular.module('app.dashboard', [])
 
 .controller('dashboardController', ['$scope', 'data', 'isAuth', '$location', '$window', function($scope, data, isAuth, $location, $window) {
-   if (!isAuth) {
+  if (!isAuth) {
     var redir = $location.$$path;
     $window.localStorage.setItem('redir', redir);
     $location.path('/login');
