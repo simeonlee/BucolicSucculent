@@ -17,45 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  
-  ___Product Name___ is a location based interactive experience!
+  Scvng.it is a location based interactive experience!
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
-
   It's fun for everyone! 
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-
-  With _______, you can create a new game by selecting locations from a map. Then share with your friends and delight in visiting each spot while exploring your city. Players can see a list of points on the map and plan their own routes. The first player to visit all the places is the winner! Individual players can view their statistics from past games.
+  With Scvng.it, you can create a new game by selecting locations from a map. Then share with your friends and delight in visiting each spot while exploring your city. Players can see a list of points on the map and plan their own routes. The first player to visit all the places is the winner! Individual players can view their statistics from past games.
 
 ## Problem ##
-  > Describe the problem your product solves.
-
   Sitting is the new smoking and most web-based games require the player to sit at their computer. This is unhealthy!
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
-
-  When you play ______, you must get off the couch if you want to win. Since players can strategize their own routes, they can decide the optimal path to victory.
+  When you play Scvng.it, you must get off the couch if you want to win. Since players can strategize their own routes, they can decide the optimal path to victory.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
-
-  _______ is the next step in location based interactive experiences. The future is now!
+  Scvng.it is the next step in location based interactive experiences. The future is now!
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
-
-  ______ is completely based in the browser so no need to download any apps or extra stuff. Just enable geolocation when prompted and you're good to go!
+  Scvng.it is completely based in the browser so no need to download any apps or extra stuff. Just enable geolocation when prompted and you're good to go!
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
-
   This game is great! I've been playing for about a month now and feel healthier and happier. 
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
-
   What are you waiting for? Just dooooooo it! Nothing is impossible!
