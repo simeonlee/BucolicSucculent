@@ -35,6 +35,67 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     zoom: 13
   };
 
+  $scope.searchbox = {
+    // GET template from when we saved in $templateCache in app.js
+    template: 'searchbox.tpl.html',
+    position: 'top-center',
+    options: {
+      autocomplete: true,
+    },
+    events: {
+      place_changed: function (autocomplete){
+
+        place = autocomplete.getPlace();
+
+        if (place.address_components) {
+          
+          newMarkers = [];
+          // var bounds = new google.maps.LatLngBounds();
+
+          var marker = {
+            idKey: place.place_id,
+            place_id: place.place_id,
+            name: place.address_components[0].long_name,
+            latitude: place.geometry.location.lat(),
+            longitude: place.geometry.location.lng(),
+            // templateurl:'window.tpl.html',
+            // templateparameter: place,
+            // events: {
+            //   click: function (marker) {
+            //     $scope.window.coords = {
+            //       latitude: marker.model.latitude,
+            //       longitude: marker.model.longitude
+            //     };
+            //     $scope.window.templateparameter = marker.model.templateparameter;
+            //     $scope.window.show = true;
+                
+            //   }
+            // }
+          };
+          
+          newMarkers.push(marker);
+
+          // bounds.extend(place.geometry.location);
+
+          // $scope.map.bounds = {
+          //   northeast: {
+          //     latitude: bounds.getNorthEast().lat(),
+          //     longitude: bounds.getNorthEast().lng()
+          //   },
+          //   southwest: {
+          //     latitude: bounds.getSouthWest().lat(),
+          //     longitude: bounds.getSouthWest().lng()
+          //   }
+          // };
+
+          $scope.map.markers = newMarkers;
+        } else {
+          console.log('do something else with the search string: ' + place.name);
+        }
+      }
+    }
+  }
+
   $scope.map.markers = []; //<--------- save marker coords here
 
   uiGmapGoogleMapApi.then(function() { //<------- create map (promise) and after

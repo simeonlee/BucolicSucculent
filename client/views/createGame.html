@@ -6,14 +6,16 @@
     zoom='map.zoom'
     ng-show="showMap"
   >
-    <ui-gmap-drawing-manager
+<!--     <ui-gmap-drawing-manager
       options="createOptions"
       control='{}'
       static='true'
-    ></ui-gmap-drawing-manager>
+    ></ui-gmap-drawing-manager> -->
     <ui-gmap-search-box
-      template="searchbox.template"
+      options="searchbox.options"
       events="searchbox.events"
+      template="searchbox.template"
+      position="searchbox.position"
     ></ui-gmap-search-box>
     <ui-gmap-markers
       models="map.markers"
