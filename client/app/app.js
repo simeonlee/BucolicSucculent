@@ -91,7 +91,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 
   uiGmapGoogleMapApiProvider.configure({
     key: 'AIzaSyDgVf-KYpLw0vF1kUlPK3eZc9clchmpRbM', //<----- apiKey restricted!
-    libraries: 'drawing,geometry,visualization'
+    libraries: 'places,drawing,geometry,visualization'
   });
 }])
 .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
