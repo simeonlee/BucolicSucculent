@@ -30,8 +30,6 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     });
   });
 
-  
-
 
 
 
@@ -73,6 +71,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     }
   };
 
+<<<<<<< d588c791a13dd18047a3f70794383249f7466f33
   $scope.markers = [];
   $scope.imageStorage = [];
 
@@ -314,6 +313,15 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     },
     templateUrl: '/views/infowindow.html'
 
+=======
+  $scope.map = {
+    center: { 
+      latitude: 37.7836881,                 //<------- Default SF map
+      longitude: -122.4090401 
+    }, 
+    zoom: 13
+  };
+>>>>>>> Apply minor comment and styling cleanups to createGame.js
 
     // template: '<div class="iw">Name: {{data.name}} Address: {{data.photo}}</div>'
     // template: '<div class="iw">\
@@ -329,6 +337,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
     //   var el;
 
+<<<<<<< d588c791a13dd18047a3f70794383249f7466f33
     //   attrs.$observe( 'template', function ( tpl ) {
     //     if ( angular.isDefined( tpl ) ) {
     //       // compile the provided template against the current scope
@@ -346,3 +355,45 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
   };
 });*/
+// =======
+//     //API marker creation tool
+//     $scope.createOptions = {
+//       drawingMode: google.maps.drawing.OverlayType.MARKER,
+//       drawingControlOptions: {
+//         position: google.maps.ControlPosition.TOP_CENTER,
+//         drawingModes: [
+//           google.maps.drawing.OverlayType.MARKER,
+//         ]
+//       },
+//       markerOptions: {
+//         visible: false
+//         // draggable: true, //<------------- WISHLIST fix draggable marker coords saving and uncomment
+//       },
+//     };
+//     //for each game, the first marker gets labeled '1'
+//     var sequence = 1;
+
+//     // on each marker addition
+//     google.maps.event.addListener($scope.createOptions, 'overlaycomplete', function(event) {
+
+//       var marker = {
+//         sequence: sequence,
+//         latitude: event.overlay.position.lat(),
+//         longitude: event.overlay.position.lng(),
+//         options: {
+//           label: sequence.toString()
+//         }
+//       };
+
+//       // push coords to markers array
+//       $scope.map.markers.push(marker);
+
+//       // apply changes to digest loop in order to render labelled markers
+//       $scope.$apply();
+
+//       // increment sequence prop for next label
+//       sequence++;
+//     });
+//   });
+// }]);
+// >>>>>>> Apply minor comment and styling cleanups to createGame.js
