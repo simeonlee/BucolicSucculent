@@ -5,7 +5,9 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha specs/**/*.js"
+    "test": "mocha specs/**/*.js",
+    "build-css": "node-sass --include-path scss client/styles/scss/main.scss client/styles/css/main.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
   },
   "repository": {
     "type": "git",
@@ -44,8 +46,8 @@
     "gulp-watch": "^4.3.9",
     "jshint": "^2.9.3",
     "mocha": "^3.0.2",
+    "node-sass": "^3.9.3",
     "run-sequence": "^1.2.2",
     "supertest": "^2.0.0"
   }
 }
-
