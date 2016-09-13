@@ -15,7 +15,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     //get user for ajax request
     $scope.user = $window.localStorage.getItem('user');
     // get waypoints from map and submit to server to create createGame
-    Requests.createGame($scope.user, $scope.map.markers) 
+    Requests.createGame($scope.user, $scope.map.markers)
       .then(function(res) {
 
         // get back hashed game url and display
@@ -27,29 +27,10 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       $scope.showMap = false;
   };
 
-  $scope.submitWaypointsPublic = function() {
-
-    //get user for ajax request
-    $scope.user = $window.localStorage.getItem('user');
-    // get waypoints from map and submit to server to create createGame
-    Requests.createPublicGame($scope.user, $scope.map.markers) 
-      .then(function(res) {
-
-        // get back hashed game url and display
-        var gameUrl = res.data;
-        $scope.gamePath = gameUrl; //<------ to be game url
-      });
-
-      // hide map on game creation
-      $scope.showMap = false;
-  };
-
-
-
-  $scope.map = { 
+  $scope.map = {
     center: { 
       latitude: 37.7836881,                 //<------- Default SF map
-      longitude: -122.40904010000001 
+      longitude: -122.4090401 
     }, 
     zoom: 13
   };
@@ -62,7 +43,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     $scope.createOptions = {
       drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControlOptions: {
-      position: google.maps.ControlPosition.TOP_CENTER,
+        position: google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
           google.maps.drawing.OverlayType.MARKER,
         ]
@@ -72,7 +53,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         // draggable: true, //<------------- WISHLIST fix draggable marker coords saving and uncomment
       },
     };
-    //for each game, the first marker gets labelled '1'
+    //for each game, the first marker gets labeled '1'
     var sequence = 1;
 
     // on each marker addition
@@ -86,10 +67,15 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
           label: sequence.toString()
         }
       };
-      $scope.map.markers.push(marker); //<---------- push coords to markers array
-      $scope.$apply(); //<----- apply changes to digest loop in order to render labelled markers
 
-      sequence++; //<--- incrememnt sequence prop for next label
+      // push coords to markers array
+      $scope.map.markers.push(marker);
+
+      // apply changes to digest loop in order to render labelled markers
+      $scope.$apply();
+
+      // increment sequence prop for next label
+      sequence++;
     });
   });
 }]);
