@@ -29,6 +29,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       });
     });
   });
+}])
 
 
 
@@ -300,7 +301,6 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       $scope.showMap = false;
 
   };*/
-}])
 
 /*.directive('infowindow', function($compile) {
   return {
@@ -323,6 +323,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
   };
 >>>>>>> Apply minor comment and styling cleanups to createGame.js
 
+<<<<<<< 24c6309bb5f667642d963aedb5baedccb470c532
     // template: '<div class="iw">Name: {{data.name}} Address: {{data.photo}}</div>'
     // template: '<div class="iw">\
     //   <div class="iw-name">{{data.name}}</div>\
@@ -334,6 +335,70 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     //   //    element.replaceWith(jqLiteWrappedElement);
     //   //    $compile(jqLiteWrappedElement)(scope);
     //   // })
+=======
+  $scope.searchbox = {
+    // GET template from when we saved in $templateCache in app.js
+    template: 'searchbox.tpl.html',
+    position: 'top-center',
+    options: {
+      autocomplete: true,
+    },
+    events: {
+      place_changed: function (autocomplete){
+
+        place = autocomplete.getPlace();
+
+        if (place.address_components) {
+          
+          newMarkers = [];
+          // var bounds = new google.maps.LatLngBounds();
+
+          var marker = {
+            idKey: place.place_id,
+            place_id: place.place_id,
+            name: place.address_components[0].long_name,
+            latitude: place.geometry.location.lat(),
+            longitude: place.geometry.location.lng(),
+            // templateurl:'window.tpl.html',
+            // templateparameter: place,
+            // events: {
+            //   click: function (marker) {
+            //     $scope.window.coords = {
+            //       latitude: marker.model.latitude,
+            //       longitude: marker.model.longitude
+            //     };
+            //     $scope.window.templateparameter = marker.model.templateparameter;
+            //     $scope.window.show = true;
+                
+            //   }
+            // }
+          };
+          
+          newMarkers.push(marker);
+
+          // bounds.extend(place.geometry.location);
+
+          // $scope.map.bounds = {
+          //   northeast: {
+          //     latitude: bounds.getNorthEast().lat(),
+          //     longitude: bounds.getNorthEast().lng()
+          //   },
+          //   southwest: {
+          //     latitude: bounds.getSouthWest().lat(),
+          //     longitude: bounds.getSouthWest().lng()
+          //   }
+          // };
+
+          $scope.map.markers = newMarkers;
+        } else {
+          console.log('do something else with the search string: ' + place.name);
+        }
+      }
+    }
+  }
+
+  $scope.map.markers = []; //<--------- save marker coords here
+>>>>>>> Add searchbox in createGame and searchbox template in app.js
 
     //   var el;
 
