@@ -10,6 +10,7 @@ var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var ngAnnotate = require('gulp-ng-annotate');
 var shell = require('gulp-shell');
+var plumber = require('gulp-plumber'); // Handle gulp.watch errors without throwing / cancelling nodemon
 
 var config = {
   src: {
@@ -31,8 +32,6 @@ gulp.task('nodemon', function() {
     script: 'server/server.js',
     ext: 'html js'
   })
-  .on('start', ['watch'])
-  .on('change', ['watch'])
   .on('restart', function() {
     console.log('nodemon restarted server!');
   });
@@ -64,6 +63,7 @@ gulp.task('build-css', function() {
 
 gulp.task('minify-js', function() {
   return gulp.src(config.src.js)
+    .pipe(plumber())
     .pipe(concat('build.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
@@ -72,6 +72,7 @@ gulp.task('minify-js', function() {
 
 gulp.task('bower-files', function(){
   return gulp.src(config.src.lib)
+    .pipe(plumber())
     .pipe(concat('lib.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
@@ -80,6 +81,7 @@ gulp.task('bower-files', function(){
 
 gulp.task('copy-html-files', function () {
   gulp.src(config.src.html)
+    .pipe(plumber())
     .pipe(gulp.dest(config.build.html));
 });
 
@@ -98,8 +100,7 @@ gulp.task('forever', shell.task([
 gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
- 
-gulp.task('default', ['nodemon']);
+
 
 gulp.task('build', function() {
   runSequence(
@@ -115,12 +116,22 @@ gulp.task('watch', function() {
   gulp.watch(config.src.lib, ['copy-html-files']);
 });
 
+gulp.task('default', function() {
+  runSequence(
+    'set-dev',
+    'build',
+    'watch',
+    'nodemon'
+  );
+});
+
+// Would like to eventually deprecate 'devStart' in favor of 'default'
 gulp.task('devStart', function() {
   runSequence(
     'set-dev',
     'build',
     'watch',
-    'default'
+    'nodemon'
   );
 });
 
