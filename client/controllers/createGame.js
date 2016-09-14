@@ -2,6 +2,8 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
 .controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
 
+  var markerCanvas = './images/marker/canvas/markerCanvas.png';
+
   //check for JWT
   if (!isAuth) {
     $location.path('/login');
@@ -14,7 +16,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     center: {
       latitude: 37.7836881,                 
       longitude: -122.4090401 
-    }, 
+    },
     zoom: 14,
     events: {
       tilesloaded: function (map, eventName, originalEventArgs) {
@@ -33,7 +35,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
   $scope.findNearbyPlaces = function(latLng) {
     var request = {
       location: latLng,
-      radius: '50', // meters
+      radius: '75', // meters
       types: ['establishment']
     };
     service = new google.maps.places.PlacesService(document.createElement('div'));
@@ -41,20 +43,38 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(results);
         var sequence = 0;
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 1; i++) {
           var place = results[i];
           var marker = {
             sequence: sequence,
             latitude: place.geometry.location.lat(),
             longitude: place.geometry.location.lng(),
-            markerOptions: {
-              // visible: false,
+            options: {
+              icon: markerCanvas,
               animation: google.maps.Animation.BOUNCE
             }
           };
           $scope.map.markers.push(marker);
           sequence++;
         }
+        $scope.map.center = {
+          latitude: latLng.lat(),
+          longitude: latLng.lng()
+        };
+        $scope.map.zoom = 18;
+
+        var $img = $('img[src="' + markerCanvas + '"]');
+        var parent = $img.parent();
+        parent.addClass('marker');
+
+        console.log($img.parents());
+
+        // $('img[src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"]').parent().css({
+        //   'background-color': 'blue',
+        //   'width': '100px',
+        //   'height': '100px'
+        // });
+
         // Apply changes to digest loop in order to render labeled markers
         $scope.$apply();
       }
