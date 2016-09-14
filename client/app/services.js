@@ -4,6 +4,7 @@ angular.module('app.services', ['ngGeolocation'])
   return {
     getGameData: function(path) {
       var params = {
+        //setItem and getItem 
         username: $window.localStorage.getItem('user'), 
         path: path
       };
@@ -90,6 +91,39 @@ angular.module('app.services', ['ngGeolocation'])
     }
   };
 }])
+// new factory to provide socket connects
+// .factory('socket', ['btford.socket-io'], function(socketFactory){
+//   return socketFactory({
+//     prefix: 'foo~',
+//     ioSocket: io.connect('/bar')
+//   });
+// })
+.factory('socket', function (socketFactory) {
+    return socketFactory();
+})
+// .factory('socket', function ($rootScope) {
+//   var socket = io.connect();
+//   return {
+//     on: function (eventName, callback) {
+//       socket.on(eventName, function () {  
+//         var args = arguments;
+//         $rootScope.$apply(function () {
+//           callback.apply(socket, args);
+//         });
+//       });
+//     },
+//     emit: function (eventName, data, callback) {
+//       socket.emit(eventName, data, function () {
+//         var args = arguments;
+//         $rootScope.$apply(function () {
+//           if (callback) {
+//             callback.apply(socket, args);
+//           }
+//         });
+//       })
+//     }
+//   };
+// })
 .factory('Auth', ['$http', '$location', '$window', function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password
@@ -112,7 +146,7 @@ angular.module('app.services', ['ngGeolocation'])
       return resp.data.token;
     });
   };
-
+  
   var signup = function (user) {
     return $http({
       method: 'POST',

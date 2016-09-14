@@ -47,7 +47,8 @@ gulp.task('minify-js', function() {
 });
 
 gulp.task('bower-files', function(){
-    return gulp.src(['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'])
+    // when ordering your src below... keep in mind which variables will be needed first.... kept running into 'angular is not defined' until I moved angular module to front of array!
+    return gulp.src(['./client/lib/angular/angular.js', './client/lib/socket.io-client/socket.io.js', './client/lib/angular-socket-io/socket.js', './client/lib/lodash/lodash.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'])
         .pipe(concat('lib.js'))
         .pipe(ngAnnotate())
         .pipe(uglify())
@@ -75,12 +76,13 @@ gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
  
-gulp.task('default', ['nodemon']);
+
+gulp.task('default', ['nodemon']); //'lint',  add later
 
 gulp.task('build', function() {
   runSequence(
     'clean',
-    ['minify-css', 'minify-js', 'copy-html-files', 'bower-files']
+    ['minify-css', 'minify-js', 'copy-html-files', 'bower-files'] //'lint' add linter later
   );
 });
 
