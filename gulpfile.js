@@ -3,17 +3,36 @@ var nodemon = require('gulp-nodemon');
 var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
+var sass = require('gulp-sass');
 var minifyCSS = require('gulp-minify-css');
+var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var ngAnnotate = require('gulp-ng-annotate');
 var shell = require('gulp-shell');
+
+var config = {
+  src: {
+    html: ['./client/**/*.html', './client/*.ico'],
+    css: './client/styles/scss/main.scss',
+    js: ['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'],
+    lib: ['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js']
+  },
+  build: {
+    html: './dist/',
+    css: './dist/styles/css/',
+    js: './dist/',
+    lib: './dist/lib'
+  }
+};
 
 gulp.task('nodemon', function() {
   nodemon({
     script: 'server/server.js',
     ext: 'html js'
   })
+  .on('start', ['watch'])
+  .on('change', ['watch'])
   .on('restart', function() {
     console.log('nodemon restarted server!');
   });
@@ -31,32 +50,37 @@ gulp.task('clean', function() {
     .pipe(clean({force: true}));
 });
 
-gulp.task('minify-css', function() {
-  var opts = {comments:true,spare:true};
-  return gulp.src(['./client/**/*.css', '!./client/lib/**'])
+gulp.task('build-css', function() {
+  var opts = { comments: true, spare: true };
+  gulp.src(config.src.css)
+    .pipe(sass({
+      outputStyle: 'expanded'
+    }).on('error', sass.logError))
+    .pipe(gulp.dest(config.build.css))
     .pipe(minifyCSS(opts))
-    .pipe(gulp.dest('./dist/'));
-});
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(gulp.dest(config.build.css));
+})
 
 gulp.task('minify-js', function() {
-  return gulp.src(['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'])
+  return gulp.src(config.src.js)
     .pipe(concat('build.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest(config.build.js));
 });
 
 gulp.task('bower-files', function(){
-    return gulp.src(['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'])
-        .pipe(concat('lib.js'))
-        .pipe(ngAnnotate())
-        .pipe(uglify())
-        .pipe(gulp.dest('./dist/lib'));
+  return gulp.src(config.src.lib)
+    .pipe(concat('lib.js'))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(gulp.dest(config.build.lib));
 });
 
 gulp.task('copy-html-files', function () {
-  gulp.src(['./client/**/*.html', './client/*.ico'])
-    .pipe(gulp.dest('dist/'));
+  gulp.src(config.src.html)
+    .pipe(gulp.dest(config.build.html));
 });
 
 gulp.task('set-prod', function() {
@@ -75,19 +99,27 @@ gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
  
-gulp.task('default', ['lint', 'nodemon']);
+gulp.task('default', ['nodemon']);
 
 gulp.task('build', function() {
   runSequence(
     'clean',
-    ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'bower-files']
+    ['build-css', 'minify-js', 'copy-html-files', 'bower-files']
   );
+});
+
+gulp.task('watch', function() {
+  gulp.watch(config.src.css, ['build-css']);
+  gulp.watch(config.src.js, ['minify-js']);
+  gulp.watch(config.src.html, ['copy-html-files']);
+  gulp.watch(config.src.lib, ['copy-html-files']);
 });
 
 gulp.task('devStart', function() {
   runSequence(
     'set-dev',
     'build',
+    'watch',
     'default'
   );
 });
