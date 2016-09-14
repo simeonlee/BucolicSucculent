@@ -39,8 +39,6 @@ gulp.task('nodemon', function() {
     script: 'server/server.js',
     ext: 'html js'
   })
-  .on('start', ['watch'])
-  .on('change', ['watch'])
   .on('restart', function() {
     console.log('nodemon restarted server!');
   });
@@ -127,7 +125,6 @@ gulp.task('stop', shell.task([
 gulp.task('build', function() {
   runSequence(
     'clean',
-<<<<<<< 2db9b6e5b0eac1ea858bbc631b5fc8b1e5caad14
     ['build-css', 'minify-js', 'copy-html-files', 'copy-json-files', 'bower-files', 'image']
   );
 });
