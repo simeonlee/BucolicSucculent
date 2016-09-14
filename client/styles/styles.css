@@ -125,6 +125,21 @@ body {
 .notFound {
     color: red;
 }
+#markerContainer {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+}
+
+#playermarker {
+    background-color: black;
+    width: 200px;
+    height: 200px;
+}
+
+#bulba {
+    background-color: black;
+}
 
 /*color pallete!*/
 /*https://coolors.co/313715-d16014-939f5c-bbce8a-e2f9b8*/
