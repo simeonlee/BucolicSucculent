@@ -179,4 +179,25 @@ angular.module('app.services', ['ngGeolocation'])
     isAuth: isAuth,
     signout: signout
   };
-}]);
+}])
+.factory('gameFactory', function(){
+  return {
+    makePlayerObject: function(user, lat, lng, color){
+      return {
+        user: user,
+        longitude: lat,
+        latitude: lng,
+        radius: 100,
+        stroke: {
+              color: color || 'red',
+              weight: 1,
+              opacity: 0.4
+            },
+        fill: {
+          color: color || 'red',
+          opacity: 0.3
+        }
+      }
+    }
+  }
+});

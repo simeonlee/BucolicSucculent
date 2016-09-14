@@ -26,7 +26,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
 
 }])
-.controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', 'socket', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window, socket) {
+.controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', 'socket','gameFactory', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window, socket, gameFactory) {
   console.log('inside gameMapController');
   //testing socket connection. remove later
   socket.on('send:time', function (data) {
@@ -35,26 +35,60 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   //update other player locations
   socket.on('updateLocation', function(data){
       console.log(data, 'data data data')
-      $scope.player2 = data;
-  });
+      if($scope.playersPlaying[data.user] === undefined){
+        console.log('new user! add to $scope.players');
+        $scope.playersPlaying[data.user] = data;
+        $scope.players.push(data);
+      } else {
+        console.log('user exists! update location');
+        var playersCount = $scope.players.length;
+        for(var i = 0; i < playersCount; i++) {
+          if($scope.players[i].user === data.user){
+            $scope.players[i] = data;
+            return;
+          }
+        }
+      }
+    });
   //Get user and markers data
   $scope.user = $window.localStorage.getItem('user');
+  $scope.markers = data;
+  //Get other player data
   $scope.playersPlaying = {};
   $scope.players = []; //<------- TODO. HOW TO GET OTHER PLAYER LOCATION VIA SOCKETS TO APPEND TO USER MAP
-  $scope.player2 = {
-    center: $scope.position,
-    radius: 100,
-    stroke: {
-          color: 'red',
-          weight: 1,
-          opacity: 0.4
-        },
-    fill: {
-      color: 'red',
-      opacity: 0.3
-    }
-    };
-  $scope.markers = data;
+  // $scope.player2 = {};
+  // var makePlayerObject = function(user, lat, lng, color){
+  //   return {
+  //     user: user,
+  //     longitude: lat,
+  //     latitude: lng,
+  //     radius: 100,
+  //     stroke: {
+  //           color: color || 'red',
+  //           weight: 1,
+  //           opacity: 0.4
+  //         },
+  //     fill: {
+  //       color: color || 'red',
+  //       opacity: 0.3
+  //     }
+  //   }
+  // }
+
+  //working iteration of player two movement below
+  // $scope.player2 = {
+  //   center: $scope.position,
+  //   radius: 100,
+  //   stroke: {
+  //         color: 'red',
+  //         weight: 1,
+  //         opacity: 0.4
+  //       },
+  //   fill: {
+  //     color: 'red',
+  //     opacity: 0.3
+  //   }
+  //   };
 
     // $scope.players = res.data.players; //<----------------- wishlist
 
@@ -76,18 +110,22 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     $scope.map.center = newloc;
   });
 
-  $scope.$watch('players', function(updatePlayers){
-    console.log(typeof updatePlayers, updatePlayers, 'updatePlayers')
-  });
+  $scope.$watch('players', function(updatedPlayersArray){
+    console.log(typeof updatedPlayersArray, updatedPlayersArray, 'updatedPlayersArray');
+    $scope.players = updatedPlayersArray;
+    console.log($scope.players, 'updated Players Array');
+  }, true);
 
-  $scope.$watch('player2', function(newPlayer2){
-    console.log(typeof newPlayer2, newPlayer2, 'newPlayer2')
-    $scope.player2 = newPlayer2;
-  });
+  // $scope.$watch('player2', function(newPlayer2){
+  //   console.log(typeof newPlayer2, newPlayer2, 'newPlayer2')
+  //   $scope.player2 = newPlayer2;
+  // });
   //necessary to watch players object? --- check later
   $scope.$watch('playersPlaying', function(updatePlayersPlaying){
     console.log(updatePlayersPlaying, 'updatePlayersPlaying');
-  })
+    $scope.playersPlaying = updatePlayersPlaying;
+    console.log($scope.playersPlaying, 'new updated Players playing object')
+  }, true)
 
 
   $scope.map = { 
@@ -144,7 +182,9 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       // user:$scope.user, <== bring this back later for ui markers
       // latitude: lat,
       // longitude: lng
-      center: pos,
+      user: $scope.user, 
+      latitude: lat, 
+      longitude: lng,
       radius: 100,
       stroke: {
         color: 'red',
