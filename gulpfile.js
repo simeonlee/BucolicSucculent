@@ -15,7 +15,7 @@ var plumber = require('gulp-plumber'); // Handle gulp.watch errors without throw
 var config = {
   src: {
     html: ['./client/**/*.html', './client/*.ico'],
-    css: './client/styles/scss/main.scss',
+    css: './client/styles/scss/*.scss',
     js: ['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'],
     lib: ['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js']
   },
