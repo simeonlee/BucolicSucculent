@@ -10,20 +10,25 @@ var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
 var ngAnnotate = require('gulp-ng-annotate');
 var shell = require('gulp-shell');
+var image = require('gulp-image');
 var plumber = require('gulp-plumber'); // Handle gulp.watch errors without throwing / cancelling nodemon
+ 
+gulp.task('default', []);
 
 var config = {
   src: {
     html: ['./client/**/*.html', './client/*.ico'],
     css: './client/styles/scss/main.scss',
     js: ['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'],
-    lib: ['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js']
+    lib: ['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'],
+    img: './client/images/**/*'
   },
   build: {
     html: './dist/',
     css: './dist/styles/css/',
     js: './dist/',
-    lib: './dist/lib'
+    lib: './dist/lib/',
+    img: './dist/images/'
   }
 };
 
@@ -85,6 +90,12 @@ gulp.task('copy-html-files', function () {
     .pipe(gulp.dest(config.build.html));
 });
 
+gulp.task('image', function () {
+  gulp.src(config.src.img)
+    .pipe(image())
+    .pipe(gulp.dest(config.build.img));
+});
+
 gulp.task('set-prod', function() {
     return process.env.NODE_ENV = 'production';
 });
@@ -105,7 +116,7 @@ gulp.task('stop', shell.task([
 gulp.task('build', function() {
   runSequence(
     'clean',
-    ['build-css', 'minify-js', 'copy-html-files', 'bower-files']
+    ['build-css', 'minify-js', 'copy-html-files', 'bower-files', 'image']
   );
 });
 
@@ -114,6 +125,7 @@ gulp.task('watch', function() {
   gulp.watch(config.src.js, ['minify-js']);
   gulp.watch(config.src.html, ['copy-html-files']);
   gulp.watch(config.src.lib, ['copy-html-files']);
+  gulp.watch(config.src.img, ['image']);
 });
 
 gulp.task('default', function() {
