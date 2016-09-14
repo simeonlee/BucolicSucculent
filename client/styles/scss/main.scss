@@ -1,128 +1,130 @@
+@import 'marker';
+
 .angular-google-map-container { 
   height: 400px; 
 }
 
 #loginContainer {
-    width: 50%;
-    margin:5% 0 0 25%;
-    background-color: #468C77;
+	width: 50%;
+	margin:5% 0 0 25%;
+	background-color: #468C77;
 }
 
 #signupContainer {
-    width: 50%;
-    margin:5% 0 0 25%;
-    background-color: #468C77;
+	width: 50%;
+	margin:5% 0 0 25%;
+	background-color: #468C77;
 }
 
 #loginForm {
-    outline:2px solid rgba(0, 0, 0, .1);
-    text-align: center;
-    padding:3%;
-    padding-bottom: 3%;
+	outline:2px solid rgba(0, 0, 0, .1);
+	text-align: center;
+	padding:3%;
+	padding-bottom: 3%;
 }
 
 #signupForm {
-    outline:2px solid rgba(0, 0, 0, .1);
-    text-align: center;
-    padding:3%;
-    padding-bottom: 3%;
+	outline:2px solid rgba(0, 0, 0, .1);
+	text-align: center;
+	padding:3%;
+	padding-bottom: 3%;
 }
 
 #loginHeader {
-    border-bottom: 1px solid #c9c8c5;
-    text-align: left;
-    color: white;
+	border-bottom: 1px solid #c9c8c5;
+	text-align: left;
+	color: white;
 }
 
 #signupHeader {
-    border-bottom: 1px solid #c9c8c5;
-    text-align: left;
-    color: white;
+	border-bottom: 1px solid #c9c8c5;
+	text-align: left;
+	color: white;
 }
 
 #loginFooter, #loginHeader {
-    padding:3%;
-    background-color: #363636;
+	padding:3%;
+	background-color: #363636;
 }
 
 
 #signupFooter, #signupHeader {
-    padding:3%;
-    background-color: #363636;
+	padding:3%;
+	background-color: #363636;
 }
 
 .angular-google-map {
-    padding-left: 10%;
-    padding-right: 10%;
+	padding-left: 10%;
+	padding-right: 10%;
 }
 
 body {
-    text-align:center;
+	text-align:center;
 }
 
 .app {
-    width: 80%;
-    margin: auto;
-    background-color: #468C77;
+	width: 80%;
+	margin: auto;
+	background-color: #468C77;
 }
 
 .btn {
-    border: 1px solid #000;
-    border-radius: 5px;
-    color: #000;
-    cursor: pointer;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+	border: 1px solid #000;
+	border-radius: 5px;
+	color: #000;
+	cursor: pointer;
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
 
 .btn:hover {
-    background: #000;
-    color: #fff;
+	background: #000;
+	color: #fff;
 }
 .BSicon {
-    border-radius: 50%;
-    border: 2px solid #222;
+	border-radius: 50%;
+	border: 2px solid #222;
 }
 .error{
-    color: red;
-    background-color: yellow;
+	color: red;
+	background-color: yellow;
 }
 th {
-    text-align: center;
+	text-align: center;
 }
 #dashboardTable{
-    width: 60%;
-    margin: auto;
+	width: 60%;
+	margin: auto;
 }
 #playerTable{
-    width: 200px;
-    border: 3px solid #468C77;
-    margin: 30px;
+	width: 200px;
+	border: 3px solid #468C77;
+	margin: 30px;
 }
 .flex-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
 }
 .tablePlayerName {
-    background-color: #468C77;
+	background-color: #468C77;
 }
 h1 {
-    letter-spacing: 1px;
-    margin-top: 30px;
+	letter-spacing: 1px;
+	margin-top: 30px;
 }
 .mainheader {
-    color: white;
-    text-shadow: 2px 2px black;
+	color: white;
+	text-shadow: 2px 2px black;
 }
 body {
-    font-family: 'Lato', sans-serif !important;
+	font-family: 'Lato', sans-serif !important;
 }
 .found {
-    color: green;
+	color: green;
 }
 .notFound {
-    color: red;
+	color: red;
 }
 
 /*color pallete!*/
