@@ -96,7 +96,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
 }])
 .run(['$rootScope', '$location', 'Auth', '$templateCache', function ($rootScope, $location, Auth, $templateCache) {
   // Hold the HTML template for Google Places API searchbox
-  $templateCache.put('searchbox.tpl.html', '<input id="pac-input" class="pac-controls" type="text" placeholder="Search">');
+  $templateCache.put('searchbox.tpl.html', '<input class="searchbox" type="text" placeholder="Search">');
 
   $rootScope.signOut = function() {
     Auth.signout();

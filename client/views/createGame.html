@@ -3,14 +3,10 @@
   <!-- Map to choose waypoints -->
   <ui-gmap-google-map
     center='map.center'
+    events='map.events'
     zoom='map.zoom'
     ng-show="showMap"
   >
-<!--     <ui-gmap-drawing-manager
-      options="createOptions"
-      control='{}'
-      static='true'
-    ></ui-gmap-drawing-manager> -->
     <ui-gmap-search-box
       options="searchbox.options"
       events="searchbox.events"
