@@ -2,6 +2,8 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
 .controller('createGameController', ['Map', '$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function(Map, $scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
 
+  var markerCanvas = './images/marker/canvas/markerCanvas.png';
+
   //check for JWT
   if (!isAuth) {
     $location.path('/login');
@@ -91,6 +93,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         console.log(results);
 
         var sequence = 0;
+<<<<<<< cd059397f601929d6da5827fab43ca67ec9b635d
         $scope.markers = [];
         $scope.imageStorage = [];
 
@@ -178,6 +181,17 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
               // }, true);
 
               sequence++;
+=======
+        for (var i = 0; i < 1; i++) {
+          var place = results[i];
+          var marker = {
+            sequence: sequence,
+            latitude: place.geometry.location.lat(),
+            longitude: place.geometry.location.lng(),
+            options: {
+              icon: markerCanvas,
+              animation: google.maps.Animation.BOUNCE
+>>>>>>> Add marker canvas technology
             }
           })(i);
         }
@@ -185,10 +199,29 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
           latitude: latLng.lat(),
           longitude: latLng.lng()
         };
+<<<<<<< cd059397f601929d6da5827fab43ca67ec9b635d
         // Zoom in to select places more easily
         $scope.map.zoom = 18;
 
         // console.log($('img[src="' + transparent + '"]'));
+=======
+        $scope.map.zoom = 18;
+
+        var $img = $('img[src="' + markerCanvas + '"]');
+        var parent = $img.parent();
+        parent.addClass('marker');
+
+        console.log($img.parents());
+
+        // $('img[src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"]').parent().css({
+        //   'background-color': 'blue',
+        //   'width': '100px',
+        //   'height': '100px'
+        // });
+
+        // Apply changes to digest loop in order to render labeled markers
+        $scope.$apply();
+>>>>>>> Add marker canvas technology
       }
     });
   }*/
