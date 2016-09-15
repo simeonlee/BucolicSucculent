@@ -18,6 +18,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       longitude: -122.4090401 
     },
     zoom: 14,
+    bounds: {},
     events: {
       tilesloaded: function (map, eventName, originalEventArgs) {
         // Once map is loaded and ready, this callback is hit
@@ -51,7 +52,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
             var rating = place.rating;
             if (place.photos && place.photos[0]) {
               var width = place.photos[0].width;
-              var photoUrl = place.photos[0].getUrl({maxWidth: 190, maxHeight: 190});
+              var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 160});
               console.log(photoUrl);
             } else {
               var photoUrl = null;
@@ -62,10 +63,25 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
               longitude: place.geometry.location.lng(),
               options: {
                 icon: transparent,
-                animation: google.maps.Animation.BOUNCE
+                optimized: false
               }
             };
             $scope.map.markers.push(marker);
+
+
+            // $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
+            //   // Only need to regenerate once
+            //   if (!ov.southwest && nv.southwest) {
+            //     var markers = [];
+
+
+            //     // for (var i = 0; i < 50; i++) {
+            //       // markers.push(createRandomMarker(i, $scope.map.bounds))
+            //     // }
+            //     $scope.map.markers = markers;
+            //   }
+            // }, true);
+
 
             var $transparentMarker = $('img[src="' + transparent + '"]');
             var $anchor = $transparentMarker.parent();
@@ -74,9 +90,9 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
               $anchor
                 .append($('<div>', {'class': 'ring marker'}))
                 .append($('<div>', {'class': 'shadow'}))
-                .append($('<div>', {'class': 'iw'}));
+                .append($('<div>', {'class': 'iw iw-' + i}));
             };
-            var $iw = $('.iw');
+            var $iw = $('.iw-' + i);
             if (!$iw.find('div.iw-name').length) {
               $iw
                 .append('<div class="iw-name">' + name + '</div>')
