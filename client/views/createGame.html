@@ -15,13 +15,16 @@
       position="searchbox.position"
     ></ui-gmap-search-box>
     <ui-gmap-markers
-      models="map.markers"
+      models="markers"
       idKey="'sequence'"
       coords="'self'"
       options="'options'"
     >
       <ui-gmap-windows show="show">
-        <div ng-non-bindable>{{title}}</div>
+        <div class="iw-content" ng-non-bindable>
+          <div class="iw-name">{{name}}</div>
+          <img class="iw-photo" src={{photoUrl}} />
+        </div>
       </ui-gmap-windows>
     </ui-gmap-markers>
   </ui-gmap-google-map>
