@@ -44,27 +44,48 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         console.log(results);
         var sequence = 0;
         for (var i = 0; i < 5; i++) {
-          var place = results[i];
-          var name = place.name;
-          var rating = place.rating;
-          if (place.photos && place.photos[0]) {
-            var width = place.photos[0].width;
-            var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 200});
-            console.log(photoUrl);
-          } else {
-            var photoUrl = null;
-          };
-          var marker = {
-            sequence: sequence,
-            latitude: place.geometry.location.lat(),
-            longitude: place.geometry.location.lng(),
-            options: {
-              icon: transparent,
-              animation: google.maps.Animation.BOUNCE
-            }
-          };
-          $scope.map.markers.push(marker);
-          sequence++;
+          (function(i) {
+
+            var place = results[i];
+            var name = place.name;
+            var rating = place.rating;
+            if (place.photos && place.photos[0]) {
+              var width = place.photos[0].width;
+              var photoUrl = place.photos[0].getUrl({maxWidth: 190, maxHeight: 190});
+              console.log(photoUrl);
+            } else {
+              var photoUrl = null;
+            };
+            var marker = {
+              sequence: sequence,
+              latitude: place.geometry.location.lat(),
+              longitude: place.geometry.location.lng(),
+              options: {
+                icon: transparent,
+                animation: google.maps.Animation.BOUNCE
+              }
+            };
+            $scope.map.markers.push(marker);
+
+            var $transparentMarker = $('img[src="' + transparent + '"]');
+            var $anchor = $transparentMarker.parent();
+            !$anchor.hasClass('canvas') && $anchor.addClass('canvas hover');
+            if (!$anchor.find('div.ring').length) {
+              $anchor
+                .append($('<div>', {'class': 'ring marker'}))
+                .append($('<div>', {'class': 'shadow'}))
+                .append($('<div>', {'class': 'iw'}));
+            };
+            var $iw = $('.iw');
+            if (!$iw.find('div.iw-name').length) {
+              $iw
+                .append('<div class="iw-name">' + name + '</div>')
+                .append('<img class="iw-photo" src="' + photoUrl + '"/>');
+            } 
+
+            sequence++;
+
+          })(i);
         }
         $scope.map.center = {
           latitude: latLng.lat(),
@@ -75,14 +96,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         // Apply changes to digest loop in order to render labeled markers
         $scope.$apply();
 
-        $('img[src="' + transparent + '"]')
-          .parent()
-          .addClass('canvas hover')
-          .append($('<div>', {'class': 'ring marker'}))
-          .append($('<div>', {'class': 'shadow'}))
-          .append($('<div>', {'class': 'iw'}));
-        $('iw')
-          .append()
+ 
         console.log($('img[src="' + transparent + '"]'));
       }
     });
