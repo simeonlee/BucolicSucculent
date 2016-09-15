@@ -1,21 +1,21 @@
-var gulp = require('gulp');
-var nodemon = require('gulp-nodemon');
-var concat = require('gulp-concat');
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
-var sass = require('gulp-sass');
-var minifyCSS = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var clean = require('gulp-clean');
-var runSequence = require('run-sequence');
-var ngAnnotate = require('gulp-ng-annotate');
-var shell = require('gulp-shell');
-var image = require('gulp-image');
-var plumber = require('gulp-plumber'); // Handle gulp.watch errors without throwing / cancelling nodemon
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const concat = require('gulp-concat');
+const jshint = require('gulp-jshint');
+const uglify = require('gulp-uglify');
+const sass = require('gulp-sass');
+const minifyCSS = require('gulp-minify-css');
+const rename = require('gulp-rename');
+const clean = require('gulp-clean');
+const runSequence = require('run-sequence');
+const ngAnnotate = require('gulp-ng-annotate');
+const shell = require('gulp-shell');
+const image = require('gulp-image');
+const plumber = require('gulp-plumber'); // Handle gulp.watch errors without throwing / cancelling nodemon
  
 gulp.task('default', []);
 
-var config = {
+const config = {
   src: {
     html: ['./client/**/*.html', './client/*.ico'],
     css: './client/styles/scss/*.scss',
