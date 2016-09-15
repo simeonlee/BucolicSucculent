@@ -40,6 +40,21 @@ angular.module('app.services', ['ngGeolocation'])
         data: data
       });
     },
+
+    createPublicGame: function(user, markers) {
+      var data = {
+        username: user,
+        markers: markers, 
+      };
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
+      return $http({
+        method: 'POST',
+        url: '/api/public',
+        data: data
+      });
+    },
+
     updateLocStatus: function(user, loc) {
       var data = {
         username: user,

@@ -27,6 +27,25 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       $scope.showMap = false;
   };
 
+  $scope.submitWaypointsPublic = function() {
+
+    //get user for ajax request
+    $scope.user = $window.localStorage.getItem('user');
+    // get waypoints from map and submit to server to create createGame
+    Requests.createPublicGame($scope.user, $scope.map.markers) 
+      .then(function(res) {
+
+        // get back hashed game url and display
+        var gameUrl = res.data;
+        $scope.gamePath = gameUrl; //<------ to be game url
+      });
+
+      // hide map on game creation
+      $scope.showMap = false;
+  };
+
+
+
   $scope.map = { 
     center: { 
       latitude: 37.7836881,                 //<------- Default SF map

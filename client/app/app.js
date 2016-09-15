@@ -41,7 +41,8 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
       resolve: {
 
         data: function(Requests) {
-          Requests.getPublicGames().then(function(res) {
+          return Requests.getPublicGames().then(function(res) {
+            console.log('checking my resolve??????', res);
             return res.data;
           });
         }

@@ -167,6 +167,11 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   $scope.players = data;
 }])
 .controller('publicController', ['$scope', 'data', function($scope, data) {
+
+  $scope.list = function() {
+    console.log('what is this data thingie i have here????', data);
+  };
+
   $scope.players = data;
 }]);
 

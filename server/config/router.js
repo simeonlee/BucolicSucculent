@@ -24,11 +24,18 @@ module.exports = function(app, express) {
   //   .put(helpers.updateStatus)
   //   .post(helpers.createGame, detectEnvironment);
 
+  app.route('/api/public')
+    .get(jwtAuth, requireAuth, helpers.getPublicGames)
+    .post(jwtAuth, requireAuth, helpers.createPublicGame, detectEnvironment);
+
+
+
+
   app.post('/api/users/signup', helpers.createUser);
 
   app.post('/api/users/login', helpers.loginUser);
 
-  app.post('/api/public', helpers.createPublicGame);
+  // app.post('/api/public', helpers.createPublicGame);
 
-  app.get('/api/public', helpers.getPublicGames);
+  // app.get('/api/public', helpers.getPublicGames);
 };
