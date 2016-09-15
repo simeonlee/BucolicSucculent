@@ -2,7 +2,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
 .controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
 
-  var markerCanvas = './images/marker/canvas/markerCanvas.png';
+  var transparent = './images/marker/falseMarker/transparent-200x350.png';
 
   //check for JWT
   if (!isAuth) {
@@ -43,14 +43,23 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(results);
         var sequence = 0;
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < 5; i++) {
           var place = results[i];
+          var name = place.name;
+          var rating = place.rating;
+          if (place.photos && place.photos[0]) {
+            var width = place.photos[0].width;
+            var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 200});
+            console.log(photoUrl);
+          } else {
+            var photoUrl = null;
+          };
           var marker = {
             sequence: sequence,
             latitude: place.geometry.location.lat(),
             longitude: place.geometry.location.lng(),
             options: {
-              icon: markerCanvas,
+              icon: transparent,
               animation: google.maps.Animation.BOUNCE
             }
           };
@@ -63,20 +72,18 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         };
         $scope.map.zoom = 18;
 
-        var $img = $('img[src="' + markerCanvas + '"]');
-        var parent = $img.parent();
-        parent.addClass('marker');
-
-        console.log($img.parents());
-
-        // $('img[src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"]').parent().css({
-        //   'background-color': 'blue',
-        //   'width': '100px',
-        //   'height': '100px'
-        // });
-
         // Apply changes to digest loop in order to render labeled markers
         $scope.$apply();
+
+        $('img[src="' + transparent + '"]')
+          .parent()
+          .addClass('canvas hover')
+          .append($('<div>', {'class': 'ring marker'}))
+          .append($('<div>', {'class': 'shadow'}))
+          .append($('<div>', {'class': 'iw'}));
+        $('iw')
+          .append()
+        console.log($('img[src="' + transparent + '"]'));
       }
     });
   }
