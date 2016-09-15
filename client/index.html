@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Scvng.it</title>
+    <title>SCVNGR</title>
     <meta name="description" content="Scavenger Hunt">
     <meta name="author" content="Bucolic Succulent">
 
     <!-- Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="styles/css/main.min.css" rel="stylesheet" >
 
  
   </head>
+<<<<<<< 0f719541485d460f819101e31cc68d1cc10dd395
   <body ng-app='app' >
     <div class="app">
       <div class="top">
@@ -46,11 +46,37 @@
               <li><button type="button" class="btn btn-default btn-xs navbar-btn" ng-click="signOut()">Sign Out</button></li>
             </ul>
           </div>
+=======
+  <body ng-app="app">
+    <nav class="turquoise wrap navbar navbar-default" role="navigation">
+      <!-- Why role="navigation" in <nav>? See article: -->
+      <!-- https://www.w3.org/WAI/GL/wiki/Using_HTML5_nav_element#Example:The_.3Cnav.3E_element -->
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand logo" href="/">SCVNGR</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+>>>>>>> Implement navbar restructuring and reformatting
         </div>
-      </nav>
-    </div>
-
-
+        <div class="collapse navbar-collapse" id="navigation">
+          <ul class="nav navbar-nav">
+            <li><a class="white" ui-sref="dashboard">Dashboard</a></li>
+            <li><a class="white" ui-sref="createGame">New Game</a></li>
+            <li ng-show="gameNav()"><a class="white" ui-sref="game.map">Map</a></li>
+            <li ng-show="gameNav()"><a class="white" ui-sref="game.stats">Game Stats</a></li>
+            <li><a class="white" ng-click="signOut()" href="/#/login">Sign Out</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Old comments that might be useful later -->
+      <!-- <nav ng-hide="hideNav()" class="navbar navbar-default"> -->
+      <!-- <a class="navbar-brand hidden-xs" href="/#/dashboard"><img class="BSicon" alt="Bucolic Succulent" src="./favicon.ico"></a> -->
+    </nav>
     <div ui-view></div>
 
 
