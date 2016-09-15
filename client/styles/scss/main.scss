@@ -134,7 +134,11 @@ nav button {
 .start {
 	position: absolute;
 	top: 50%;
-	right: 10px;
+	right: 2%;
+	background-color: $smoke;
+	opacity: 0.6 !important;
+	border: 0 !important;
+	color: white !important;
 	z-index: 9999999;
 }
 
