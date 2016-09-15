@@ -14,6 +14,8 @@
 //       }
 //     }
 
+// Object]0: Object$$hashKey: "object:18"id: 1latitude: 37.7857751114614longitude: -122.43757903575897options: Objectlabel: "1"__proto__: Objectsequence: 1statuses: Objectstatus: false__proto__: Object__proto__: Object1: Object2: Objectlength: 3__proto__: Array[0]
+
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
 .controller('gameController', ['$scope', '$window', 'isAuth', '$location', function($scope, $window, isAuth, $location) {
@@ -56,39 +58,8 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   //Get other player data
   $scope.playersPlaying = {};
   $scope.players = []; //<------- TODO. HOW TO GET OTHER PLAYER LOCATION VIA SOCKETS TO APPEND TO USER MAP
-  // $scope.player2 = {};
-  // var makePlayerObject = function(user, lat, lng, color){
-  //   return {
-  //     user: user,
-  //     longitude: lat,
-  //     latitude: lng,
-  //     radius: 100,
-  //     stroke: {
-  //           color: color || 'red',
-  //           weight: 1,
-  //           opacity: 0.4
-  //         },
-  //     fill: {
-  //       color: color || 'red',
-  //       opacity: 0.3
-  //     }
-  //   }
-  // }
 
-  //working iteration of player two movement below
-  // $scope.player2 = {
-  //   center: $scope.position,
-  //   radius: 100,
-  //   stroke: {
-  //         color: 'red',
-  //         weight: 1,
-  //         opacity: 0.4
-  //       },
-  //   fill: {
-  //     color: 'red',
-  //     opacity: 0.3
-  //   }
-  //   };
+
 
     // $scope.players = res.data.players; //<----------------- wishlist
 
@@ -153,6 +124,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
   //create position on map
   var createMyPosition = function() {
+
     $geolocation.watchPosition(function(success){
       console.log(success, 'watchPosition')
     }, null, {
@@ -182,6 +154,10 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       // user:$scope.user, <== bring this back later for ui markers
       // latitude: lat,
       // longitude: lng
+      id: 1,
+      options: {
+        label: 1
+        },
       user: $scope.user, 
       latitude: lat, 
       longitude: lng,

@@ -182,9 +182,13 @@ angular.module('app.services', ['ngGeolocation'])
 }])
 .factory('gameFactory', function(){
   return {
-    makePlayerObject: function(user, lat, lng, color){
+    makePlayerObject: function(user, lat, lng, avatar, content, ){
       return {
         user: user,
+        window: {
+          options: { content: content},
+          show: false
+        },
         longitude: lat,
         latitude: lng,
         radius: 100,
@@ -200,4 +204,36 @@ angular.module('app.services', ['ngGeolocation'])
       }
     }
   }
+
+ //   // ======= roberts code ====== //
+ //   $scope.wind = {
+ //     options: {
+ //       // content: '<div><span>Challenges Completed: \ {{completed}} \</span></div>'
+ //       content: '<div id= "bulba"><img src= \'http://pldh.net/media/pokemon/shuffle/001.png\'/></div>'
+ //     },
+ //     show: false
+ //   };
+  
+ //  $scope.mark = {
+
+ //   events: {
+ //     // click: function() {
+ //     //   $scope.wind.show = !$scope.wind.show;
+ //     // },
+ //     mouseover: function() {
+ //       console.log('hitting my mouseover event');
+ //       $scope.wind.show = true;
+ //     },
+ //     mouseout: function() {
+ //       console.log('hitting my mouseOUT event yo!');
+ //       $scope.wind.show = false;
+ //     }
+
+ //   },
+
+ //   options: {
+ //     icon:'http://pldh.net/media/pokemon/gen3/frlg/007.png',
+ //     title: 'squirtle!!!!'
+ //   }
+ // };
 });
