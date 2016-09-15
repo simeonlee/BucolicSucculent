@@ -6,8 +6,10 @@ angular.module('app.dashboard', [])
     $window.localStorage.setItem('redir', redir);
     $location.path('/login');
   }
-  console.log(data, 'token token token');
-  $scope.user = data.userdata.username;
+  $window.localStorage.setItem('facebookname', data.userFacebook.facebookname || undefined);
+  $window.localStorage.setItem('facebookavatar', data.userFacebook.facebookavatar || undefined);
+
+  $scope.user = data.userFacebook.facebookname || data.userdata.username;
   $scope.games = data.userdata.games;
 
   //update facebook stuffs

@@ -11,14 +11,13 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
 }])
 .controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', 'socket','gameFactory', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window, socket, gameFactory) {
-  console.log('inside gameMapController');
   //testing socket connection. remove later
   socket.on('send:time', function (data) {
         console.log(data);
     });
   //update other player locations
   socket.on('updateLocation', function(data){
-      console.log(data, 'data data data')
+      console.log(data, 'socket data data data')
       if($scope.playersPlaying[data.user] === undefined){
         console.log('new user! add to $scope.players');
         $scope.playersPlaying[data.user] = data;
@@ -35,15 +34,20 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       }
     });
   //Get user and markers data
-  $scope.user = $window.localStorage.getItem('user');
+  $scope.user = $window.localStorage.getItem('facebookname') || $window.localStorage.getItem('user');
+  $scope.facebookavatar = $window.localStorage.getItem('facebookavatar') || null;
   $scope.markers = data;
+  $scope.userMarkOptions = {
+    options: {
+      icon: $scope.facebookavatar
+    }
+  }
   //Get other player data
   $scope.playersPlaying = {};
   $scope.players = []; //<------- TODO. HOW TO GET OTHER PLAYER LOCATION VIA SOCKETS TO APPEND TO USER MAP
 
 
-
-    // $scope.players = res.data.players; //<----------------- wishlist
+  // $scope.players = res.data.players; //<----------------- wishlist
 
   //Add labels to markers according to sequence number
   $scope.markers.forEach(function(marker, ind) {

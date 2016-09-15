@@ -9,18 +9,20 @@
 
   <ui-gmap-google-map events='map.events' center='map.center' zoom='map.zoom'>
     <ui-gmap-markers models="markers" idKey="'id'" coords="'self'" options="'options'"></ui-gmap-markers>
+    <!-- current User marker -->
     <ui-gmap-marker 
     center="circle.center" 
     idKey="254" 
-    options="mark.options" coords="circle.center" events='mark.events'
+    options="userMarkOptions.options" coords="circle.center" events='mark.events'
     clickable=true>
     </ui-gmap-marker>
-
+    <!-- current User infowindow -->
     <ui-gmap-window coords ="circle.center" options="wind.options" show="wind.show">
-           <div>
-             <img src = 'http://pldh.net/media/pokemon/shuffle/007.png'/>
-           </div>
-         </ui-gmap-window>
+     <div>
+       <img src = 'http://pldh.net/media/pokemon/shuffle/007.png'/>
+     </div>
+   </ui-gmap-window>
+    <!-- other user markers -->
     <ui-gmap-circle 
     ng-repeat="object in players"
     radius="100"
@@ -29,7 +31,6 @@
     center="{latitude: object.latitude, longitude: object.longitude}"
     clickable=true>
   </ui-gmap-circle>
-    <!-- temporary player 2 marker only will eventally have array of users! -->
     <!--TODO append other player locations here -->
 
   </ui-gmap-google-map>
