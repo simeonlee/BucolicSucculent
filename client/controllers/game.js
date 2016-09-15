@@ -1,21 +1,3 @@
-// console.log('updating ' + data.user + '\'s' + ' location');
-//     if($scope.playersPlaying[data.user] === undefined){
-//       $scope.playersPlaying[data.user] = true;
-//       $scope.players = $scope.players.push(data)
-//     } else {
-//       var $newPlayerLocations = $scope.players //(might need to make copy instead of reference)
-//       var playersLength = $newPlayerLocations.length;
-//       for (var i = 0; i < playersLength; i++) {
-//         if($newPlayerLocations[i].user === data.user){
-//           $newPlayerLocations[i].latitude = data.latitude;
-//           $newPlayerLocations[i].longitude = data.longitude;
-//           return $scope.players = $newPlayerLocations;
-//         } 
-//       }
-//     }
-
-// Object]0: Object$$hashKey: "object:18"id: 1latitude: 37.7857751114614longitude: -122.43757903575897options: Objectlabel: "1"__proto__: Objectsequence: 1statuses: Objectstatus: false__proto__: Object__proto__: Object1: Object2: Objectlength: 3__proto__: Array[0]
-
 angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'])
 
 .controller('gameController', ['$scope', '$window', 'isAuth', '$location', function($scope, $window, isAuth, $location) {
