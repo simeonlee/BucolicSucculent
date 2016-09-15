@@ -1,5 +1,150 @@
+@import 'https://fonts.googleapis.com/css?family=Raleway:100,400|Yatra+One';
+@import 'marker';
+
+$turquoise: #36D7B7;
+
+* {
+	font-family: 'Raleway', sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+	&:link {
+		text-decoration: none;
+		color: black;
+	}
+	&:visited {
+		text-decoration: none;
+		color: black;
+	}
+	&:hover {
+		text-decoration: none;
+		color: black;
+	}
+	&:active {
+		text-decoration: none;
+		color: black;
+	}
+}
+
+ul {
+	list-style-type: none;
+}
+
+h1 {
+	letter-spacing: 1px;
+	margin-top: 30px;
+}
+
+th {
+	text-align: center;
+}
+
+.turquoise {
+	background-color: $turquoise !important;
+}
+
+.wrap {
+	border: 0 !important;
+	border-radius: 0 !important;
+}
+
+.white {
+	color: white !important;
+}
+
+.icon-bar {
+	background-color: white !important;
+}
+
+nav button {
+	border: 0 !important;
+}
+
+// .active {
+//   color: #000;
+//   background: #d65c14;
+// }
+
+// .active > a, 
+// .active > a:hover, 
+// .active > a:focus {
+//   color: #000;
+//   background: #d65c14;
+// }
+
+.navbar-toggle {
+	background-color: $turquoise !important;
+}
+
+.navbar-collapse {
+	border: 0px solid $turquoise !important;
+}
+
+// .nav {
+// 	position: absolute;
+// 	top: 0;
+// 	right: 0;
+// 	left: 0;
+// 	height: 60px;
+// 	font-weight: 100;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: space-around;
+// }
+
+
+// .center {
+// 	display: flex;
+// 	align-items: center;
+// }
+
+// .space-around {
+// 	display: flex;
+// 	justify-content: space-around;
+// }
+
+// .space-between {
+// 	display: flex;
+// 	justify-content: space-between;
+// }
+
+.logo {
+	font-family: 'Yatra One', cursive;
+	font-size: 26px;
+	color: white !important;
+}
+
+// .nav {
+// 	position: absolute;
+// 	top: 60px;
+// 	right: 0;
+// 	left: 0;
+// 	height: 40px;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: space-around;
+// }
+
+.start {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	z-index: 9999999;
+}
+
+.angular-google-map {
+
+}
+
 .angular-google-map-container { 
-  height: 400px; 
+	position: absolute;
+	top: 50px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -9999999;
 }
 
 #loginContainer {
@@ -51,21 +196,6 @@
     background-color: #363636;
 }
 
-.angular-google-map {
-    padding-left: 10%;
-    padding-right: 10%;
-}
-
-body {
-    text-align:center;
-}
-
-.app {
-    width: 80%;
-    margin: auto;
-    background-color: #468C77;
-}
-
 .btn {
     border: 1px solid #000;
     border-radius: 5px;
@@ -79,51 +209,46 @@ body {
     background: #000;
     color: #fff;
 }
+
 .BSicon {
     border-radius: 50%;
     border: 2px solid #222;
 }
+
 .error{
     color: red;
     background-color: yellow;
 }
-th {
-    text-align: center;
-}
+
 #dashboardTable{
     width: 60%;
     margin: auto;
 }
+
 #playerTable{
     width: 200px;
     border: 3px solid #468C77;
     margin: 30px;
 }
+
 .flex-container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
 .tablePlayerName {
     background-color: #468C77;
 }
-h1 {
-    letter-spacing: 1px;
-    margin-top: 30px;
-}
-.mainheader {
-    color: white;
-    text-shadow: 2px 2px black;
-}
-body {
-    font-family: 'Lato', sans-serif !important;
-}
+
 .found {
     color: green;
 }
+
 .notFound {
     color: red;
 }
+
 #markerContainer {
     width: 50px;
     height: 50px;
