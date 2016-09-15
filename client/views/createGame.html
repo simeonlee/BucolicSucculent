@@ -2,9 +2,10 @@
   <div class="large temporary center pomegranate upper"><span>Select waypoints to build your game</span></div>
   <!-- Map to choose waypoints -->
   <ui-gmap-google-map
-    center='map.center'
-    events='map.events'
-    zoom='map.zoom'
+    center="map.center"
+    events="map.events"
+    zoom="map.zoom"
+    bounds="map.bounds"
     ng-show="showMap"
   >
     <ui-gmap-search-box
@@ -18,7 +19,11 @@
       idKey="'sequence'"
       coords="'self'"
       options="'options'"
-    ></ui-gmap-markers>
+    >
+      <ui-gmap-windows show="show">
+        <div ng-non-bindable>{{title}}</div>
+      </ui-gmap-windows>
+    </ui-gmap-markers>
   </ui-gmap-google-map>
 
   <div ng-show="map.markers.length"><a class="btn" ng-click="submitWaypoints()" ng-show="showMap">Create Private Game</a></div>
