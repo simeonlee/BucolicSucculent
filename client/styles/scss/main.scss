@@ -45,6 +45,10 @@ th {
 	background-color: $turquoise !important;
 }
 
+.transparent {
+	opacity: 0.9;
+}
+
 .wrap {
 	border: 0 !important;
 	border-radius: 0 !important;
@@ -89,7 +93,7 @@ nav button {
 
 .angular-google-map-container { 
 	position: absolute;
-	top: 50px;
+	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
