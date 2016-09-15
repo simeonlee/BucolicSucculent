@@ -1,10 +1,15 @@
-@import 'https://fonts.googleapis.com/css?family=Raleway:100,400|Yatra+One';
+@import 'https://fonts.googleapis.com/css?family=Raleway:100,200|Gruppo';
 @import 'marker';
 
-$turquoise: #36D7B7;
+$major: 'Gruppo';
+$minor: 'Raleway';
+
+$smoke: #6C7A89;
+$pomegranate: #F62459;
 
 * {
-	font-family: 'Raleway', sans-serif;
+	font-family: $minor, sans-serif;
+	font-weight: 200;
 }
 
 a {
@@ -42,11 +47,15 @@ th {
 }
 
 .turquoise {
-	background-color: $turquoise !important;
+	background-color: $smoke !important;
 }
 
 .transparent {
 	opacity: 0.9;
+}
+
+.upper {
+	text-transform: uppercase;
 }
 
 .wrap {
@@ -67,7 +76,7 @@ nav button {
 }
 
 .navbar-toggle {
-	background-color: $turquoise !important;
+	background-color: $smoke !important;
 }
 
 .navbar-collapse {
@@ -75,9 +84,51 @@ nav button {
 }
 
 .logo {
-	font-family: 'Yatra One', cursive;
+	font-family: $major, cursive;
 	font-size: 26px;
 	color: white !important;
+}
+
+.large {
+	font-size: 34px;
+}
+
+.center {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.pomegranate {
+	color: $pomegranate;
+}
+
+.temporary {
+	animation-name: fade;
+	animation-fill-mode: forwards;
+	animation-duration: 5s;
+	z-index: 9999999;
+}
+
+@keyframes fade {
+	0% {
+		opacity: 1.0;
+		z-index: 9999999;
+	}
+	80% {
+		opacity: 1.0;
+		z-index: 9999999;
+	}
+	100% {
+		opacity: 0.0;
+		z-index: -9999999;
+	}
 }
 
 .start {

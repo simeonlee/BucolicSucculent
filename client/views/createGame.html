@@ -1,5 +1,5 @@
 <div>
-  <h2>Select waypoints to build your game!</h2>
+  <div class="large temporary center pomegranate upper"><span>Select waypoints to build your game</span></div>
   <!-- Map to choose waypoints -->
   <ui-gmap-google-map
     center='map.center'
@@ -21,7 +21,7 @@
     ></ui-gmap-markers>
   </ui-gmap-google-map>
 
-  <div ng-show="map.markers.length">
+  <div class="start" ng-show="map.markers.length">
     <a class="btn" ng-click="submitWaypoints()" ng-show="showMap">
       Start Game
     </a>
