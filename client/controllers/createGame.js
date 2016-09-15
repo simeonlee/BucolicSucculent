@@ -2,7 +2,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
 .controller('createGameController', ['Map', '$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function(Map, $scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
 
-  var markerCanvas = './images/marker/canvas/markerCanvas.png';
+  var transparent = './images/marker/falseMarker/transparent-200x350.png';
 
   //check for JWT
   if (!isAuth) {
@@ -93,6 +93,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         console.log(results);
 
         var sequence = 0;
+<<<<<<< 7aa48ab82db9aee38e0416457a00d0f517df7f9c
 <<<<<<< cd059397f601929d6da5827fab43ca67ec9b635d
         $scope.markers = [];
         $scope.imageStorage = [];
@@ -183,13 +184,25 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
               sequence++;
 =======
         for (var i = 0; i < 1; i++) {
+=======
+        for (var i = 0; i < 5; i++) {
+>>>>>>> Add ability to retrieve place photo urls from google api
           var place = results[i];
+          var name = place.name;
+          var rating = place.rating;
+          if (place.photos && place.photos[0]) {
+            var width = place.photos[0].width;
+            var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 200});
+            console.log(photoUrl);
+          } else {
+            var photoUrl = null;
+          };
           var marker = {
             sequence: sequence,
             latitude: place.geometry.location.lat(),
             longitude: place.geometry.location.lng(),
             options: {
-              icon: markerCanvas,
+              icon: transparent,
               animation: google.maps.Animation.BOUNCE
 >>>>>>> Add marker canvas technology
             }
@@ -207,21 +220,22 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 =======
         $scope.map.zoom = 18;
 
-        var $img = $('img[src="' + markerCanvas + '"]');
-        var parent = $img.parent();
-        parent.addClass('marker');
-
-        console.log($img.parents());
-
-        // $('img[src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"]').parent().css({
-        //   'background-color': 'blue',
-        //   'width': '100px',
-        //   'height': '100px'
-        // });
-
         // Apply changes to digest loop in order to render labeled markers
         $scope.$apply();
+<<<<<<< 7aa48ab82db9aee38e0416457a00d0f517df7f9c
 >>>>>>> Add marker canvas technology
+=======
+
+        $('img[src="' + transparent + '"]')
+          .parent()
+          .addClass('canvas hover')
+          .append($('<div>', {'class': 'ring marker'}))
+          .append($('<div>', {'class': 'shadow'}))
+          .append($('<div>', {'class': 'iw'}));
+        $('iw')
+          .append()
+        console.log($('img[src="' + transparent + '"]'));
+>>>>>>> Add ability to retrieve place photo urls from google api
       }
     });
   }*/
