@@ -62,70 +62,19 @@ nav button {
 	border: 0 !important;
 }
 
-// .active {
-//   color: #000;
-//   background: #d65c14;
-// }
-
-// .active > a, 
-// .active > a:hover, 
-// .active > a:focus {
-//   color: #000;
-//   background: #d65c14;
-// }
-
 .navbar-toggle {
 	background-color: $turquoise !important;
 }
 
 .navbar-collapse {
-	border: 0px solid $turquoise !important;
+	border: 0px solid rgba(255, 255, 255, 0.0) !important;
 }
-
-// .nav {
-// 	position: absolute;
-// 	top: 0;
-// 	right: 0;
-// 	left: 0;
-// 	height: 60px;
-// 	font-weight: 100;
-// 	display: flex;
-// 	align-items: center;
-// 	justify-content: space-around;
-// }
-
-
-// .center {
-// 	display: flex;
-// 	align-items: center;
-// }
-
-// .space-around {
-// 	display: flex;
-// 	justify-content: space-around;
-// }
-
-// .space-between {
-// 	display: flex;
-// 	justify-content: space-between;
-// }
 
 .logo {
 	font-family: 'Yatra One', cursive;
 	font-size: 26px;
 	color: white !important;
 }
-
-// .nav {
-// 	position: absolute;
-// 	top: 60px;
-// 	right: 0;
-// 	left: 0;
-// 	height: 40px;
-// 	display: flex;
-// 	align-items: center;
-// 	justify-content: space-around;
-// }
 
 .start {
 	position: absolute;
