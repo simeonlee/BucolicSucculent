@@ -94,8 +94,14 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
             return [];
           }
           return Requests.getUserData().then(function(res) {
-            console.log('checking dashboard data??????', res.data);
-            return res.data;
+            return Requests.updateFacebookData()
+                .then(function(facebookInfo){
+                  console.log('crazy callbacks', res, facebookInfo);
+                  return {
+                    userdata: res.data,
+                    userFacebook: facebookInfo.data
+                  };
+                })
           }); 
         }
       }

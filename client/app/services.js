@@ -88,6 +88,22 @@ angular.module('app.services', ['ngGeolocation'])
         url: '/api/public',
 
       });
+    },
+    updateFacebookData: function() {
+      console.log('updateFacebookData');
+      var params = {
+        username: $window.localStorage.getItem('user')
+      }
+      var token = $window.localStorage.getItem('token');
+      $http.defaults.headers.common['x-access-token'] = token;
+      return $http({
+        method:'GET',
+        url: '/user/facebook',
+        params: params
+      });
+      // .then(function(data){
+      //   console.log(data);
+      // })
     }
   };
 }])
@@ -142,6 +158,7 @@ angular.module('app.services', ['ngGeolocation'])
       }
     })
     .then(function (resp) {
+      console.log(resp, 'does response now have fb info?');
       $window.localStorage.setItem('user', resp.data.user);
       return resp.data.token;
     });
@@ -182,7 +199,7 @@ angular.module('app.services', ['ngGeolocation'])
 }])
 .factory('gameFactory', function(){
   return {
-    makePlayerObject: function(user, lat, lng, avatar, content, ){
+    makePlayerObject: function(user, lat, lng, avatar, content){
       return {
         user: user,
         window: {
@@ -204,36 +221,4 @@ angular.module('app.services', ['ngGeolocation'])
       }
     }
   }
-
- //   // ======= roberts code ====== //
- //   $scope.wind = {
- //     options: {
- //       // content: '<div><span>Challenges Completed: \ {{completed}} \</span></div>'
- //       content: '<div id= "bulba"><img src= \'http://pldh.net/media/pokemon/shuffle/001.png\'/></div>'
- //     },
- //     show: false
- //   };
-  
- //  $scope.mark = {
-
- //   events: {
- //     // click: function() {
- //     //   $scope.wind.show = !$scope.wind.show;
- //     // },
- //     mouseover: function() {
- //       console.log('hitting my mouseover event');
- //       $scope.wind.show = true;
- //     },
- //     mouseout: function() {
- //       console.log('hitting my mouseOUT event yo!');
- //       $scope.wind.show = false;
- //     }
-
- //   },
-
- //   options: {
- //     icon:'http://pldh.net/media/pokemon/gen3/frlg/007.png',
- //     title: 'squirtle!!!!'
- //   }
- // };
 });

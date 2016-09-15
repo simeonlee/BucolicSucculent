@@ -148,6 +148,48 @@ exports.createGame = function(req, res, next) {
     next();
   });
 };
+//===== facebook auth to get user info =====//
+exports.updateUser = function(req, res) {
+  console.log('inside helpers.js updateUser fb info', req);
+
+  var facebookid = req.user.facebookid;
+  var facebookavatar = req.user.facebookavatar;
+  var facebookemail = req.user.facebookemail;
+  var facebookname = req.user.facebookname; 
+  
+  User.update({
+      facebookid: facebookid,
+      facebookavatar: facebookavatar,
+      facebookemail: facebookemail,
+      facebookname: facebookname
+    }, {
+      where: {username: 'mike'} //<===hard coded 
+  })
+  .then(function(user){
+    console.log(user, 'hopefully updated user');
+    res.redirect('http://localhost:4200/#/dashboard/');
+    //res.send(200);
+  })
+  .catch(function(error){
+    console.log(error);
+    //res.send(400);
+  })
+}
+
+exports.getUserFacebook = function(req, res) {
+  if(req.query.username){
+    User.findOne({username: req.query.username})
+    .then(function(user){
+      res.send(user)
+    })
+    .catch(function(err){
+      console.log('helpers.getUserFacebook err');
+    })  
+  } else {
+    // redirect?
+  }
+}
+// ====== end facebook auth ====== //
 
 exports.createUser = function(req, res) {
   if (req.headers.username && req.headers.password) {   
@@ -185,6 +227,7 @@ exports.loginUser = function(req, res) {
 
     User.findOne({where: { username: req.headers.username }})
     .then(function(user) {
+      console.log('user findOne serverside', user);
       if (user) {
         Utils.comparePassword(req.headers.password, user, function(err, isMatch) {
           // bad password
@@ -193,6 +236,7 @@ exports.loginUser = function(req, res) {
           // has successfully authenticated, send a token
           if (isMatch) {
             jwt.createToken(user, function(token) {
+              console.log('token,token', token)
               if ( token.token ) {
                 res.status(200).send(token);
               } else {

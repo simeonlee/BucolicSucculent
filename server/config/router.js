@@ -35,5 +35,6 @@ module.exports = function(app, express) {
 
   app.post('/api/users/login', helpers.loginUser);
 
-
+  app.get('/user/facebook', helpers.getUserFacebook)
 };
+

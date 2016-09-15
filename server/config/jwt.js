@@ -54,6 +54,8 @@ exports.createToken = function (user, cb) {
   );
   cb ({
     token: token,
-    user: user.dataValues.username
+    user: user.dataValues.username,
+    facebookavatar: user.facebookavatar,
+    facebookname: user.facebookname,
   });
 };
