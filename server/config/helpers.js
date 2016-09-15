@@ -65,6 +65,50 @@ exports.updateStatus = function (req, res) {
   });
 };
 
+exports.createPublicGame = function(req, res, next) {
+
+  var creator = req.user.username;      // for production with authentication
+  // var creator = req.body.username;      // bypass auth for testing with postman
+
+  // generate pathUrl Hash
+  var pathUrl = md5(JSON.stringify(req.body)).slice(0, 5);
+
+  var locations = req.body.markers;
+
+  User.findOne({ where: { username: creator } })
+  // Find the creator in the User table
+  .then(function(currentUser) {
+    // then create a Game and its locations
+    return Game.create({
+      path: pathUrl,
+      public: 1,
+      locations: locations
+    }, { include: [Location] })
+    .then(function(game) {
+      // then set the creatorId foreign key for the Game
+      return game.setCreator(currentUser);
+    });
+  })
+  .then(function() {
+    // when finished, send back the pathUrl
+    req.pathUrl = pathUrl;
+    next();
+  });
+
+};
+
+exports.getPublicGames = function(req, res, next) {
+
+  console.log('i hit getPublicGames on the server side!!! YAY!!!!');
+
+  Game.findAll({
+    where: {public: 1}
+  }).then(function(games) {
+    console.log('checking if im getting any games back', games);
+    res.status(202).send(games);
+  });
+};
+
 exports.createGame = function(req, res, next) {
 
   // Example Data Structure
@@ -90,6 +134,7 @@ exports.createGame = function(req, res, next) {
     // then create a Game and its locations
     return Game.create({
       path: pathUrl,
+      public: 0,
       locations: locations
     }, { include: [Location] })
     .then(function(game) {

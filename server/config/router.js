@@ -27,4 +27,8 @@ module.exports = function(app, express) {
   app.post('/api/users/signup', helpers.createUser);
 
   app.post('/api/users/login', helpers.loginUser);
+
+  app.post('/api/public', helpers.createPublicGame);
+
+  app.get('/api/public', helpers.getPublicGames);
 };

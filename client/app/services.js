@@ -64,6 +64,14 @@ angular.module('app.services', ['ngGeolocation'])
         url: '/api/game',
         params: params
       });
+    },
+    getPublicGames: function() {
+      console.log('i hit getPublicGames');
+      return $http({
+        method: 'GET',
+        url: '/api/public',
+
+      });
     }
   };
 }])
