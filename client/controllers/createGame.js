@@ -1,6 +1,6 @@
 angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location) {
+.controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
 
   var transparent = './images/marker/falseMarker/transparent-200x350.png';
 
@@ -27,9 +27,11 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         var e = originalEventArgs[0];
         $scope.findNearbyPlaces(e.latLng);
       }
-    },
-    markers: []
+    }
   };
+
+  $scope.markers = [];
+  $scope.imageStorage = [];
 
   // Find nearby places using Google API based on location
   // https://developers.google.com/maps/documentation/javascript/places#place_search_requests
@@ -43,77 +45,106 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     service.nearbySearch(request, function(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(results);
+
         var sequence = 0;
-        for (var i = 0; i < 5; i++) {
+        $scope.markers = [];
+        $scope.imageStorage = [];
+
+        for (var i = 0; i < results.length; i++) {
+
+          // Show only up to 5 images at one time
+          if ($scope.imageStorage.length >= 5) { 
+            break;
+          }
           (function(i) {
 
-            var place = results[i];
-            var name = place.name;
-            var rating = place.rating;
-            if (place.photos && place.photos[0]) {
-              var width = place.photos[0].width;
-              var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 160});
-              console.log(photoUrl);
-            } else {
-              var photoUrl = null;
+            var place = {
+              name: results[i].name,
+              photo: typeof results[i].photos !== 'undefined' ? results[i].photos[0].getUrl({'maxWidth': 200, 'maxHeight': 140}) : '',
+              location: {
+                lat: results[i].geometry.location.lat(),
+                lng: results[i].geometry.location.lng()
+              },
+              rating: results[i].rating
             };
-            var marker = {
-              sequence: sequence,
-              latitude: place.geometry.location.lat(),
-              longitude: place.geometry.location.lng(),
-              options: {
-                icon: transparent,
-                optimized: false
-              }
-            };
-            $scope.map.markers.push(marker);
 
+            if (place.photo) {
+              $scope.imageStorage.push(place.photo);
 
-            // $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
-            //   // Only need to regenerate once
-            //   if (!ov.southwest && nv.southwest) {
-            //     var markers = [];
+              var marker = {
+                sequence: sequence,
+                latitude: place.location.lat,
+                longitude: place.location.lng,
+                options: {
+                  icon: transparent,
+                  optimized: false
+                },
+                name: place.name,
+                photo: place.photo,
+                show: true
+              };
 
+              $scope.markers.push(marker);
 
-            //     // for (var i = 0; i < 50; i++) {
-            //       // markers.push(createRandomMarker(i, $scope.map.bounds))
-            //     // }
-            //     $scope.map.markers = markers;
-            //   }
-            // }, true);
+ 
 
+              $scope[place.name] = place;
 
-            var $transparentMarker = $('img[src="' + transparent + '"]');
-            var $anchor = $transparentMarker.parent();
-            !$anchor.hasClass('canvas') && $anchor.addClass('canvas hover');
-            if (!$anchor.find('div.ring').length) {
-              $anchor
-                .append($('<div>', {'class': 'ring marker'}))
-                .append($('<div>', {'class': 'shadow'}))
-                .append($('<div>', {'class': 'iw iw-' + i}));
-            };
-            var $iw = $('.iw-' + i);
-            if (!$iw.find('div.iw-name').length) {
-              $iw
-                .append('<div class="iw-name">' + name + '</div>')
-                .append('<img class="iw-photo" src="' + photoUrl + '"/>');
-            } 
+              // Apply changes to digest loop in order to render labeled markers
+              $scope.$apply();
 
-            sequence++;
+              console.log(marker);
+              console.log($scope.markers[i]);
 
+              // $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
+              var $transparentMarker = $('img[src="' + transparent + '"]');
+              var $anchor = $transparentMarker.parent();
+              // var uniqueWindowClass = 'iw-' + sequence;
+              // var uniqueCanvasClass = 'canvas-' + sequence;
+              // !$anchor.hasClass('canvas') && $anchor.addClass('canvas hover ' + uniqueCanvasClass);
+              !$anchor.hasClass('canvas') && $anchor.addClass('canvas hover');
+              // if (!$anchor.hasClass(uniqueCanvasClass) && !$anchor.find('div.ring').length) {
+              if (!$anchor.find('div.ring').length) {
+                $anchor
+                  .append($('<div>', {'class': 'ring marker'}))
+                  .append($('<div>', {'class': 'shadow'}))
+                  // .append('<infowindow data=' + $scope.markers[i] + '></infowindow>')
+                  .append($compile('<infowindow data=' + place.name + '></infowindow>')($scope));
+                  // .append($('<div>', {'class': 'iw ' + uniqueWindowClass}));
+              };
+
+              // var $iw = $('.' + uniqueWindowClass);
+              // console.log($iw);
+              // if (!$iw.find('div.iw-name').length) {
+              //   $iw
+              //     .append('<div class="iw-name">' + name + '</div>')
+              //     .append('<img class="iw-photo" src="' + photo + '"/>');
+              // }
+
+              // console.log($('.iw-content').parents());
+
+                // Only need to regenerate once
+                // if (!ov.southwest && nv.southwest) {
+                  // var markers = [];
+                  // for (var i = 0; i < 50; i++) {
+                    // markers.push(createRandomMarker(i, $scope.map.bounds))
+                  // }
+                  // $scope.markers = markers;
+                // }
+              // }, true);
+
+              sequence++;
+            }
           })(i);
         }
         $scope.map.center = {
           latitude: latLng.lat(),
           longitude: latLng.lng()
         };
+        // Zoom in to select places more easily
         $scope.map.zoom = 18;
 
-        // Apply changes to digest loop in order to render labeled markers
-        $scope.$apply();
-
- 
-        console.log($('img[src="' + transparent + '"]'));
+        // console.log($('img[src="' + transparent + '"]'));
       }
     });
   }
@@ -172,7 +203,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
           //   }
           // };
 
-          $scope.map.markers = newMarkers;
+          $scope.markers = newMarkers;
         } else {
           console.log('do something else with the search string: ' + place.name);
         }
@@ -215,7 +246,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     // get user for ajax request
     $scope.user = $window.localStorage.getItem('user');
     // get waypoints from map and submit to server to create createGame
-    Requests.createGame($scope.user, $scope.map.markers)
+    Requests.createGame($scope.user, $scope.markers)
       .then(function(res) {
 
         // get back hashed game url and display
@@ -227,4 +258,48 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
       $scope.showMap = false;
 
   };
-}]);
+}])
+
+.directive('infowindow', function($compile) {
+  return {
+    restrict: 'E',
+    scope: {
+      data: '='
+    },
+    link: function (scope, element, attrs) {
+      console.log("Case test running")
+    },
+    templateUrl: '/views/infowindow.html'
+
+
+    // template: '<div class="iw">Name: {{data.name}} Address: {{data.photo}}</div>'
+    // template: '<div class="iw">\
+    //   <div class="iw-name">{{data.name}}</div>\
+    //   <img class="iw-photo" ng-src={{data.photo}} />\
+    // </div>',
+    // link: function ( scope, element, attrs ) {
+    //   // scope.$watch('pluginui', function(newValue) {
+    //   //    var jqLiteWrappedElement = angular.element('<div ' + newValue + ' width=...');
+    //   //    element.replaceWith(jqLiteWrappedElement);
+    //   //    $compile(jqLiteWrappedElement)(scope);
+    //   // })
+
+    //   var el;
+
+    //   attrs.$observe( 'template', function ( tpl ) {
+    //     if ( angular.isDefined( tpl ) ) {
+    //       // compile the provided template against the current scope
+    //       el = $compile( tpl )( scope );
+
+    //       // stupid way of emptying the element
+    //       element.html("");
+
+    //       // add the template content
+    //       element.append( el );
+    //     }
+    //   });
+    // },
+    // replace: true
+
+  };
+});

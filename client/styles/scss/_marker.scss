@@ -4,13 +4,14 @@ $purple: #9b59b6;
 	// border: 2px solid red;
 	display: flex;
 	justify-content: center;
+	z-index: 10000000;
 }
 
 .marker {
-  cursor: pointer;
 }
 
 .ring {
+  cursor: pointer;
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
