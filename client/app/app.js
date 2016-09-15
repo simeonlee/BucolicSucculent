@@ -94,6 +94,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
             return [];
           }
           return Requests.getUserData().then(function(res) {
+            console.log('checking dashboard data??????', res.data);
             return res.data;
           }); 
         }

@@ -166,13 +166,18 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 .controller('gameStatsController', ['$scope', 'data', function($scope, data) {
   $scope.players = data;
 }])
-.controller('publicController', ['$scope', 'data', function($scope, data) {
+.controller('publicController', ['$scope', 'data', '$location', '$window', function($scope, data, $location, $window) {
 
   $scope.list = function() {
     console.log('what is this data thingie i have here????', data);
   };
 
-  $scope.players = data;
+  $scope.games = data;
+
+  $scope.goToGame = function(path) {
+    $location.path('/game/' + path + '/map');
+  };
+
 }]);
 
 
