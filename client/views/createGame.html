@@ -21,10 +21,8 @@
     ></ui-gmap-markers>
   </ui-gmap-google-map>
 
-  <div class="start" ng-show="map.markers.length">
-    <a class="btn" ng-click="submitWaypoints()" ng-show="showMap">
-      Start The Hunt
-    </a>
+  <div class="start btn" ng-show="map.markers.length && showMap" ng-click="submitWaypoints()">
+    Start The Hunt
   </div>
 
   <div class="sharePath">
