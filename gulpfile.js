@@ -20,6 +20,7 @@ const config = {
     html: ['./client/**/*.html', './client/*.ico'],
     css: './client/styles/scss/main.scss',
     js: ['./client/app/services.js', './client/controllers/dashboard.js', './client/controllers/game.js', './client/controllers/createGame.js', './client/controllers/auth.js', './client/app/app.js'],
+    json: './client/styles/**/*.json',
     lib: ['./client/lib/lodash/lodash.js', './client/lib/angular/angular.js', './client/lib/ui-router/release/angular-ui-router.js', './client/lib/angular-simple-logger/dist/angular-simple-logger.js', './client/lib/angular-google-maps/dist/angular-google-maps.js', './client/lib/ngGeolocation/ngGeolocation.js'],
     img: ['./client/images/**', './client/images/**/*', '!./client/images/**/*.sketch']
   },
@@ -27,6 +28,7 @@ const config = {
     html: './dist/',
     css: './dist/styles/css/',
     js: './dist/',
+    json: './dist/styles/',
     lib: './dist/lib/',
     img: './dist/images/'
   }
@@ -57,9 +59,10 @@ gulp.task('clean', function() {
 gulp.task('build-css', function() {
   var opts = { comments: true, spare: true };
   gulp.src(config.src.css)
+    .pipe(plumber())
     .pipe(sass({
       outputStyle: 'expanded'
-    }).on('error', sass.logError))
+    }))
     .pipe(gulp.dest(config.build.css))
     .pipe(minifyCSS(opts))
     .pipe(rename({ extname: '.min.css' }))
@@ -69,8 +72,8 @@ gulp.task('build-css', function() {
 gulp.task('minify-js', function() {
   return gulp.src(config.src.js)
     .pipe(plumber())
-    .pipe(concat('build.js'))
     .pipe(ngAnnotate())
+    .pipe(concat('build.js'))
     .pipe(uglify())
     .pipe(gulp.dest(config.build.js));
 });
@@ -88,6 +91,12 @@ gulp.task('copy-html-files', function () {
   gulp.src(config.src.html)
     .pipe(plumber())
     .pipe(gulp.dest(config.build.html));
+});
+
+gulp.task('copy-json-files', function () {
+  gulp.src(config.src.json)
+    .pipe(plumber())
+    .pipe(gulp.dest(config.build.json));
 });
 
 gulp.task('image', function () {
@@ -116,7 +125,7 @@ gulp.task('stop', shell.task([
 gulp.task('build', function() {
   runSequence(
     'clean',
-    ['build-css', 'minify-js', 'copy-html-files', 'bower-files', 'image']
+    ['build-css', 'minify-js', 'copy-html-files', 'copy-json-files', 'bower-files', 'image']
   );
 });
 
@@ -124,7 +133,8 @@ gulp.task('watch', function() {
   gulp.watch(config.src.css, ['build-css']);
   gulp.watch(config.src.js, ['minify-js']);
   gulp.watch(config.src.html, ['copy-html-files']);
-  gulp.watch(config.src.lib, ['copy-html-files']);
+  gulp.watch(config.src.json, ['copy-json-files']);
+  gulp.watch(config.src.lib, ['bower-files']);
   gulp.watch(config.src.img, ['image']);
 });
 

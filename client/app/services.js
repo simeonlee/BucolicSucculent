@@ -145,4 +145,47 @@ angular.module('app.services', ['ngGeolocation'])
     isAuth: isAuth,
     signout: signout
   };
+}])
+.factory('Map', ['$rootScope', '$http', function($rootScope, $http) {
+  var initialize = function() {
+    var defaultLocation = {
+      lat: 37.783697,
+      lng: -122.408966
+    };
+
+    return $http.get('styles/map/style.json').then(function(mapStyle) {
+      $rootScope.map = new google.maps.Map(document.getElementById('map'), {
+        center: $rootScope.userLocation || defaultLocation,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: mapStyle.data,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_BOTTOM
+        },
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false
+      });
+    })
+  };
+
+  var createDestinationMarker = function(location) {
+    var icon = new google.maps.MarkerImage('images/marker/marker-black-36x36@2x.png', null, null, null, new google.maps.Size(36, 36))
+    var marker = new google.maps.Marker({
+      position: location,
+      icon: icon,
+      title: 'Destination',
+      // animation: google.maps.Animation.DROP
+    });
+    marker.setMap($rootScope.map);
+    // marker.setAnimation(google.maps.Animation.BOUNCE);  
+  }
+
+  return {
+    initialize: initialize,
+    createDestinationMarker: createDestinationMarker
+  }
 }]);
