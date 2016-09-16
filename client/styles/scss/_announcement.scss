@@ -1,0 +1,44 @@
+$pomegranate: #F62459;
+
+.announcement {
+	text-transform: uppercase;
+	color: $pomegranate;
+	font-size: 34px;
+	background-color: rgba(255, 255, 255, 0.9);
+	height: 120px;
+	z-index: 1;
+}
+
+.center {
+	position: absolute;
+	top: 40%;
+	right: 0;
+	// bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.temporary {
+	animation-name: fade;
+	animation-fill-mode: forwards;
+	animation-duration: 3s;
+	z-index: 9999999;
+}
+
+@keyframes fade {
+	0% {
+		opacity: 1.0;
+		z-index: 9999999;
+	}
+	80% {
+		opacity: 1.0;
+		z-index: 9999999;
+	}
+	100% {
+		opacity: 0.0;
+		z-index: -9999999;
+	}
+}

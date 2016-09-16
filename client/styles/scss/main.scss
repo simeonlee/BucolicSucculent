@@ -1,11 +1,14 @@
 @import 'marker';
 @import 'infowindow';
+@import 'announcement';
+@import 'nav';
+@import 'button';
+@import 'map';
 
 $major: 'Gruppo';
 $minor: 'Raleway';
 
-$smoke: #6C7A89;
-$pomegranate: #F62459;
+$smoke: #3c3c3c;
 
 * {
 	font-family: $minor, sans-serif;
@@ -44,141 +47,6 @@ h1 {
 
 th {
 	text-align: center;
-}
-
-.turquoise {
-	background-color: $smoke !important;
-}
-
-.transparent {
-	opacity: 0.9;
-}
-
-.upper {
-	text-transform: uppercase;
-}
-
-.wrap {
-	border: 0 !important;
-	border-radius: 0 !important;
-}
-
-.white {
-	color: white !important;
-}
-
-.icon-bar {
-	background-color: white !important;
-}
-
-nav button {
-	border: 0 !important;
-}
-
-.navbar-toggle {
-	background-color: $smoke !important;
-}
-
-.navbar-collapse {
-	border: 0px solid rgba(255, 255, 255, 0.0) !important;
-}
-
-.logo {
-	font-family: $major, cursive;
-	font-size: 26px;
-	color: white !important;
-}
-
-.large {
-	font-size: 34px;
-}
-
-.center {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-}
-
-.pomegranate {
-	color: $pomegranate;
-}
-
-.temporary {
-	animation-name: fade;
-	animation-fill-mode: forwards;
-	animation-duration: 5s;
-	z-index: 9999999;
-}
-
-@keyframes fade {
-	0% {
-		opacity: 1.0;
-		z-index: 9999999;
-	}
-	80% {
-		opacity: 1.0;
-		z-index: 9999999;
-	}
-	100% {
-		opacity: 0.0;
-		z-index: -9999999;
-	}
-}
-
-.start {
-	position: absolute;
-	top: 50%;
-	right: 2%;
-	background-color: $smoke;
-	opacity: 0.6 !important;
-	border: 0 !important;
-	color: white !important;
-	z-index: 9999999;
-}
-
-.start:after {
-	content: "";
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 0%;
-	height: 100%;
-	border-radius: 4px;
-	background-color: rgba(255, 255, 255, 0.7);
-	animation-name: shine;
-	animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-delay: 2s;
-}
-
-@keyframes shine {
-	0% {
-		width: 0%;
-		background-color: rgba(255, 255, 255, 0.7);
-	}
-	100% {
-		width: 120%;
-		background-color: rgba(255, 255 ,255, 0.0)
-	}
-}
-
-.angular-google-map {
-
-}
-
-.angular-google-map-container { 
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: -9999999;
 }
 
 #loginContainer {
