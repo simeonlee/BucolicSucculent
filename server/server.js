@@ -64,8 +64,11 @@ require('./config/router')(app, express);
 
 var port = app.get('env') === 'development' ? 4200 : 80;
 
-//socket connection
+
+// socket connection
 io.sockets.on('connection', require('./sockets/socketsConfig'));
+
+
 
 server.listen(port, function () {
   console.log('Server listening on port ' + port +'!');
@@ -74,4 +77,7 @@ server.listen(port, function () {
   });
 });
 
-module.exports = server;
+module.exports = {
+  server: server,
+  io: io
+};

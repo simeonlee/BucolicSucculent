@@ -1,13 +1,22 @@
-module.exports = function (socket) {
-  console.log('connection made');
+var gameRooms = {}; //<=== server temp storage for game room data
 
-  socket.on('updateLocation', function(data){
-    console.log(data);
-    socket.broadcast.emit('updateLocation', data);
+module.exports = function (socket) {
+
+  socket.on('updateLocation', function(data){ //=== data needs to contain 3 things.. game url, socket, name
+    var user = data.user
+    if(!gameRooms[data.gameId]){
+      gameRooms[data.gameId] = {};
+      gameRooms[data.gameId][user] = socket;
+    } else {
+      gameRooms[data.gameId][user] = socket;
+      console.log(gameRooms);
+    }
+    for(var key in gameRooms[data.gameId]){
+      gameRooms[data.gameId][key].emit('/test', data);
+    }
   })
 
-
-  setInterval(function () {
+  setInterval(function () { //<=== keep this running to make sure sockets is working on client side
     socket.emit('send:time', {
       time: (new Date()).toString()
     });

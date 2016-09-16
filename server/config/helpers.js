@@ -6,6 +6,7 @@ var Utils = require('./utils');
 var jwt = require('./jwt');
 var md5 = require('md5');
 
+
 exports.joinGame = function(req, res) {
 
   // do a query for pathUrl and username

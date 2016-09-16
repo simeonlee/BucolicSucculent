@@ -1,4 +1,4 @@
-angular.module('app.services', ['ngGeolocation'])
+angular.module('app.services', ['ngGeolocation', 'btford.socket-io'])
 
 .factory('Requests', ['$http', '$window', function($http, $window) {
   return {
@@ -117,29 +117,28 @@ angular.module('app.services', ['ngGeolocation'])
 .factory('socket', function (socketFactory) {
     return socketFactory();
 })
-// .factory('socket', function ($rootScope) {
-//   var socket = io.connect();
-//   return {
-//     on: function (eventName, callback) {
-//       socket.on(eventName, function () {  
-//         var args = arguments;
-//         $rootScope.$apply(function () {
-//           callback.apply(socket, args);
-//         });
-//       });
-//     },
-//     emit: function (eventName, data, callback) {
-//       socket.emit(eventName, data, function () {
-//         var args = arguments;
-//         $rootScope.$apply(function () {
-//           if (callback) {
-//             callback.apply(socket, args);
-//           }
-//         });
-//       })
-//     }
-//   };
-// })
+.factory('socket2', function ($rootScope) {
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {  
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+  };
+})
 .factory('Auth', ['$http', '$location', '$window', function ($http, $location, $window) {
   // Auth service is responsible for authenticating our user
   // by exchanging the user's username and password

@@ -11,7 +11,17 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
 }])
 .controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', 'socket','gameFactory', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window, socket, gameFactory) {
+
+  var nameSpace = '/' + data.gameId; //<=== this specific window's game ID
+  // socket.on(nameSpace, function(data) {
+  //   console.log('connected to ' + nameSpace);
+  // });
   //testing socket connection. remove later
+  socket.on('/test', function(data){
+    console.log('test test test', data);
+    socket.emit('/test', 'hello world');
+  })
+
   socket.on('send:time', function (data) {
         console.log(data);
     });
@@ -36,7 +46,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   //Get user and markers data
   $scope.user = $window.localStorage.getItem('facebookname') || $window.localStorage.getItem('user');
   $scope.facebookavatar = $window.localStorage.getItem('facebookavatar') || null;
-  $scope.markers = data;
+  $scope.markers = data.data;
   $scope.userMarkOptions = {
     options: {
       icon: $scope.facebookavatar
@@ -140,6 +150,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       // user:$scope.user, <== bring this back later for ui markers
       // latitude: lat,
       // longitude: lng
+      gameId: data.gameId,
       id: 1,
       options: {
         label: 1
@@ -256,7 +267,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   };
 }])
 .controller('gameStatsController', ['$scope', 'data', function($scope, data) {
-  $scope.players = data;
+  $scope.players = data.data;
 }])
 .controller('publicController', ['$scope', 'data', '$location', '$window', function($scope, data, $location, $window) {
 
@@ -271,8 +282,4 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   };
 
 }]);
-
-
-
-    // <ui-gmap-marker id="playermarker" idKey="254" options="mark.options"coords="circle.center" events='mark.events' clickable=true>
 
