@@ -11,29 +11,19 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
 }])
 .controller('gameMapController', ['$scope', 'data', 'uiGmapGoogleMapApi', '$geolocation', 'Requests', '$window', 'socket','gameFactory', function($scope, data, uiGmapGoogleMapApi, $geolocation, Requests, $window, socket, gameFactory) {
-
-  var nameSpace = '/' + data.gameId; //<=== this specific window's game ID
-  // socket.on(nameSpace, function(data) {
-  //   console.log('connected to ' + nameSpace);
-  // });
-  //testing socket connection. remove later
-  socket.on('/test', function(data){
-    console.log('test test test', data);
-    socket.emit('/test', 'hello world');
-  })
-
+  //test socket connection
   socket.on('send:time', function (data) {
-        console.log(data);
+      console.log(data);
     });
   //update other player locations
   socket.on('updateLocation', function(data){
-      console.log(data, 'socket data data data')
+      console.log('socket updateLocation', data);
       if($scope.playersPlaying[data.user] === undefined){
-        console.log('new user! add to $scope.players');
+
         $scope.playersPlaying[data.user] = data;
         $scope.players.push(data);
       } else {
-        console.log('user exists! update location');
+
         var playersCount = $scope.players.length;
         for(var i = 0; i < playersCount; i++) {
           if($scope.players[i].user === data.user){
@@ -52,9 +42,9 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       icon: $scope.facebookavatar
     }
   }
-  //Get other player data
+  //Identify new playersPlaying or update playersLocation in players
   $scope.playersPlaying = {};
-  $scope.players = []; //<------- TODO. HOW TO GET OTHER PLAYER LOCATION VIA SOCKETS TO APPEND TO USER MAP
+  $scope.players = []; 
 
 
   // $scope.players = res.data.players; //<----------------- wishlist
@@ -78,9 +68,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   });
 
   $scope.$watch('players', function(updatedPlayersArray){
-    console.log(typeof updatedPlayersArray, updatedPlayersArray, 'updatedPlayersArray');
     $scope.players = updatedPlayersArray;
-    console.log($scope.players, 'updated Players Array');
   }, true);
 
   // $scope.$watch('player2', function(newPlayer2){
@@ -89,9 +77,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
   // });
   //necessary to watch players object? --- check later
   $scope.$watch('playersPlaying', function(updatePlayersPlaying){
-    console.log(updatePlayersPlaying, 'updatePlayersPlaying');
     $scope.playersPlaying = updatePlayersPlaying;
-    console.log($scope.playersPlaying, 'new updated Players playing object')
   }, true)
 
 
@@ -100,7 +86,6 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     zoom: 13,
     events: {                               //<--------- add click event to google map
       click: function(mapModel, eventName, originalEventArgs) {
-        console.log(originalEventArgs[0].latLng.lat(), originalEventArgs[0].latLng.lng()); // <=== find latLng of click on map
      }
     }
   };
@@ -110,19 +95,11 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
     // console.log(map);
   });
 
-
-  // $scope.map.markerEvents = {
-  //   dblclick: function () {
-  //     console.log('i hit my click event for the map');
-  //   }
-  
-
-
   //create position on map
   var createMyPosition = function() {
 
     $geolocation.watchPosition(function(success){
-      console.log(success, 'watchPosition')
+
     }, null, {
       timeout: 3000,
       maximumAge: 250,
@@ -181,10 +158,10 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       clickable: true,
       events: {
         click: function() {
-          console.log('i hit my circle yoLOOOOOOO!');
+
         },
         mouseover: function() {
-          console.log('its hovering over my circle yay!!!!');
+
         }
       },
       fill: {
@@ -235,7 +212,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
 
   $scope.validateLocation = function(locationId) { 
-    console.log('hello');
+
     if ($scope.myLatLng) {
       $scope.locationError = false;
       // console.log('checking location: ', locationId);
@@ -272,7 +249,7 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 .controller('publicController', ['$scope', 'data', '$location', '$window', function($scope, data, $location, $window) {
 
   $scope.list = function() {
-    console.log('what is this data thingie i have here????', data);
+
   };
 
   $scope.games = data;

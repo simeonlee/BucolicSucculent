@@ -9,10 +9,10 @@ module.exports = function (socket) {
       gameRooms[data.gameId][user] = socket;
     } else {
       gameRooms[data.gameId][user] = socket;
-      console.log(gameRooms);
+
     }
     for(var key in gameRooms[data.gameId]){
-      gameRooms[data.gameId][key].emit('/test', data);
+      gameRooms[data.gameId][key].emit('updateLocation', data);
     }
   })
 
