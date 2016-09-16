@@ -1,7 +1,10 @@
 <div>
-  <div class="large temporary center pomegranate upper"><span>Select waypoints to build your game</span></div>
+  <div class="temporary center announcement"><span>Click on the map to select destinations</span></div>
+
   <!-- Map to choose waypoints -->
-  <ui-gmap-google-map
+  <div id="map"></div>
+
+  <!-- <ui-gmap-google-map
     center="map.center"
     events="map.events"
     zoom="map.zoom"
@@ -27,7 +30,7 @@
         </div>
       </ui-gmap-windows>
     </ui-gmap-markers>
-  </ui-gmap-google-map>
+  </ui-gmap-google-map> -->
 
   <div class="start btn" ng-show="map.markers.length && showMap" ng-click="submitWaypoints()">
     Start The Hunt

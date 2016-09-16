@@ -1,13 +1,37 @@
 angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
-.controller('createGameController', ['$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function($scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
-
-  var transparent = './images/marker/falseMarker/transparent-200x350.png';
+.controller('createGameController', ['Map', '$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function(Map, $scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
 
   //check for JWT
   if (!isAuth) {
     $location.path('/login');
   }
+
+  Map.initialize();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  var transparent = './images/marker/falseMarker/transparent-200x350.png';
 
   $scope.showMap = true;
 
@@ -147,9 +171,9 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         // console.log($('img[src="' + transparent + '"]'));
       }
     });
-  }
+  }*/
 
-  $scope.searchbox = {
+/*  $scope.searchbox = {
     // GET template from when we saved in $templateCache in app.js
     template: 'searchbox.tpl.html',
     position: 'TOP_RIGHT',
@@ -209,10 +233,10 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
         }
       }
     }
-  }
+  }*/
 
   // Create map (promise) and after
-  uiGmapGoogleMapApi.then(function() { 
+/*  uiGmapGoogleMapApi.then(function() { 
 
     // // API marker creation tool
     // $scope.createOptions = {
@@ -238,7 +262,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     //   console.log(e.latLng);
     //   $scope.findNearbyPlaces(e.latLng);
     // });
-  });
+  });*/
 
   // call when game is to be created
   $scope.submitWaypoints = function() {
@@ -260,7 +284,7 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
   };
 }])
 
-.directive('infowindow', function($compile) {
+/*.directive('infowindow', function($compile) {
   return {
     restrict: 'E',
     scope: {
@@ -302,4 +326,4 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
     // replace: true
 
   };
-});
+});*/
