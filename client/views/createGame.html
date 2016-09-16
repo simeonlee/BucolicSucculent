@@ -1,28 +1,8 @@
 <div>
   <div class="temporary center announcement"><span>Click on the map to select destinations</span></div>
+
   <!-- Map to choose waypoints -->
   <div id="map"></div>
-
-  <!-- <ui-gmap-google-map
-    center="map.center"
-    events="map.events"
-    zoom="map.zoom"
-    bounds="map.bounds"
-    ng-show="showMap"
-  >
-    <ui-gmap-search-box
-      options="searchbox.options"
-      events="searchbox.events"
-      template="searchbox.template"
-      position="searchbox.position"
-    ></ui-gmap-search-box>
-    <ui-gmap-markers
-      models="markers"
-      idKey="'sequence'"
-      coords="'self'"
-      options="'options'"
-    ></ui-gmap-markers>
-  </ui-gmap-google-map> -->
 
   <div ng-show="map.markers.length"><a class="btn" ng-click="submitWaypoints()" ng-show="showMap">Create Private Game</a></div>
 
