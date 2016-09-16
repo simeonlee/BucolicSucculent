@@ -31,13 +31,27 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
       latitude: 37.7836881,                 //<------- SF default map
       longitude: -122.40904010000001 
     }, 
-    zoom: 13
+    zoom: 13,
+
+    events: {
+      click: function() {
+        console.log('i hit my event yo!');
+      }
+    }
   };
   //init map
   uiGmapGoogleMapApi.then(function() {
     // post rendering tasks....
   });
+
+
+  // $scope.map.markerEvents = {
+  //   dblclick: function () {
+  //     console.log('i hit my click event for the map');
+  //   }
   
+
+
   //create position on map
   var createMyPosition = function() {
     $geolocation.watchPosition({
@@ -55,22 +69,66 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
         latitude: $geolocation.position.coords.latitude,
         longitude: $geolocation.position.coords.longitude
       },
-      radius: 100,
+      radius: 500,
       stroke: {
-        color: 'blue',
+        color: 'red',
         weight: 1,
         opacity: 0.4
       },
-      clickable: false,
+      clickable: true,
+
+      events: {
+        click: function() {
+          console.log('i hit my circle yoLOOOOOOO!');
+        },
+        mouseover: function() {
+          console.log('its hovering over my circle yay!!!!');
+        }
+      },
       fill: {
-        color: 'blue',
+        color: 'red',
         opacity: 0.3
       }
-    };  
+    };
+
+
+
 
       // create gmap latLng object for calculating distance
     $scope.myLatLng = new google.maps.LatLng($geolocation.position.coords.latitude, $geolocation.position.coords.longitude);  
   });
+
+  //window for marker
+  $scope.wind = {
+    options: {
+      content: '<div id= "bulba"><img src= \'http://pldh.net/media/pokemon/shuffle/001.png\'/></div>'
+    },
+    show: false
+  };
+
+  //the actual user marker
+  $scope.mark = {
+
+    events: {
+      click: function() {
+        $scope.wind.show = !$scope.wind.show;
+      },
+      // mouseover: function() {
+      //   console.log('hitting my mouseover event');
+      //   $scope.wind.show = true;
+      // },
+      // mouseout: function() {
+      //   console.log('hitting my mouseOUT event yo!');
+      //   $scope.wind.show = false;
+      // }
+
+    },
+
+    options: {
+      icon:'http://pldh.net/media/pokemon/gen3/frlg/007.png',
+      title: 'squirtle!!!!'
+    }
+  };
 
 
   $scope.validateLocation = function(locationId) { 
@@ -107,4 +165,22 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 }])
 .controller('gameStatsController', ['$scope', 'data', function($scope, data) {
   $scope.players = data;
+}])
+.controller('publicController', ['$scope', 'data', '$location', '$window', function($scope, data, $location, $window) {
+
+  $scope.list = function() {
+    console.log('what is this data thingie i have here????', data);
+  };
+
+  $scope.games = data;
+
+  $scope.goToGame = function(path) {
+    $location.path('/game/' + path + '/map');
+  };
+
 }]);
+
+
+
+    // <ui-gmap-marker id="playermarker" idKey="254" options="mark.options"coords="circle.center" events='mark.events' clickable=true>
+

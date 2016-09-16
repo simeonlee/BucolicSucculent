@@ -75,12 +75,12 @@ gulp.task('stop', shell.task([
   'forever stop server/server.js'
 ]));
  
-gulp.task('default', ['lint', 'nodemon']);
+gulp.task('default', ['nodemon']);
 
 gulp.task('build', function() {
   runSequence(
     'clean',
-    ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'bower-files']
+    ['minify-css', 'minify-js', 'copy-html-files', 'bower-files']
   );
 });
 

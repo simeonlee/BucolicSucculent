@@ -34,6 +34,20 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
         }
       }
     })
+    .state('PublicGames', {
+      url: '/public',
+      templateUrl: '../views/public.html',
+      controller: 'publicController',
+      resolve: {
+
+        data: function(Requests) {
+          return Requests.getPublicGames().then(function(res) {
+            console.log('checking my resolve??????', res);
+            return res.data;
+          });
+        }
+      }
+    })
     .state('game.map', { //child view of game view ---- link to here on game join
       url: '/map',
       templateUrl: '../views/game.map.html',
@@ -80,6 +94,7 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
             return [];
           }
           return Requests.getUserData().then(function(res) {
+            console.log('checking dashboard data??????', res.data);
             return res.data;
           }); 
         }

@@ -1,0 +1,18 @@
+<div>
+  <h1 ng-click="list()">Welcome!</h1>
+  <h3>Here is a list of Public games you can join:</h3>
+  <table id="dashboardTable" class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>Game #</th>
+        <th>Date started</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="game in games track by $index" ng-click="goToGame(game.path)">
+        <td>{{$index + 1}}</td>
+        <td>Created on {{game.createdAt | date:'medium'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
