@@ -220,7 +220,7 @@ angular.module('app.services', ['ngGeolocation', 'btford.socket-io'])
       }
     }
   }
-});
+})
 .factory('Map', ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
   var initialize = function() {
     var defaultLocation = {
