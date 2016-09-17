@@ -2,8 +2,6 @@ angular.module('app.createGame', ['uiGmapgoogle-maps', 'app.services', 'app'])
 
 .controller('createGameController', ['Map', '$scope', 'uiGmapGoogleMapApi', 'Requests', '$rootScope', '$window', 'isAuth', '$location', '$compile', function(Map, $scope, uiGmapGoogleMapApi, Requests, $rootScope, $window, isAuth, $location, $compile) {
 
-  var transparent = './images/marker/falseMarker/transparent-200x350.png';
-
   //check for JWT
   if (!isAuth) {
     $location.path('/login');
