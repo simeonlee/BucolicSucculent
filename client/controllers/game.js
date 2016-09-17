@@ -49,11 +49,10 @@ angular.module('app.game', ['uiGmapgoogle-maps', 'app.services', 'ngGeolocation'
 
   // $scope.players = res.data.players; //<----------------- wishlist
 
-  //Add labels to markers according to sequence number
+  // Add labels to markers according to sequence number
   $scope.markers.forEach(function(marker, ind) {
-    var label = marker.sequence.toString();
     $scope.markers[ind].options = {
-      label: label
+      label: ind.toString()
     };
   });
 

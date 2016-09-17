@@ -4,11 +4,10 @@
 @import 'nav';
 @import 'button';
 @import 'map';
+@import 'login';
 
 $major: 'Gruppo';
 $minor: 'Raleway';
-
-$smoke: #3c3c3c;
 
 * {
 	font-family: $minor, sans-serif;
@@ -49,52 +48,8 @@ th {
 	text-align: center;
 }
 
-#loginContainer {
-    width: 50%;
-    margin:5% 0 0 25%;
-    background-color: #468C77;
-}
-
-#signupContainer {
-    width: 50%;
-    margin:5% 0 0 25%;
-    background-color: #468C77;
-}
-
-#loginForm {
-    outline:2px solid rgba(0, 0, 0, .1);
-    text-align: center;
-    padding:3%;
-    padding-bottom: 3%;
-}
-
-#signupForm {
-    outline:2px solid rgba(0, 0, 0, .1);
-    text-align: center;
-    padding:3%;
-    padding-bottom: 3%;
-}
-
-#loginHeader {
-    border-bottom: 1px solid #c9c8c5;
-    text-align: left;
-    color: white;
-}
-
-#signupHeader {
-    border-bottom: 1px solid #c9c8c5;
-    text-align: left;
-    color: white;
-}
-
-#loginFooter, #loginHeader {
-    padding:3%;
-    background-color: #363636;
-}
-
-#signupFooter, #signupHeader {
-    padding:3%;
-    background-color: #363636;
+.transparent {
+  opacity: 0.9;
 }
 
 .btn {

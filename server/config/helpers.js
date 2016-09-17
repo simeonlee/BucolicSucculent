@@ -74,7 +74,7 @@ exports.createPublicGame = function(req, res, next) {
   // generate pathUrl Hash
   var pathUrl = md5(JSON.stringify(req.body)).slice(0, 5);
 
-  var locations = req.body.markers;
+  var locations = JSON.stringify(req.body.markers);
 
   User.findOne({ where: { username: creator } })
   // Find the creator in the User table
@@ -303,7 +303,7 @@ var returnStatuses = function(req, res, gameFound) {
     where: { username: req.query.username },
     include: {
       model: Location,
-      attributes: ['id', 'sequence', 'latitude', 'longitude'],
+      attributes: ['name', 'photo', 'location', 'rating'],
       where: { gameId: gameFound.id },
       through: { attributes: ['status']}
     }

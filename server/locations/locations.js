@@ -2,9 +2,10 @@ var Sequelize = require('sequelize');
 
 module.exports = function(db) {
   var Location = db.define('locations', {
-    sequence: Sequelize.INTEGER,
-    latitude: Sequelize.DOUBLE,
-    longitude: Sequelize.DOUBLE
+  	location: Sequelize.STRING,
+  	photo: Sequelize.STRING,
+  	name: Sequelize.STRING,
+  	rating: Sequelize.DOUBLE
   });
 
   return Location;
