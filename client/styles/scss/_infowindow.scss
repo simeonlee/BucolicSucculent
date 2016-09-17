@@ -1,0 +1,21 @@
+.iw {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: absolute;
+	left: 0;
+}
+
+.iw-title {
+	width: 100%;
+	text-align: left;
+	padding: 5px;
+	font-size: 16px;
+	font-weight: 200;
+}
+
+.iw-photo {
+	width: 95%;
+	height: 120px;
+	overflow: hidden;
+}
