@@ -1,5 +1,52 @@
-.angular-google-map-container { 
-  height: 400px; 
+@import 'marker';
+@import 'infowindow';
+@import 'announcement';
+@import 'nav';
+@import 'button';
+@import 'map';
+
+$major: 'Gruppo';
+$minor: 'Raleway';
+
+$smoke: #3c3c3c;
+
+* {
+	font-family: $minor, sans-serif;
+	font-weight: 200;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+	&:link {
+		text-decoration: none;
+		color: black;
+	}
+	&:visited {
+		text-decoration: none;
+		color: black;
+	}
+	&:hover {
+		text-decoration: none;
+		color: black;
+	}
+	&:active {
+		text-decoration: none;
+		color: black;
+	}
+}
+
+ul {
+	list-style-type: none;
+}
+
+h1 {
+	letter-spacing: 1px;
+	margin-top: 30px;
+}
+
+th {
+	text-align: center;
 }
 
 #loginContainer {
@@ -45,25 +92,9 @@
     background-color: #363636;
 }
 
-
 #signupFooter, #signupHeader {
     padding:3%;
     background-color: #363636;
-}
-
-.angular-google-map {
-    padding-left: 10%;
-    padding-right: 10%;
-}
-
-body {
-    text-align:center;
-}
-
-.app {
-    width: 80%;
-    margin: auto;
-    background-color: #468C77;
 }
 
 .btn {
@@ -79,52 +110,46 @@ body {
     background: #000;
     color: #fff;
 }
+
 .BSicon {
     border-radius: 50%;
     border: 2px solid #222;
-    position: ;
 }
+
 .error{
     color: red;
     background-color: yellow;
 }
-th {
-    text-align: center;
-}
+
 #dashboardTable{
     width: 60%;
     margin: auto;
 }
+
 #playerTable{
     width: 200px;
     border: 3px solid #468C77;
     margin: 30px;
 }
+
 .flex-container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
 .tablePlayerName {
     background-color: #468C77;
 }
-h1 {
-    letter-spacing: 1px;
-    margin-top: 30px;
-}
-.mainheader {
-    color: white;
-    text-shadow: 2px 2px black;
-}
-body {
-    font-family: 'Lato', sans-serif !important;
-}
+
 .found {
     color: green;
 }
+
 .notFound {
     color: red;
 }
+
 #markerContainer {
     width: 50px;
     height: 50px;
