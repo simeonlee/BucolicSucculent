@@ -1,13 +1,12 @@
 .iw {
 	display: flex;
 	align-items: center;
-	// justify-content: center;
 	flex-direction: column;
 	position: absolute;
 	left: 0;
 }
 
-.iw-name {
+.iw-title {
 	width: 100%;
 	text-align: left;
 	padding: 5px;
@@ -16,9 +15,7 @@
 }
 
 .iw-photo {
-
-}
-
-.gm-style-iw {
-
+	width: 95%;
+	height: 120px;
+	overflow: hidden;
 }

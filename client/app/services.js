@@ -123,19 +123,18 @@ angular.module('app.services', ['ngGeolocation'])
     signout: signout
   };
 }])
-.factory('Map', ['$rootScope', '$http', function($rootScope, $http) {
+.factory('Map', ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
   var initialize = function() {
     var defaultLocation = {
       lat: 37.783697,
       lng: -122.408966
     };
-
-    return $http.get('styles/map/style.json').then(function(mapStyle) {
-      $rootScope.map = new google.maps.Map(document.getElementById('map'), {
+    return $http.get('styles/map/styles.json').then(function(styles) {
+      return new google.maps.Map(document.getElementById('map'), {
         center: $rootScope.userLocation || defaultLocation,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: mapStyle.data,
+        styles: styles.data,
         zoomControl: true,
         zoomControlOptions: {
           position: google.maps.ControlPosition.RIGHT_BOTTOM
@@ -146,23 +145,128 @@ angular.module('app.services', ['ngGeolocation'])
         rotateControl: false,
         fullscreenControl: false
       });
-    })
+    });
   };
 
-  var createDestinationMarker = function(location) {
-    var icon = new google.maps.MarkerImage('images/marker/marker-black-36x36@2x.png', null, null, null, new google.maps.Size(36, 36))
+  var getCenter = function(map) {
+    return {
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    }
+  };
+
+  // initializeMarkerLayer collects any markers that aren't in a layer 
+  // (so all of them) and puts them in a manipulatable DOM pane
+  // https://www.sitepoint.com/animated-google-map-markers-css-javascript
+  var initializeMarkerLayer = function(map) {
+    var myoverlay = new google.maps.OverlayView();
+    myoverlay.draw = function() {
+      this.getPanes().markerLayer.id = 'markerLayer';
+    };
+    myoverlay.setMap(map);
+  }
+
+  var _createMarker = function(place, title, map) {
+    var icon = {
+      url: 'images/marker/falseMarker/transparent-200x350.png',
+      size: new google.maps.Size(200, 350),
+      scaledSize: new google.maps.Size(200, 350),
+      origin: new google.maps.Point(0,0)
+    };
     var marker = new google.maps.Marker({
-      position: location,
+      position: place.location,
       icon: icon,
-      title: 'Destination',
-      // animation: google.maps.Animation.DROP
+      title: title,
+      map: map,
+      optimized: false
     });
-    marker.setMap($rootScope.map);
-    // marker.setAnimation(google.maps.Animation.BOUNCE);  
+    return _addHoverEffect(marker);
+  }
+
+  var _addHoverEffect = function(marker) {
+    google.maps.event.addListener(marker, 'mouseover', function() {
+      console.log('mouseover');
+      var title = Number(this.title);
+      $('#markerLayer img').eq(title).css({
+        
+      })
+    })
+    google.maps.event.addListener(marker, 'mouseout', function() {
+      console.log('mouseout');
+      var title = Number(this.title);
+      $('#markerLayer img').eq(title).css({
+
+      })
+    })
+    return marker;
+  }
+
+  var _customizeDestination = function(place, marker) {
+    var title = Number(marker.title);
+    setTimeout(function() {
+      var infowindow = '<div class="iw">\
+        <div class="iw-title">' + place.name + '</div>\
+        <img class="iw-photo" src="' + place.photo + '" />\
+      <div>'
+
+      $('#markerLayer > div').eq(title + 1).append($('<div>', {class: 'lavender ring'}));
+      $('#markerLayer > div').eq(title + 1).append($('<div>', {class: 'shadow'}));
+      $('#markerLayer > div').eq(title + 1).append(infowindow);
+    }, 500);
+    return marker;
+  }
+
+  var createDestination = function(place, title, map) {
+    var marker = _createMarker(place, title, map);
+    return _customizeDestination(place, marker);
+    // marker.setMap(map);
+    // return marker;
+  }
+
+  // Find nearby places using Google API based on location
+  // https://developers.google.com/maps/documentation/javascript/places#place_search_requests
+  var findNearbyPlaces = function(latLng, map) {
+    var request = {
+      location: latLng,
+      radius: '75', // meters
+      types: ['establishment']
+    };
+    service = new google.maps.places.PlacesService(map);
+
+    return $q(function(resolve, reject) {
+      service.nearbySearch(request, function(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          var places = [];
+          for (var i = 0; i < results.length; i++) {
+            // Show only up to 6 images at one time
+            if (places.length >= 6) { break; }
+            (function(i) {
+              var place = {
+                name: results[i].name,
+                photo: typeof results[i].photos !== 'undefined' ? results[i].photos[0].getUrl({'maxWidth': 200, 'maxHeight': 140}) : '',
+                location: {
+                  lat: results[i].geometry.location.lat(),
+                  lng: results[i].geometry.location.lng()
+                },
+                rating: results[i].rating
+              };
+              if (place.photo) {
+                places.push(place);
+              }
+            })(i);
+          }
+          resolve(places);
+        }
+        resolve('Error with Google Places Services');
+      });
+    })
   }
 
   return {
     initialize: initialize,
-    createDestinationMarker: createDestinationMarker
+    getCenter: getCenter,
+    initializeMarkerLayer: initializeMarkerLayer,
+    createDestination: createDestination,
+    findNearbyPlaces: findNearbyPlaces
   }
 }]);
