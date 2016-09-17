@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game', 'app.dashboard'])
+angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-maps', 'app.services', 'app.game', 'app.dashboard', 'btford.socket-io'])
 .config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
 
   $urlRouterProvider.otherwise('/dashboard'); // <-------------- default view TODO: SET TO DASHBOARD!
@@ -59,7 +59,10 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
             return [];
           }
           return Requests.getGameData($stateParams.path).then(function(res) {
-            return res.data.locations;
+            return {
+              data: res.data.locations,
+              gameId: $stateParams.path
+            };
           }); 
         }
       }
@@ -94,8 +97,14 @@ angular.module('app', ['ui.router', 'app.auth', 'app.createGame', 'uiGmapgoogle-
             return [];
           }
           return Requests.getUserData().then(function(res) {
-            console.log('checking dashboard data??????', res.data);
-            return res.data;
+            return Requests.updateFacebookData()
+                .then(function(facebookInfo){
+                  console.log('crazy callbacks', res, facebookInfo);
+                  return {
+                    userdata: res.data,
+                    userFacebook: facebookInfo.data
+                  };
+                })
           }); 
         }
       }

@@ -72,3 +72,6 @@ Temporary Items
 
 # build
 dist
+
+#API keys
+server/config/keys.js
